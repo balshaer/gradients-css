@@ -1,0 +1,584 @@
+:root {
+  --color-white: #d9d9d9;
+  --color-gray: #c4c4c4;
+  --color-green: #3c5e64;
+  --color-black: #000;
+  --color-purple: #7145ac;
+  --color-light-blue: #96c5f5;
+  --box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+}
+
+html {
+  color: #222;
+  font-size: 1em;
+  line-height: 1.4;
+  font-family: "Clash Display", sans-serif;
+}
+
+::-moz-selection {
+  background: #b3d4fc;
+  text-shadow: none;
+  color: #010101;
+}
+
+::selection {
+  background: #b3d4fc;
+  text-shadow: none;
+  color: #010101;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-green);
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  transition: all 0.3s ease 0s;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -ms-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #3c5e64ad;
+  transition: all 0.3s ease 0s;
+}
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+  vertical-align: middle;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.hidden,
+[hidden] {
+  display: none !important;
+}
+
+.sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.sr-only.focusable:active,
+.sr-only.focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  white-space: inherit;
+  width: auto;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+/*
+ * Clearfix: contain floats
+ *
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    `contenteditable` attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that receive the `clearfix` class.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+
+.clearfix::before,
+.clearfix::after {
+  content: " ";
+  display: table;
+}
+
+.clearfix::after {
+  clear: both;
+}
+
+/* ==========================================================================
+   EXAMPLE Media Queries for Responsive Design.
+   These examples override the primary ('mobile first') styles.
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+  /* Style adjustments for viewports that meet the condition */
+}
+
+@media print,
+  (-webkit-min-device-pixel-ratio: 1.25),
+  (min-resolution: 1.25dppx),
+  (min-resolution: 120dpi) {
+  /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+   Print styles.
+   Inlined to avoid the additional HTTP request:
+   https://www.phpied.com/delay-loading-your-print-css/
+   ========================================================================== */
+* {
+  scroll-behavior: smooth !important;
+}
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: #fff !important;
+    color: #000 !important;
+    /* Black prints faster */
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+
+  abbr[title]::after {
+    content: " (" attr(title) ")";
+  }
+
+  /*
+   * Don't show links that are fragment identifiers,
+   * or use the `javascript:` pseudo protocol
+   */
+  a[href^="#"]::after,
+  a[href^="javascript:"]::after {
+    content: "";
+  }
+
+  pre {
+    white-space: pre-wrap !important;
+  }
+
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+
+  /*
+   * Printing Tables:
+   * https://web.archive.org/web/20180815150934/http://css-discuss.incutio.com/wiki/Printing_Tables
+   */
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}
+
+body {
+  background-color: #10101a;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #10101a;
+  padding: 0 10px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+  position: relative;
+}
+
+header {
+  height: 93vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.thelogo {
+  height: 15vh;
+  width: 15vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: linear-gradient(90deg, #7145ac, #96c5f5);
+  border-radius: 50%;
+}
+
+.LoadingGlow {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  display: block;
+  height: 5px;
+  z-index: 9999;
+  animation-name: load;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  background: #00d8ff;
+  background: linear-gradient(90deg, #7145ac, #96c5f5);
+  visibility: visible;
+  margin-left: -200%;
+}
+
+@keyframes load {
+  0% {
+    margin-left: -200%;
+  }
+
+  100% {
+    margin-left: 0%;
+    visibility: hidden;
+  }
+}
+
+.thelogo img {
+  height: 10vh;
+  width: 10vh;
+  -o-object-fit: cover;
+  object-fit: cover;
+  border: 2px solid #d9d9d9;
+  border-radius: 50%;
+  padding: 25px;
+}
+
+header {
+  text-align: center;
+  position: relative;
+}
+
+header h3 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #7145ac, #96c5f5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#topHeader {
+  position: absolute;
+  width: 100%;
+  right: 0;
+  left: 0;
+  top: 0;
+  margin: auto;
+  height: 10vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 99;
+}
+
+#topHeader .icons {
+  display: flex;
+  gap: 20px;
+  transition: all 0.3s ease 0s;
+}
+
+.sp-header {
+  color: var(--color-gray) !important;
+  font-size: 1rem;
+}
+
+#cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 30px;
+  margin: 2rem 10%;
+  margin-top: 2rem;
+}
+
+#card {
+  height: 300px;
+  border-radius: 22px;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease-in-out;
+  background-color: var(--color-light-blue);
+}
+
+.icons img {
+  transition: all 0.3s ease 0s;
+}
+
+.icons img:hover {
+  opacity: 70%;
+}
+
+#card {
+  box-shadow: var(--box-shadow);
+  border: 2px solid #edf0f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.copyText {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #000;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0%;
+  transition: all 0.3s ease 0s;
+  -webkit-filter: blur(5px);
+  filter: blur(5px);
+  gap: 1rem;
+
+  cursor: pointer;
+}
+
+.copyText:hover {
+  opacity: 100%;
+  -webkit-filter: blur(0);
+  filter: blur(0);
+}
+
+#arrow {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+}
+
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 3.5em;
+  height: 2em;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  --background: #28096b;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--background);
+  transition: 0.5s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.4em;
+  width: 1.4em;
+  border-radius: 50%;
+  left: 10%;
+  bottom: 15%;
+  box-shadow: inset 8px -4px 0px 0px #fff000;
+  background: var(--background);
+  transition: 0.5s;
+}
+
+input:checked + .slider {
+  background-color: #522ba7;
+}
+
+input:checked + .slider:before {
+  transform: translateX(100%);
+  box-shadow: inset 15px -4px 0px 15px #fff000;
+}
+
+#arrow {
+  display: none;
+}
+
+.widget-lg .btn, .widget-lg .social-count {
+  height: 23px !important;
+  padding: 5px 10px !important;
+  font-size: 12px !important;
+  display: flex !important;
+  line-height: 16px !important;
+  gap: 6px !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+footer {
+  background-color: #10101a;
+  height: 66px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1em;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: bold;
+  background: linear-gradient(90deg, #b993d6, #8ca6db);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.icons span:nth-child(1){
+  box-shadow: var(--box-shadow) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#alertTop{
+  width: 100vw;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  letter-spacing: 2px;
+  z-index: 999;
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: -60px;
+  margin: auto;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border-radius: 12px;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  animation-name: alert;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-delay: 0s;
+  transition: all 0.3s ease 0s;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -ms-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+}
+
+
+#Clipboard{
+  height: 0px;
+  width: 0px;
+  opacity: 0%;
+  position: fixed;
+  z-index: -9999;
+  left: -1000vw;
+  bottom: -1000vw;
+}
+
+
+@media (max-width: 788px) {
+  #cards { grid-template-columns: repeat(2, 1fr); }
+  
+  #topHeader{
+    position: absolute;
+    width: 100%;
+    right: 0;
+    left: 0;
+    top: 0;
+    margin: auto;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+    gap: 0;
+  }
+
+  #arrow {
+    right: 0px;
+    height: 24px ;
+    width: 24px;
+    object-fit: contain !important;
+  }
+}
+
+
+@media (max-width: 588px) {
+  #cards { grid-template-columns: repeat(1, 1fr); }
+}
