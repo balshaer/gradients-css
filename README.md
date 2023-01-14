@@ -1,6 +1,8 @@
-![Untitled_design-removebg-preview](https://user-images.githubusercontent.com/89737291/212494864-26765d71-7ace-4630-8977-41d218fb4310.png)
+<p align="center">
+    <img width="200" src="https://cdn.dribbble.com/users/11365883/screenshots/20383041/media/ed0745667fa196c1604c89c9c279fa8d.png" alt="logo">
+</p>
 
-#gradientos.netlify.app
+<h1>gradientos.netlify.app</h1>
 
 CSS Gradientos. I hope this will help designers and developers experiment with it and possibly adapt it.
 
