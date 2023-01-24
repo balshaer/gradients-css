@@ -8,3 +8,6 @@ CSS Gradientos. I hope this will help designers and developers experiment with i
 
 
 :link: [Live version](https://gradientos.vercel.app/)
+
+
+## License WebGradients is created under the [MIT](http://opensource.org/licenses/MIT) license.
