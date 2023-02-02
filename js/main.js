@@ -1,8 +1,14 @@
+//the elements
 let topbtn = document.getElementById("arrow");
 let card = document.getElementsByTagName("card");
 let alertTop = document.getElementById("alertTop");
 let modeBtn = document.getElementById('mode');
 let logoimg = document.getElementById('logoimg');
+
+
+
+//mode function
+
 
 modeBtn.onchange = (e) => {
   if (modeBtn.checked === true) {
@@ -15,6 +21,7 @@ document.querySelector('body').classList.toggle("lightmode");
 
   }
 }
+
 
 const mode = window.localStorage.getItem('mode');
 if (mode == 'dark') {
@@ -34,6 +41,7 @@ if (mode == 'light') {
 
 
 
+//scroll function
 
 window.onscroll = function () {
   scrollFunction();
@@ -51,6 +59,8 @@ function topFunction() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
+
+//alert top function
 
 function alert() {
   document.getElementById("alertTop").style.top = "-60px";

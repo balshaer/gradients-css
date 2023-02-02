@@ -582,3 +582,10 @@ footer {
 @media (max-width: 588px) {
   #cards { grid-template-columns: repeat(1, 1fr); }
 }
+
+@media (max-width: 700px) {
+#arrow{display: none !important;}
+
+header {height: 80vh !important;}
+
+}
