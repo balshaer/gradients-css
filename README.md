@@ -7,7 +7,7 @@
 CSS Gradientos. Simple web tool project that will help designers and developers experiment with it and possibly adapt it.
 
 
-:link: [Live version](https://gradientos.vercel.app/)
+:link: [Live version](https://gradientscss.vercel.app/)
 
 
 <pre> License WebGradients is created under the [MIT](http://opensource.org/licenses/MIT) license. </pre>
