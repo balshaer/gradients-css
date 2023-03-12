@@ -4,7 +4,7 @@
 
 <h1>https://gradientscss.vercel.app//</h1>
 
-CSS Gradientos. Simple web tool project that will help designers and developers experiment with it and possibly adapt it.
+gradientscss. Simple web tool project that will help designers and developers experiment with it and possibly adapt it.
 
 
 :link: [Live version](https://gradientscss.vercel.app/)
