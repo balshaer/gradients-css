@@ -1,75 +1,89 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Gradient CSS</title>
-    <link rel="stylesheet" href="./css/main.css" />
-    <link href="https://api.fontshare.com/v2/css?f[]=chillax@500,400&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <!-- Add AOS CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
-  </head>
-  <body>
-    <div class="preloader">
-      <div class="preloader-container">
-        <div class="preloader-circle"></div>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gradients CSS - Beautiful Gradient Cards for Web Design</title>
+  <meta name="description"
+    content="Create stunning gradient cards with Gradients CSS. Our easy-to-use tool allows you to customize your gradient card's colors, direction, and more.">
+  <meta name="keywords" content="gradient cards, web design, CSS gradients, customizable, beautiful, easy-to-use">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://gradientscss.vercel.app/">
+  <meta name="author" content="Gradients CSS">
+  <!-- Open Graph tags -->
+  <meta property="og:title" content="Gradients CSS - Beautiful Gradient Cards for Web Design">
+  <meta property="og:description"
+    content="Create stunning gradient cards with Gradients CSS. Our easy-to-use tool allows you to customize your gradient card's colors, direction, and more.">
+  <meta property="og:image" content="[https://camo.githubusercontent.com/b21de9f382d93f5ccae14872002f7bf86e068edd40124e6152aadd169c323b21/68747470733a2f2f63646e2e6472696262626c652e636f6d2f75736572732f31313336353838332f73637265656e73686f74732f32303338333034312f6d656469612f65643037343536363766613139366331363034633839633963323739666138642e706e67]">
+  <meta property="og:url" content="[https://gradientscss.vercel.app/]">
+  <meta property="og:type" content="website">
+
+  <link rel="stylesheet" href="./css/main.css" />
+  <link href="https://api.fontshare.com/v2/css?f[]=chillax@500,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <!-- Add AOS CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+</head>
+
+<body>
+  <div class="preloader">
+    <div class="preloader-container">
+      <div class="preloader-circle"></div>
+    </div>
+  </div>
+  <header class="animate__animated animate__fadeIn">
+    <h1 id="logo">Gradients CSS</h1>
+    <div class="icons">
+      <div class="githubIcon">
+        <!-- Place this tag where you want the button to render. -->
+        <a class="github-button" href="https://github.com/Baraasher/gradients"
+          data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true"
+          aria-label="Star Baraasher/gradients on GitHub">Star</a>
+      </div>
+      <div class="tweetButton">
+        <a href="https://twitter.com/intent/tweet?text=Your%20tweet%20text%20here"
+          class="twitter-share-button">Tweet</a>
       </div>
     </div>
-    <header class="animate__animated animate__fadeIn">
-      <h1 id="logo">Gradients CSS</h1>
-      <div class="icons">
-        <div class="githubIcon">
-          <!-- Place this tag where you want the button to render. -->
-          <a class="github-button"
-             href="https://github.com/Baraasher/gradients"
-             data-color-scheme="no-preference: light; light: light; dark: dark;"
-             data-size="large"
-             data-show-count="true"
-             aria-label="Star Baraasher/gradients on GitHub"
-             >Star</a>
-        </div>
-        <div class="tweetButton">
-          <a href="https://twitter.com/intent/tweet?text=Your%20tweet%20text%20here" class="twitter-share-button">Tweet</a>
-        </div>
+  </header>
+  <hr class="hr" />
+  <main>
+    <div class="cards-container animate__animated animate__fadeIn" id="cards"></div>
+  </main>
+  <button id="scroll-up">Scroll Up</button>
+  <div class="alert" id="alert-top"></div>
+  <div id="copy-modal" class="copy-modal">
+    <div class="copy-modal-content"></div>
+  </div>
+  <footer>
+    <div class="footer-container">
+      <div class="footer-left">
+        <img src="./img/logo2.png" alt="Footer Logo" />
+        <p>Developed by <strong>Baraa</strong></p>
       </div>
-    </header>
-    <hr class="hr" />
-    <main>
-      <div class="cards-container animate__animated animate__fadeIn" id="cards"></div>
-    </main>
-    <button id="scroll-up">Scroll Up</button>
-    <div class="alert" id="alert-top"></div>
-    <div id="copy-modal" class="copy-modal">
-      <div class="copy-modal-content"></div>
-    </div>
-    <footer>
-      <div class="footer-container">
-        <div class="footer-left">
-          <img src="./img/logo2.png" alt="Footer Logo" />
-          <p>Developed by <strong>Baraa</strong></p>
-        </div>
-        <div class="footer-right">
-          <!-- <ul>
+      <div class="footer-right">
+        <!-- <ul>
           <li><a href="#">Home</a></li>
           <li><a href="#">About</a></li>
           <li><a href="#">Contact</a></li>
         </ul> -->
-        </div>
       </div>
-    </footer>
-    <div class="alert" id="copy-alert">
-      <p>Gradient copied to clipboard! 🎉</p>
     </div>
-    <script>
-      window.addEventListener("load", function () {
-        var preloader = document.querySelector(".preloader");
-        preloader.style.display = "none";
-      });
-    </script>
-    <script src="./js/main.js"></script>
-    <!-- Add AOS JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  </body>
+  </footer>
+  <div class="alert" id="copy-alert">
+    <p>Gradient copied to clipboard! 🎉</p>
+  </div>
+  <script>
+    window.addEventListener("load", function () {
+      var preloader = document.querySelector(".preloader");
+      preloader.style.display = "none";
+    });
+  </script>
+  <script src="./js/main.js"></script>
+  <!-- Add AOS JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</body>
+
 </html>
