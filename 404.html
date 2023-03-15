@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title>Page Not Found</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Styles to center and style the error message -->
     <style>
       * {
         line-height: 1.2;
@@ -33,10 +34,10 @@
 
       p {
         margin: 0 auto;
-
         width: 280px;
       }
 
+      /* Media query to adjust styling on smaller screens */
       @media only screen and (max-width: 280px) {
         body,
         p {
@@ -51,11 +52,10 @@
     </style>
   </head>
 
-
-
   <body>
     <h1>Page Not Found</h1>
     <p>Sorry, but the page you were trying to view does not exist.</p>
   </body>
 </html>
-<!-- IE needs 512+ bytes: https://docs.microsoft.com/archive/blogs/ieinternals/friendly-http-error-pages -->
+
+<!-- Microsoft recommends having at least 512 bytes for IE compatibility: https://docs.microsoft.com/archive/blogs/ieinternals/friendly-http-error-pages -->

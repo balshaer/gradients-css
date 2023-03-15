@@ -1,13 +1,33 @@
 <p align="center">
-    <img width="200" src="https://cdn.dribbble.com/users/11365883/screenshots/20383041/media/ed0745667fa196c1604c89c9c279fa8d.png" alt="logo">
+  <img width="200" src="https://cdn.dribbble.com/users/11365883/screenshots/20383041/media/ed0745667fa196c1604c89c9c279fa8d.png" alt="GradientsCSS logo">
 </p>
 
-<h1>https://gradientscss.vercel.app//</h1>
+# GradientsCSS
 
-gradientscss. Simple web tool project that will help designers and developers experiment with it and possibly adapt it.
+Welcome to the GradientsCSS repository! GradientsCSS is a simple web tool project that allows designers and developers to experiment with gradients and potentially adapt them for their own use.
 
+## Live Version
 
-:link: [Live version](https://gradientscss.vercel.app/)
+A live version of the tool can be found at [https://gradientscss.vercel.app/](https://gradientscss.vercel.app/).
 
+## Features
 
-<pre> License WebGradients is created under the [MIT](http://opensource.org/licenses/MIT) license. </pre>
+- Easy to use interface
+- Customizable gradient options
+- Instant preview of gradient changes
+- Code generator for easy implementation
+- Responsive design for use on any device
+
+## Technologies Used
+
+- HTML5
+- CSS3
+- JavaScript
+
+## Installation
+
+To use GradientsCSS, simply visit the [live version](https://gradientscss.vercel.app/) of the tool in your preferred web browser.
+
+## License
+
+GradientsCSS is licensed under the [MIT License](http://opensource.org/licenses/MIT).
