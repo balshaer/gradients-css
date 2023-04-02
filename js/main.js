@@ -2,6 +2,11 @@
 const cardsDiv = document.getElementById('cards');
 const copyModal = document.getElementById('copy-modal');
 const copyModalText = document.getElementById('copy-modal-text');
+const cards = document.querySelectorAll('.card');
+cards.forEach(card => card.style.display = 'none');
+const searchInput = document.getElementById('searchInput');
+
+
 // Define the gradients
 const gradients = [
   { name: 'Black Rose', color1: '#f4c4f3', color2: '#fc67fa' },
@@ -38,6 +43,9 @@ const gradients = [
   { name: 'Frozen Dreams', color1: '#fdcbf1', color2: '#fdcbf1', color3: '#e6dee9' },
   { name: 'Sweet Sunshine', color1: '#f7b733', color2: '#fc4a1a', color3: '#ff9a00' }
 ];
+
+
+
 // Generate the cards
 function generateCards() {
   for (let i = 0; i < gradients.length; i++) {
@@ -116,3 +124,19 @@ document.getElementById("scroll-up").addEventListener("click", function () {
   document.body.scrollTop = 0; // For Safari
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 });
+
+
+// Search function
+function searchGradients() {
+  const searchTerm = searchInput.value.toLowerCase();
+  cards.forEach(card => {
+    const name = card.querySelector('.card-title').textContent.toLowerCase();
+    if (name.includes(searchTerm)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+searchInput.addEventListener('input', searchGradients);

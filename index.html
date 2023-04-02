@@ -19,20 +19,48 @@
   <meta property="og:type" content="website">
 
   <link rel="stylesheet" href="./css/main.css" />
-  <link href="https://api.fontshare.com/v2/css?f[]=chillax@500,400&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=chillax@500,300,400&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <!-- Add AOS CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
 </head>
 
 <body>
+
   <div class="preloader">
-    <div class="preloader-container">
-      <div class="preloader-circle"></div>
+    <div class="preloader-inner">
+      <div class="loader"></div>
+
     </div>
   </div>
+  
+
   <header class="animate__animated animate__fadeIn">
+    <div class="header-txt">
     <h1 id="logo">Gradients CSS</h1>
+    <p>
+      🎨Gradients CSS is a website that provides a collection of beautiful gradient color combinations for designers and developers to use in their projects. The website is easy to use and allows users to copy the CSS code for the selected gradient with just one click. 💻
+    </p>
+
+    <section class="search-sec">
+
+     <div class="input__container">
+  <div class="shadow__input"></div>
+  <button class="input__button__shadow">
+    <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" height="20px" width="20px">
+      <path d="M4 9a5 5 0 1110 0A5 5 0 014 9zm5-7a7 7 0 104.2 12.6.999.999 0 00.093.107l3 3a1 1 0 001.414-1.414l-3-3a.999.999 0 00-.107-.093A7 7 0 009 2z" fill-rule="evenodd" fill="#17202A"></path>
+    </svg>
+  </button>
+  <input id="searchInput" type="text" name="text" class="input__search" placeholder="Search by colors and names ">
+</div>
+
+    </section>
+
+
+
+
+  </div>
     <div class="icons">
       <div class="githubIcon">
         <!-- Place this tag where you want the button to render. -->
@@ -40,11 +68,12 @@
           data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true"
           aria-label="Star Baraasher/gradients on GitHub">Star</a>
       </div>
-      <div class="tweetButton">
+      <!-- <div class="tweetButton">
         <a href="https://twitter.com/intent/tweet?text=Your%20tweet%20text%20here"
           class="twitter-share-button">Tweet</a>
-      </div>
+      </div> -->
     </div>
+    
   </header>
   <hr class="hr" />
   <main>
@@ -59,7 +88,7 @@
     <div class="footer-container">
       <div class="footer-left">
         <img src="./img/logo2.png" alt="Footer Logo" />
-        <p>Developed by <strong>Baraa</strong></p>
+        <p>Developed by  <a style="text-decoration: none;" href="https://github.com/Baraasher"><strong>Baraa</strong></a></p>
       </div>
       <div class="footer-right">
         <!-- <ul>
@@ -84,6 +113,9 @@
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+  
 </body>
 
 </html>
