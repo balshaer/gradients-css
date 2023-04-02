@@ -1,7 +1,3 @@
-<p align="center">
-  <img width="200" src="https://cdn.dribbble.com/users/11365883/screenshots/20383041/media/ed0745667fa196c1604c89c9c279fa8d.png" alt="GradientsCSS logo">
-</p>
-
 # GradientsCSS
 
 Welcome to the GradientsCSS repository! GradientsCSS is a simple web tool project that allows designers and developers to experiment with gradients and potentially adapt them for their own use.
@@ -24,10 +20,6 @@ A live version of the tool can be found at [https://gradientscss.vercel.app/](ht
 - CSS3
 - JavaScript
 
-## Installation
+## Screenshot
 
-To use GradientsCSS, simply visit the [live version](https://gradientscss.vercel.app/) of the tool in your preferred web browser.
-
-## License
-
-GradientsCSS is licensed under the [MIT License](http://opensource.org/licenses/MIT).
+![screenshot](https://user-images.githubusercontent.com/89737291/229374360-eca1fd3b-52eb-4b58-bfc6-e012ff5c2388.png)
