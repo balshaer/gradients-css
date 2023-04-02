@@ -24,10 +24,6 @@ A live version of the tool can be found at [https://gradientscss.vercel.app/](ht
 - CSS3
 - JavaScript
 
-## Installation
+## Screenshot
 
-To use GradientsCSS, simply visit the [live version](https://gradientscss.vercel.app/) of the tool in your preferred web browser.
-
-## License
-
-GradientsCSS is licensed under the [MIT License](http://opensource.org/licenses/MIT).
+![screenshot](https://user-images.githubusercontent.com/89737291/229374254-49a58ec1-a443-44d6-a7ef-aae81a6e5856.png)
