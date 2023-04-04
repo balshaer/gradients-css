@@ -1,6 +1,6 @@
 # GradientsCSS
 
-Welcome to the GradientsCSS repository! GradientsCSS is a simple web tool project that allows designers and developers to experiment with gradients and potentially adapt them for their own use.
+GradientsCSS is a simple web tool project that allows designers and developers to experiment with gradients and potentially adapt them for their own use.
 
 ## Live Version
 
