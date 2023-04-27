@@ -4,6 +4,7 @@ import "normalize.css"; // Import Normalize.css
 import alertify from "alertifyjs"; // Import alertify.js library
 import "alertifyjs/build/css/alertify.css"; // Import alertify.js CSS
 import { LinearGradient } from 'react-text-gradients'
+import { useEffect, useState } from "react";
 
 // First, we will wait for the page to finish loading
 window.addEventListener('load', function () {
@@ -15,6 +16,35 @@ window.addEventListener('load', function () {
   }, 1000); // change the delay time as per your need
 });
 function App() {
+  const [gradients, setGradients] = useState([]);
+  const [filteredGradients, setFilteredGradients] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    // Fetch the gradients from the API
+    fetch("https://raw.githubusercontent.com/ghosh/uiGradients/master/gradients.json")
+      .then((response) => response.json())
+      .then((data) => {
+        setGradients(data);
+        setFilteredGradients(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching gradients:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    // Filter the gradients based on the search query
+    const filtered = gradients.filter((gradient) =>
+      gradient.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredGradients(filtered);
+  }, [searchQuery, gradients]);
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
   return (
     <>
       {/* Add font and CSS links to <head> */}
@@ -49,39 +79,43 @@ function App() {
             projects. The website is easy to use and allows users to copy<br />
             the CSS code for the selected gradient with just one click. 💻
           </p>
+
+
+            {/* Add search input */}
+      
+
+
+<div class="input__container">
+  <div class="shadow__input"></div>
+  <button class="input__button__shadow">
+    <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" height="20px" width="20px">
+      <path d="M4 9a5 5 0 1110 0A5 5 0 014 9zm5-7a7 7 0 104.2 12.6.999.999 0 00.093.107l3 3a1 1 0 001.414-1.414l-3-3a.999.999 0 00-.107-.093A7 7 0 009 2z" fill-rule="evenodd" fill="#17202A"></path>
+    </svg>
+  </button>
+  <input   value={searchQuery}
+            onChange={handleSearchChange}  type="text" name="text" class="input__search" placeholder="What do you want to search?"/>
+</div>
         </header>
         <section className="gradientCards">
+        {/* ... */}
+        {filteredGradients.map((gradient) => (
+            <div
+              key={gradient.name}
+              className="gradientCard"
+              onClick={() => {
+                navigator.clipboard.writeText(gradient.colors.join(", "));
+                alertify.success("Copied!🎉");
+              }}
+              style={{
+                background: `linear-gradient(${gradient.colors.join(", ")})`,
+              }}
+            ></div>
+          ))}
+        {/* ... */}
+        
 
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #FBD3E9, #BB377D);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #FBD3E9, #BB377D)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #FEB692, #EA5455);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #FEB692, #EA5455)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #A3F7B5, #66FFA6);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #A3F7B5, #66FFA6)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #22E1FF, #1D8FE1, #625EB1);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #22E1FF, #1D8FE1, #625EB1)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #FFC3A0, #FFAFBD);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #FFC3A0, #FFAFBD)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #76b852, #8dc26f, #a7d182);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #76b852, #8dc26f, #a7d182)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #11998e, #38ef7d);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #11998e, #38ef7d)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #fc466b, #3f5efb);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #fc466b, #3f5efb)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #F1C40F, #F39C12);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #F1C40F, #F39C12)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #DA4453, #89216B);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #DA4453, #89216B)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #11998e, #38ef7d);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #11998e, #38ef7d)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #FEB692, #EA5455);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #FEB692, #EA5455)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #4b6cb7, #182848);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #4b6cb7, #182848)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #24C6DC, #514A9D);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #24C6DC, #514A9D)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #8E2DE2, #4A00E0);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #8E2DE2, #4A00E0)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #93a5cf, #e4efe9);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #93a5cf, #e4efe9)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #00c6ff, #0072ff);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #00c6ff, #0072ff)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #5c258d, #4389a2, #dcedc2);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #5c258d, #4389a2, #dcedc2)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #fc4a1a, #f7b733);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #fc4a1a, #f7b733)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #ee9ca7, #ffdde1);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #ee9ca7, #ffdde1)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #C02425, #F0CB35);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #C02425, #F0CB35)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #F2B61F, #EC6868);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #F2B61F, #EC6868)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #00B4DB, #0083B0);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #00B4DB, #0083B0)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #A18CD1, #FBC2EB);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #A18CD1, #FBC2EB)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #0575E6, #021B79);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #0575E6, #021B79)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #96c93d, #000000);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #96c93d, #000000)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #f15f79, #b24592);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #f15f79, #b24592)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #eaafc8, #654ea3);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #eaafc8, #654ea3)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #ff0844, #ffb199);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #ff0844, #ffb199)" }}></div>
-          <div className="gradientCard" onClick={() => { navigator.clipboard.writeText("background: linear-gradient(135deg, #f8c2c1, #ef9f9c, #f8c2c1);");alertify.success('Copied!🎉'); }} style={{ background: "linear-gradient(135deg, #f8c2c1, #ef9f9c, #f8c2c1)" }}></div>
+
+
           {/* Create footer section */}
           <footer className="mainFooter">
             <p className="footerText">Developed by <a target="_blank" href="https://alsher.vercel.app/">Baraa</a></p>
