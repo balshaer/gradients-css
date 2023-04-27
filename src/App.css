@@ -10,26 +10,24 @@
   --color-secondary: #72757e;
   --color-tertiary: #2cb67d;
 }
-
 * {
-  font-family: "Chillax", sans-serif;
+  font-family: "Chillax", sans-serif !important;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
 }
-
 body {
   font-size: 1.6rem;
   background-color: var(--color-background);
+  background-color: #0d1117;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
   overflow-x: hidden;
   position: relative;
 }
-
 h1,
 h2,
 h3,
@@ -39,17 +37,14 @@ h6 {
   font-weight: bold;
   color: var(--color-headline);
 }
-
 p,
 a,
 li {
   color: var(--color-paragraph);
 }
-
 i {
   color: var(--color-highlight);
 }
-
 button {
   font-size: 1.6rem;
   color: var(--color-button-text);
@@ -60,27 +55,21 @@ button {
   transition: all 0.3s ease-in-out;
   background-color: var(--color-button);
 }
-
 button:hover {
   background-color: #ffffff;
   color: #f2f2f2;
 }
-
-
 ::-webkit-scrollbar {
   width: 7px;
 }
-
 ::-webkit-scrollbar-track {
   background-color: var(--color-background);
 }
-
 ::-webkit-scrollbar-thumb {
   background-color: var(--color-secondary);
   border-radius: 10px;
   opacity: 70%;
 }
-
 .mainHeader {
   height: 60vh;
   display: flex;
@@ -90,17 +79,14 @@ button:hover {
   text-align: center;
   border-bottom: 2px solid #72757e49;
 }
-
 .contentOftitle {
   word-wrap: break-word;
   white-space: pre-line;
   line-height: 1.5;
 }
-
 .mainLogo {
   border-radius: 50%;
   padding: 10px;
-  border: 2px solid var(--color-tertiary);
   height: 120px;
   width: 120px;
   object-fit: cover;
@@ -108,62 +94,29 @@ button:hover {
   cursor: pointer;
 }
 
-@keyframes borderOfMainLogo {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(44, 182, 125, 0.7);
-    border-color: var(--color-tertiary);
-  }
-  50% {
-    transform: scale(1.1);
-    box-shadow: 0 0 0 10px rgba(44, 182, 125, 0.5);
-    border-color: #2cb67d;
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(44, 182, 125, 0.7);
-    border-color: var(--color-tertiary);
-  }
-}
-
-.mainLogo:focus {
-  outline: none;
-}
-
-.mainLogo:active {
-  animation-name: borderOfMainLogo;
-  animation-duration: 2s;
-  animation-fill-mode: forwards;
-}
-
 @media screen and (max-width: 768px) {
   .mainHeader {
     height: 80vh;
   }
-
   .mainLogo {
     height: 80px;
     width: 80px;
   }
 }
-
 @media screen and (max-width: 480px) {
   .mainHeader {
     height: 100vh;
   }
-
   .mainLogo {
     height: 60px;
     width: 60px;
   }
 }
-
 .mainLogo:active {
   animation-name: borderOfMainLogo;
   animation-duration: 2s;
   animation-fill-mode: forwards;
 }
-
 .mainFooter {
   display: flex;
   justify-content: center;
@@ -179,22 +132,17 @@ button:hover {
   height: 77px;
   margin-top: 5rem;
 }
-
 .footerText {
   text-align: center;
   color: var(--color-main);
-
 }
-
 .footerText a {
   color: var(--color-tertiary);
   text-decoration: none;
 }
-
 .footerText a:hover {
   text-decoration: underline;
 }
-
 #preloader {
   position: fixed;
   left: 0;
@@ -210,7 +158,6 @@ button:hover {
   justify-content: center;
   align-items: center;
 }
-
 #loader {
   transform: translate(-50%, -50%);
   border: 6px solid #f3f3f3;
@@ -220,7 +167,6 @@ button:hover {
   height: 50px;
   animation: spin 1s linear infinite;
 }
-
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -229,7 +175,6 @@ button:hover {
     transform: rotate(360deg);
   }
 }
-
 .gradientCards {
   display: flex;
   flex-direction: row;
@@ -241,17 +186,13 @@ button:hover {
   justify-content: center;
   padding: 50px 10px 0 10px;
 }
-
 .gradientCard {
   height: 200px;
   width: 200px;
   cursor: pointer;
   border-radius: 8px;
   position: relative;
-
-
 }
-
 .gradientCard:hover::before {
   content: "copy css";
   position: absolute;
@@ -266,13 +207,10 @@ button:hover {
   white-space: nowrap;
   transition: all 0.3s ease 0s;
 }
-
 @media only screen and (max-width: 620px) {
-
-body{
-  display: none;
-}
-
+  body {
+    display: none;
+  }
   html::after {
     content: "This website works best on screen sizes larger than 620px";
     display: flex;
@@ -287,9 +225,30 @@ body{
     line-height: 1.5;
     overflow: hidden;
     font-weight: bold;
-    
   }
 }
 
+.ajs-message,
+.ajs-success,
+.ajs-visible {
+  background: linear-gradient(135deg, #38ef7d, #11998e) !important;
+  color: #000 !important;
+  font-weight: bold;
+  border-radius: 8px !important;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
+  border: 1.4px solid #000 !important;
+}
 
-
+html, body {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+}
+#world {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
