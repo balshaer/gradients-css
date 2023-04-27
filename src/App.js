@@ -5,7 +5,6 @@ import alertify from "alertifyjs"; // Import alertify.js library
 import "alertifyjs/build/css/alertify.css"; // Import alertify.js CSS
 import { LinearGradient } from 'react-text-gradients'
 import { useEffect, useState } from "react";
-
 // First, we will wait for the page to finish loading
 window.addEventListener('load', function () {
   // Then, we will find the preloader element
@@ -19,7 +18,6 @@ function App() {
   const [gradients, setGradients] = useState([]);
   const [filteredGradients, setFilteredGradients] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
   useEffect(() => {
     // Fetch the gradients from the API
     fetch("https://raw.githubusercontent.com/ghosh/uiGradients/master/gradients.json")
@@ -32,7 +30,6 @@ function App() {
         console.error("Error fetching gradients:", error);
       });
   }, []);
-
   useEffect(() => {
     // Filter the gradients based on the search query
     const filtered = gradients.filter((gradient) =>
@@ -40,11 +37,9 @@ function App() {
     );
     setFilteredGradients(filtered);
   }, [searchQuery, gradients]);
-
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
-
   return (
     <>
       {/* Add font and CSS links to <head> */}
@@ -62,15 +57,11 @@ function App() {
         {/* Create header section */}
         <header className="mainHeader">
           <div id="world">
-          
           </div>
           <h1 className="title">
-            
           <LinearGradient gradient={['to left', '#17acff ,#ff68f0']}>
           Gradients CSS
   </LinearGradient>
-            
-            
             </h1>
           <p className="contentOftitle">
             {/* Add line breaks to content */}
@@ -79,12 +70,7 @@ function App() {
             projects. The website is easy to use and allows users to copy<br />
             the CSS code for the selected gradient with just one click. 💻
           </p>
-
-
             {/* Add search input */}
-      
-
-
 <div class="input__container">
   <div class="shadow__input"></div>
   <button class="input__button__shadow">
@@ -112,10 +98,6 @@ function App() {
             ></div>
           ))}
         {/* ... */}
-        
-
-
-
           {/* Create footer section */}
           <footer className="mainFooter">
             <p className="footerText">Developed by <a target="_blank" href="https://alsher.vercel.app/">Baraa</a></p>

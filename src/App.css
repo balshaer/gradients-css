@@ -24,7 +24,6 @@ body {
   font-size: 1.6rem;
   background-color: var(--color-background);
   background-color: #0d1117;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
   overflow-x: hidden;
   position: relative;
 }
@@ -93,7 +92,6 @@ button:hover {
   transition: transform 0.3s ease-in-out;
   cursor: pointer;
 }
-
 @media screen and (max-width: 768px) {
   .mainHeader {
     height: 80vh;
@@ -227,7 +225,6 @@ button:hover {
     font-weight: bold;
   }
 }
-
 .ajs-message,
 .ajs-success,
 .ajs-visible {
@@ -238,7 +235,6 @@ button:hover {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
   border: 1.4px solid #000 !important;
 }
-
 html, body {
 	position: relative;
 	margin: 0;
@@ -252,7 +248,6 @@ html, body {
 	height: 100%;
 	overflow: hidden;
 }
-
 .input__container {
   position: relative;
   background: rgba(255, 255, 255, 0.664);
@@ -270,7 +265,6 @@ html, body {
   z-index: 9999;
   margin-top: 10vh;
 }
-
 .shadow__input {
   content: "";
   position: absolute;
@@ -290,7 +284,6 @@ html, body {
     radial-gradient(at 91% 83%, hsla(283,74%,69%,1) 0px, transparent 50%),
     radial-gradient(at 72% 91%, hsla(213,75%,75%,1) 0px, transparent 50%);
 }
-
 .input__button__shadow {
   cursor: pointer;
   border: none;
@@ -302,11 +295,9 @@ html, body {
   border-radius: 12px;
   padding: 5px;
 }
-
 .input__button__shadow:hover {
   background: rgba(255, 255, 255, 0.411);
 }
-
 .input__search {
   width: 100%;
   border-radius: 20px;
