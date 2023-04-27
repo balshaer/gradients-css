@@ -12,4 +12,4 @@ You can search for gradients by name using the search bar at the top of the page
 
 ## Screenshot
 
-![Screenshot 2023-04-27 230656](https://user-images.githubusercontent.com/89737291/234979377-53e8247b-be87-4a2e-b3dc-18a4ae571d6f.png)
+![Screenshot 2023-04-27 232714](https://user-images.githubusercontent.com/89737291/234983380-2e4d699a-23f6-4d67-98c1-8c150000dab5.png)
