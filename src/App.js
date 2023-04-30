@@ -89,9 +89,11 @@ function App() {
               key={gradient.name}
               className="gradientCard"
               onClick={() => {
-                navigator.clipboard.writeText(gradient.colors.join(", "));
+                const gradientCSS = `background: ${gradient.colors[0]};\nbackground: linear-gradient(90deg, ${gradient.colors[0]} 16%, ${gradient.colors[1]} 44%, ${gradient.colors[2]} 100%);`;
+                navigator.clipboard.writeText(gradientCSS);
                 alertify.success("Copied!🎉");
               }}
+              
               style={{
                 background: `linear-gradient(${gradient.colors.join(", ")})`,
               }}
