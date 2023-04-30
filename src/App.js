@@ -79,7 +79,7 @@ function App() {
     </svg>
   </button>
   <input   value={searchQuery}
-            onChange={handleSearchChange}  type="text" name="text" class="input__search" placeholder="search by the color or the name?"/>
+            onChange={handleSearchChange}  type="text" name="text" class="input__search" placeholder="search by the color name?"/>
 </div>
         </header>
         <section className="gradientCards">
