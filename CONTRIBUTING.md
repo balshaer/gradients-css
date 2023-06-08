@@ -37,7 +37,7 @@ Please note that all contributions to Gradients are subject to review and approv
 ## Contact
 If you have any questions, suggestions, or need assistance with your contributions, please feel free to reach out to us. You can contact us through the following channels:
 
-- Email: [your_email@example.com]
+- Email: [alsher.info@gmail.com]
 - Issue Tracker: [link_to_issue_tracker]
 - Chat Platform: [link_to_chat_platform]
 
