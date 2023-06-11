@@ -3,7 +3,6 @@ import { Container, Tooltip } from "@mui/material";
 import ReactPaginate from 'react-paginate';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import "normalize.css";
 import logo from './images/logo2.png';
@@ -12,6 +11,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import SearchIcon from '@mui/icons-material/Search';
 import LanguageIcon from '@mui/icons-material/Language';
 import toast, { Toaster } from 'react-hot-toast';
+import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 
 function App() {
   const [gradients, setGradients] = useState([]);
@@ -173,7 +173,18 @@ function App() {
 
         <section className="gradientCards">
           {paginatedGradients.length === 0 ? (
-            <p className="noGradientsText">There are no gradients with that name. <img width="24" height="24" src="https://img.icons8.com/nolan/64/1A6DFF/C822FF/cancel-2.png" alt="cancel-2" /></p>
+
+            <div id="searchMessage">
+              <p className="noGradientsText ">There are no gradients with that name.
+              </p>
+              <span>
+              <DoNotDisturbIcon sx={{ color: "white" }} color="#fff" fontSize="large" />
+
+              </span>
+
+            </div>
+
+
           ) : (
             paginatedGradients.map((gradient) => (
               <div className="gradientCardDiv">
