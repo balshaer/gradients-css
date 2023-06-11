@@ -1,15 +1,29 @@
-# Gradients
+# Gradients CSS
 
-Gradients is a collection of carefully crafted CSS gradients that you can use to add depth and dimension to your web projects. You can customize them or use them as they are.
+
+Gradients is a curated collection of CSS gradients designed to enhance the visual appeal of your web projects by adding depth and dimension. Whether you prefer to use them as they are or customize them to fit your specific needs, Gradients has got you covered.
+
+## Usage
+
+To incorporate these gradients into your project, simply include the following CSS code:
+
+```css
+/* Add the desired class to your HTML element */
+.your-element {
+  background: linear-gradient(to right, #start-color, #end-color);
+}
+```
+
+Replace #start-color and #end-color with the colors of your choice from the gradient you wish to use. You can find the complete list of available gradients in the data.json file.
+
 
 ## API
 
-The API endpoint for the gradients is `https://raw.githubusercontent.com/ghosh/uiGradients/master/gradients.json`. You can use this endpoint to retrieve the gradient data and use it in your projects.
+If you prefer programmatic access to the gradients, you can utilize the following API endpoint:
 
-## Search
+GET https://raw.githubusercontent.com/ghosh/uiGradients/master/gradients.json
 
-You can search for gradients by name using the search bar at the top of the page. The search is automatic and will update the displayed gradients as you type.
 
-## Screenshot
+<hr>
 
-![Screenshot 2023-04-27 232714](https://user-images.githubusercontent.com/89737291/234983380-2e4d699a-23f6-4d67-98c1-8c150000dab5.png)
+
