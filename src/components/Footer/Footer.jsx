@@ -14,9 +14,9 @@ const Footer = () => {
     return (
         <footer className="mainFooter" style={{ marginTop: "3rem" }}>
             <div onClick={handleOnClick} className="footerUser">
-                <User src={githubProfileImage}>
+                <User onClick={handleOnClick} src={githubProfileImage}>
                     <User.Link style={{ color: "white" }}>
-                        <span style={{ cursor: "pointer" }}>@{githubUsername}</span>
+                        <span onClick={handleOnClick} style={{ cursor: "pointer" }}>@{githubUsername}</span>
                     </User.Link>
                 </User>
             </div>
