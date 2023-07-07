@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
-import { Tooltip } from "@mui/material";
+import CheckIcon from '@mui/icons-material/Check';
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import "alertifyjs/build/css/alertify.css";
-import "./Gradients.css";
-import toast from "react-hot-toast";
 import DoNotDisturbIcon from '@mui/icons-material/ErrorOutline';
-import Header from "../Header/Header";
+import { Tooltip } from "@mui/material";
 import { Pagination } from "@nextui-org/react";
+import "alertifyjs/build/css/alertify.css";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import Header from "../Header/Header";
+import "./Gradients.css";
 
 const Gradients = () => {
   const [gradients, setGradients] = useState([]);
@@ -14,6 +15,8 @@ const Gradients = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
+  const [clickedIndex, setClickedIndex] = useState(-1);
+  let timeout;
 
   useEffect(() => {
     fetch(
@@ -53,12 +56,25 @@ const Gradients = () => {
     setCurrentPage(selected.selected);
   };
 
-  const gradientsPerPage = 10;
+  const gradientsPerPage = 12;
   const offset = currentPage * gradientsPerPage;
   const paginatedGradients = filteredGradients.slice(
     offset,
     offset + gradientsPerPage
   );
+
+  const handleCopyButtonClick = (gradientCSS, index) => {
+    navigator.clipboard.writeText(gradientCSS);
+    toast('Copied!', {
+      icon: '🎉',
+    });
+
+    setClickedIndex(index);
+
+    timeout = setTimeout(() => {
+      setClickedIndex(-1);
+    }, 3000);
+  };
 
   return (
     <section>
@@ -71,12 +87,10 @@ const Gradients = () => {
               <p className="noGradientsText">There are no gradients with that name.</p>
               <span>
                 <DoNotDisturbIcon sx={{ color: "rgb(148, 161, 178)" }} fontSize="large" />
-
-
               </span>
             </div>
           ) : (
-            paginatedGradients.map((gradient) => (
+            paginatedGradients.map((gradient, index) => (
               <div className="gradientCardDiv" key={gradient.name}>
                 <h3 className="gradientName">
                   {gradient.name}
@@ -86,13 +100,14 @@ const Gradients = () => {
                     id="copyButton"
                     onClick={() => {
                       const gradientCSS = `background: ${gradient.colors[0]};\nbackground: linear-gradient(90deg, ${gradient.colors[0]} 16%, ${gradient.colors[1]} 44%, ${gradient.colors[2]} 100%);`;
-                      navigator.clipboard.writeText(gradientCSS);
-                      toast('Copied!', {
-                        icon: '🎉',
-                      });
+                      handleCopyButtonClick(gradientCSS, index);
                     }}
                   >
-                    <ContentCopyIcon className="ContentCopyIcon" />
+                    {clickedIndex === index ? (
+                      <CheckIcon className="ContentCopyIcon animate__animated animate__fadeIn" id="ContentCopyIcon" />
+                    ) : (
+                      <ContentCopyIcon className="ContentCopyIcon" id="ContentCopyIcon" />
+                    )}
                   </button>
                 </Tooltip>
                 <div

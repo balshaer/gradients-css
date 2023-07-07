@@ -1,14 +1,10 @@
-import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import React from "react";
 import "./Header.css";
 
 const Header = ({ searchQuery, handleSearchChange }) => {
     return (
         <header className="main-header">
-
-
-
-
 
             <h1 className="title boujee-text">Gradients CSS</h1>
             <p className="content-of-title">
