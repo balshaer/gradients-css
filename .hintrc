@@ -8,7 +8,8 @@
       {
         "ignore": [
           "inset",
-          "scroll-behavior"
+          "scroll-behavior",
+          "-ms-grid-column"
         ]
       }
     ]
