@@ -8,14 +8,9 @@ const Header = ({ searchQuery, handleSearchChange }) => {
 
             <h1 className="title boujee-text">Gradients CSS</h1>
             <p className="content-of-title">
-                🎨 Gradients CSS is a website that provides a collection of beautiful
-                <br />
-                gradient color combinations for designers and developers to use in
-                their
-                <br />
-                projects. The website is easy to use and allows users to copy
-                <br />
-                the CSS code for the selected gradient with just one click. 💻
+              The collection of CSS gradients. Simply click the 'Copy' button 
+    <br />
+to acquire and seamlessly integrate these gradients into your project
             </p>
             <div className="searchInput">
                 <div className="input__container">
