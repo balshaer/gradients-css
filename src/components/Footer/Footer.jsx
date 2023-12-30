@@ -4,7 +4,7 @@ import "./Footer.css";
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
-    const githubUsername = "Baraasher";
+    const githubUsername = "balshaer";
     const githubProfileImage = `https://github.com/${githubUsername}.png`;
 
     const handleOnClick = () => {
