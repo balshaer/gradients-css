@@ -3,7 +3,23 @@ import { FunctionComponent } from "react";
 
 interface HeaderProps {}
 
-const Header: FunctionComponent<HeaderProps> = (props) => {
+async function getData() {
+  const res = await fetch(
+    "https://raw.githubusercontent.com/ghosh/uiGradients/master/gradients.json"
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  } else {
+    console.log(res);
+  }
+
+  return res.json();
+}
+
+async function Header() {
+  getData();
+
   return (
     <div className="w-full flex justify-center items-center flex-col  text-center gap-4 py-20 ">
       <h1 className=" font-bold text-3xl bg-gradient-to-r from-[#bf5ae0] via-[#9400D3] to-[#a811da] inline-block text-transparent bg-clip-text">
@@ -17,6 +33,6 @@ const Header: FunctionComponent<HeaderProps> = (props) => {
       <SearchBar />
     </div>
   );
-};
+}
 
 export default Header;
