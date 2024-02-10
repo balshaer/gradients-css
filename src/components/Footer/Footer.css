@@ -1,7 +1,0 @@
-.mainFooter{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;flex-direction:row;height:100px;width:100%;border-top:1px dotted #94a1b2}
-.copyright,.footerUser{display:flex;justify-content:center;align-items:center}
-.footerUser{cursor:pointer}
-@media (max-width:400px){
-.mainFooter{justify-content:start;flex-direction:column;align-items:start;gap:1rem}
-.mainFooter .nextui-c-ijHtNE{padding:0!important}
-}
