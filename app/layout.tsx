@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import PageLoading from "@/components/layouts/loading/PageLoading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +30,10 @@ export default function RootLayout({
       </head>
 
       <body className={inter.className}>
+        <PageLoading />
+
         {children}
+
         <Toaster />
       </body>
     </html>
