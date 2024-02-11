@@ -5,6 +5,7 @@ import GradientsFetcher from "@/components/layouts/gradients/GradientFetcher";
 import Header from "@/components/layouts/header/Header";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
+import Footer from "@/components/layouts/footer/Footer";
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,6 +32,7 @@ export default function Home() {
           setCurrentPage={setCurrentPage}
           onPageChange={onPageChange}
         />
+        <Footer />
       </ScrollArea>
     </main>
   );

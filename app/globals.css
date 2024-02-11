@@ -129,14 +129,14 @@ body {
 }
 
 .animated-gradient {
-  background-image: linear-gradient(
-    to right,
-    #9400d3,
-    #9400d3,
-    #4b0082
-  ); /* Change gradient colors as needed */
+  background-image: linear-gradient(to right, #9400d3, #9400d3, #4b0082);
   background-size: 200% auto;
   color: transparent;
   background-clip: text;
-  animation: gradientAnimation 3s ease infinite; /* Adjust animation duration and timing function as needed */
+  animation: gradientAnimation 3s ease infinite;
+}
+
+.hoverd,
+.hoverd:hover {
+  transition: all 0.3s ease 0s;
 }
