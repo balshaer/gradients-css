@@ -7,7 +7,6 @@ import {
 } from "react-icons/hi";
 import { VscCopy } from "react-icons/vsc";
 import GradientFetcher from "./GradientFetcher";
-import { SiTruenas } from "react-icons/si";
 import SearchBar from "@/components/common/search_bar/SearchBar";
 import AnimationComponent from "@/components/common/animation/AnimationComponent";
 import {
@@ -17,6 +16,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
+import CardLoding from "../loading/CardLoading";
+
 function Gradients() {
   const [gradients, setGradients] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,6 +28,7 @@ function Gradients() {
   const [showIcons, setShowIcons] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const [noGradientsFound, setNoGradientsFound] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handlePageChange = (page: any) => {
     setCurrentPage(page);
@@ -57,6 +59,7 @@ function Gradients() {
   };
 
   useEffect(() => {
+    setLoading(true);
     const filteredGradients = gradients.filter((gradient) =>
       gradient.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -78,6 +81,10 @@ function Gradients() {
     setShowIcons(Object.fromEntries(visibleGradients.map((_, i) => [i, true])));
 
     setNoGradientsFound(filteredGradients.length === 0);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 4000);
   }, [currentPage, gradients, searchQuery]);
 
   return (
@@ -87,18 +94,18 @@ function Gradients() {
       </div>
       <AnimationComponent>
         <GradientFetcher setGradients={setGradients} />
-
-        {noGradientsFound ? (
+        {loading ? (
+          <CardLoding />
+        ) : noGradientsFound ? (
           <div className="text-center text-[var(--color-paragraph)] w-full flex items-center justify-center gap-2">
             <span>There is no gradient by this name.</span>
-
             <span>
               <HiOutlineZoomOut />
             </span>
           </div>
         ) : (
           <section className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
-            {visibleGradients.map((gradient, index) => (
+            {visibleGradients.map((gradient: any, index: any) => (
               <div
                 key={index}
                 className="h-72 rounded-3xl text-sm flex flex-col justify-start items-center bg-black p-4 gap-2"
@@ -140,7 +147,7 @@ function Gradients() {
                 </div>
                 <footer className="w-full h-16 text-[var(--color-paragraph)] gap-2 font-semibold p-2 flex justify-between flex-col items-start">
                   <div className="flex gap-2">
-                    {gradient.colors.map((color, i) => (
+                    {gradient.colors.map((color: any, i: any) => (
                       <span
                         key={i}
                         className="rounded-full h-5 w-5"
@@ -149,7 +156,7 @@ function Gradients() {
                     ))}
                   </div>
                   <div className="flex gap-1 flex-wrap  h-20 max-h-none min-h-20 w-full">
-                    {gradient.colors.map((color, i) => (
+                    {gradient.colors.map((color: any, i: any) => (
                       <span key={i}>{color}</span>
                     ))}
                   </div>
