@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const GradientFetcher = ({ setGradients }) => {
   useEffect(() => {
@@ -9,6 +9,7 @@ const GradientFetcher = ({ setGradients }) => {
         );
         const result = await res.json();
         setGradients(result);
+        console.log(result);
       } catch (err) {
         console.log(err);
         setGradients([]);
