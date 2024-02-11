@@ -16,6 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=chillax@600,500,300,700,400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+
       <body className={inter.className}>{children}</body>
     </html>
   );
