@@ -1,37 +1,40 @@
 "use client";
-
+import React, { useState } from "react";
 import Gradients from "@/components/layouts/gradients/Gradients";
 import GradientsFetcher from "@/components/layouts/gradients/GradientFetcher";
 import Header from "@/components/layouts/header/Header";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState } from "react";
 import Footer from "@/components/layouts/footer/Footer";
 
-export default function Home() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [gradients, setGradients] = useState([]);
+interface Gradient {
+  id: number;
+  name: string;
+  colors: string[];
+}
 
-  const onPageChange = (page: number) => {
+export default function Home(): JSX.Element {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [gradients, setGradients] = useState<Gradient[]>([]);
+
+  const onPageChange = (page: number): void => {
     setCurrentPage(page);
   };
 
   return (
     <main>
-      <ScrollArea className="h-full min-h-[100vh] w-full   p-4 max-w-7xl m-auto">
+      <ScrollArea className="h-full min-h-[100vh] w-full p-4 max-w-7xl m-auto">
         <Header />
 
-        <GradientsFetcher
-          currentPage={currentPage}
-          pageSize={pageSize}
-          setGradients={setGradients as any}
-        />
+        <GradientsFetcher setGradients={setGradients} />
+
         <Gradients
           gradients={gradients}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           onPageChange={onPageChange}
         />
+
         <Footer />
       </ScrollArea>
     </main>

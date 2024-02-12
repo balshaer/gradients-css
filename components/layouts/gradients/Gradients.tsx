@@ -16,25 +16,41 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
-import CardLoding from "../loading/CardLoading";
+import CardLoading from "../loading/CardLoading";
 
-function Gradients() {
-  const [gradients, setGradients] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [visibleGradients, setVisibleGradients] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [startPage, setStartPage] = useState(1);
-  const [endPage, setEndPage] = useState(1);
-  const [showIcons, setShowIcons] = useState({});
-  const [searchQuery, setSearchQuery] = useState("");
-  const [noGradientsFound, setNoGradientsFound] = useState(false);
-  const [loading, setLoading] = useState(true);
+interface Gradient {
+  name: string;
+  colors: string[];
+}
 
-  const handlePageChange = (page: any) => {
+interface GradientsProps {
+  gradients: Gradient[];
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  onPageChange: (page: number) => void;
+}
+
+const Gradients: React.FC<GradientsProps> = ({
+  gradients: propGradients,
+  currentPage,
+  setCurrentPage,
+  onPageChange,
+}) => {
+  const [visibleGradients, setVisibleGradients] = useState<Gradient[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [startPage, setStartPage] = useState<number>(1);
+  const [endPage, setEndPage] = useState<number>(1);
+  const [showIcons, setShowIcons] = useState<boolean[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [noGradientsFound, setNoGradientsFound] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const handlePageChange = (page: number) => {
+    setLoading(false);
     setCurrentPage(page);
   };
 
-  const handleCopy = (index: any) => {
+  const handleCopy = (index: number) => {
     toast.success("Copied");
 
     const gradient = visibleGradients[index];
@@ -42,25 +58,22 @@ function Gradients() {
       ", "
     )});`;
     navigator.clipboard.writeText(cssGradient);
-    setShowIcons((prevState) => ({
-      ...prevState,
-      [index]: false,
-    }));
+    setShowIcons((prevIcons) =>
+      prevIcons.map((icon, idx) => (idx === index ? false : icon))
+    );
     setTimeout(() => {
-      setShowIcons((prevState) => ({
-        ...prevState,
-        [index]: true,
-      }));
+      setShowIcons((prevIcons) =>
+        prevIcons.map((icon, idx) => (idx === index ? true : icon))
+      );
     }, 3000);
   };
 
-  const handleSearch = (query: any) => {
+  const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
 
   useEffect(() => {
-    setLoading(true);
-    const filteredGradients = gradients.filter((gradient) =>
+    const filteredGradients = propGradients.filter((gradient) =>
       gradient.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     const totalPages = Math.ceil(filteredGradients.length / 12);
@@ -78,14 +91,16 @@ function Gradients() {
     );
     setVisibleGradients(visibleGradients);
 
-    setShowIcons(Object.fromEntries(visibleGradients.map((_, i) => [i, true])));
+    setShowIcons(Array.from({ length: visibleGradients.length }, () => true));
 
     setNoGradientsFound(filteredGradients.length === 0);
 
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       setLoading(false);
-    }, 4000);
-  }, [currentPage, gradients, searchQuery]);
+    }, 3000);
+
+    return () => clearTimeout(timeout); 
+  }, [currentPage, propGradients, searchQuery]);
 
   return (
     <div>
@@ -93,9 +108,10 @@ function Gradients() {
         <SearchBar onSearch={handleSearch} />
       </div>
       <AnimationComponent>
-        <GradientFetcher setGradients={setGradients} />
+        <GradientFetcher setGradients={() => {}} />
+
         {loading ? (
-          <CardLoding />
+          <CardLoading />
         ) : noGradientsFound ? (
           <div className="text-center text-[var(--color-paragraph)] w-full flex items-center justify-center gap-2">
             <span>There is no gradient by this name.</span>
@@ -105,7 +121,7 @@ function Gradients() {
           </div>
         ) : (
           <section className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
-            {visibleGradients.map((gradient: any, index: any) => (
+            {visibleGradients.map((gradient: Gradient, index: number) => (
               <div
                 key={index}
                 className="h-72 rounded-3xl text-sm flex flex-col justify-start items-center bg-black p-4 gap-2"
@@ -122,8 +138,7 @@ function Gradients() {
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
-                            {" "}
-                            <VscCopy />{" "}
+                            <VscCopy />
                           </TooltipTrigger>
                           <TooltipContent>
                             <p>Copy CSS</p>
@@ -143,20 +158,20 @@ function Gradients() {
                         ", "
                       )})`,
                     }}
-                  ></div>
+                  />
                 </div>
                 <footer className="w-full h-16 text-[var(--color-paragraph)] gap-2 font-semibold p-2 flex justify-between flex-col items-start">
                   <div className="flex gap-2">
-                    {gradient.colors.map((color: any, i: any) => (
+                    {gradient.colors.map((color: string, i: number) => (
                       <span
                         key={i}
                         className="rounded-full h-5 w-5"
                         style={{ backgroundColor: color }}
-                      ></span>
+                      />
                     ))}
                   </div>
-                  <div className="flex gap-1 flex-wrap  h-20 max-h-none min-h-20 w-full">
-                    {gradient.colors.map((color: any, i: any) => (
+                  <div className="flex gap-1 flex-wrap h-20 max-h-none min-h-20 w-full">
+                    {gradient.colors.map((color: string, i: number) => (
                       <span key={i}>{color}</span>
                     ))}
                   </div>
@@ -201,6 +216,6 @@ function Gradients() {
       </AnimationComponent>
     </div>
   );
-}
+};
 
 export default Gradients;

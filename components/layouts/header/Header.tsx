@@ -9,8 +9,8 @@ function Header() {
       </h1>
 
       <p className="text-[var(--color-paragraph)] text-base max-w-xl w-full">
-        The collection of CSS gradients. Simply click the 'Copy' button to
-        acquire and seamlessly integrate these gradients into your project
+        The collection of CSS gradients. Simply click the Copy button to acquire
+        and seamlessly integrate these gradients into your project
       </p>
     </div>
   );
