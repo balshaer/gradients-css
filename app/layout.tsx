@@ -26,7 +26,7 @@ export default function RootLayout({
         />
         <link rel="icon" href="./assets/icon.png" sizes="any" />
 
-        <title>Gradients CSS</title>
+        <title>GradiMix</title>
       </head>
 
       <body className={inter.className}>
