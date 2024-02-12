@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Gradients from "@/components/layouts/gradients/Gradients";
 import GradientsFetcher from "@/components/layouts/gradients/GradientFetcher";
 import Header from "@/components/layouts/header/Header";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import Footer from "@/components/layouts/footer/Footer";
 
 interface Gradient {
@@ -23,7 +22,7 @@ export default function Home(): JSX.Element {
 
   return (
     <main>
-      <ScrollArea className="h-full min-h-[100vh] w-full p-4 max-w-7xl m-auto">
+      <div className="h-full min-h-[100vh] w-full p-4 max-w-7xl m-auto">
         <Header />
 
         <GradientsFetcher setGradients={setGradients} />
@@ -36,7 +35,7 @@ export default function Home(): JSX.Element {
         />
 
         <Footer />
-      </ScrollArea>
+      </div>
     </main>
   );
 }
