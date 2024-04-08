@@ -7,7 +7,7 @@ import { FaGithub } from "react-icons/fa";
 
 function Footer() {
   return (
-    <footer className="h-20 w-full max-sm:gap-5  flex justify-between items-center  text-sm border-t-2 border-[#edf0f15f]  max-sm:flex-col max-md:py-5">
+    <footer className="h-20 w-full max-sm:gap-5 max-md:h-max  flex justify-between items-center  text-sm border-t-2 border-[#edf0f15f]  max-sm:flex-col max-md:py-5">
       <div className="flex gap-2 max-sm:flex-col  text-[var(--color-paragraph)] items-center justify-center font-medium ">
         <span>Built with:</span>
 
