@@ -11,9 +11,9 @@ function Footer() {
       <div className="flex gap-2 max-sm:flex-col  text-[var(--color-paragraph)] items-center justify-center font-medium ">
         <span>Built with:</span>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center justify-center">
           <a href="https://nextjs.org/" target="_blank">
-            <div className="flex items-center justify-center gap-1 opacity-70 cursor-pointer hover:text-white hoverd hover:opacity-100 ">
+            <div className="flex items-center justify-center gap-1 opacity-90 cursor-pointer hover:text-white hoverd hover:opacity-100 ">
               <span>Next JS</span>
 
               <span className="flex ">
@@ -29,7 +29,7 @@ function Footer() {
           </a>
 
           <a target="_blank" href="https://vercel.com/">
-            <div className="flex items-center justify-center gap-1 opacity-70 cursor-pointer hover:text-white hoverd hover:opacity-100">
+            <div className="flex items-center justify-center gap-1 opacity-90 cursor-pointer hover:text-white hoverd hover:opacity-100">
               <span>Vercel</span>
 
               <span className="flex ">
