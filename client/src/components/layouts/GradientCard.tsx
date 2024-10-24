@@ -128,7 +128,7 @@ export default function GradientCard({
             step={1}
             className="flex-grow"
           />
-          <span className="text-sm font-medium text-gray-600">{angle}°</span>
+          <span className="text-sm font-medium text-gray-600">{angle}°</span>f
           <FaArrowRotateLeft
             className="flex h-full cursor-pointer items-center justify-center text-gray-600"
             onClick={() => setAngle(90)}
@@ -177,8 +177,8 @@ export default function GradientCard({
           </TabsContent>
           <TabsContent value="css" className="mt-2">
             <div className="relative">
-              <pre className="w-max rounded-md bg-gray-100 p-2 text-sm">
-                {cssCode}
+            <pre className="w-full overflow-hidden rounded-md bg-gray-100 p-2 text-xs text-gray-500">
+            {cssCode}
               </pre>
               <Button
                 size="icon"

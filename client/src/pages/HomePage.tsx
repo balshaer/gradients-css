@@ -136,6 +136,7 @@ export default function GradientGallery() {
             favorites={favorites}
             toggleFavorite={toggleFavorite}
             setBackground={setBackground}
+            isLoading={false}
           />
 
           <Pagination

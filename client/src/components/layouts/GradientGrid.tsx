@@ -1,17 +1,20 @@
 import { motion, AnimatePresence } from "framer-motion";
 import GradientCard from "./GradientCard";
+import SkeletonGradientCard from "./SkeletonGradientCard";
 
 interface GradientGridProps {
   gradients: Array<{ name: string; colors: string[] }>;
   favorites: string[];
   toggleFavorite: (name: string) => void;
   setBackground: (background: string) => void;
+  isLoading: boolean;
 }
 
 export default function GradientGrid({
   gradients,
   favorites,
   toggleFavorite,
+  isLoading,
 }: GradientGridProps) {
   return (
     <motion.div
@@ -23,22 +26,35 @@ export default function GradientGrid({
       }}
     >
       <AnimatePresence>
-        {gradients.map((gradient) => (
-          <motion.div
-            key={gradient.name}
-            layout
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3 }}
-          >
-            <GradientCard
-              gradient={gradient}
-              isFavorite={favorites.includes(gradient.name)}
-              onFavoriteToggle={() => toggleFavorite(gradient.name)}
-            />
-          </motion.div>
-        ))}
+        {isLoading
+          ? Array.from({ length: 6 }).map((_, index) => (
+              <motion.div
+                key={`skeleton-${index}`}
+                layout
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.3 }}
+              >
+                <SkeletonGradientCard />
+              </motion.div>
+            ))
+          : gradients.map((gradient) => (
+              <motion.div
+                key={gradient.name}
+                layout
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.3 }}
+              >
+                <GradientCard
+                  gradient={gradient}
+                  isFavorite={favorites.includes(gradient.name)}
+                  onFavoriteToggle={() => toggleFavorite(gradient.name)}
+                />
+              </motion.div>
+            ))}
       </AnimatePresence>
     </motion.div>
   );
