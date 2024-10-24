@@ -177,8 +177,8 @@ export default function GradientCard({
           </TabsContent>
           <TabsContent value="css" className="mt-2">
             <div className="relative">
-            <pre className="w-full overflow-hidden rounded-md bg-gray-100 p-2 text-xs text-gray-500">
-            {cssCode}
+              <pre className="w-full overflow-hidden rounded-md bg-gray-100 p-2 text-xs text-gray-500">
+                {cssCode}
               </pre>
               <Button
                 size="icon"

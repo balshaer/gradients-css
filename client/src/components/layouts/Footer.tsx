@@ -3,7 +3,7 @@ import { ExternalLinkIcon } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="footer container flex h-[64px] items-center justify-between max-md:flex-col max-md:py-5">
+    <footer className="footer container flex h-[64px] items-center justify-between max-md:flex-col max-md:gap-3 max-md:py-10 max-md:text-center">
       <p className="flex items-center justify-center text-sm">
         Devlop by{" "}
         <a
@@ -17,7 +17,7 @@ export default function Footer() {
       </p>
 
       <div>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-500 max-md:pb-6">
           &copy; {new Date().getFullYear()} GradientsCSS. All rights reserved.
         </p>
       </div>
