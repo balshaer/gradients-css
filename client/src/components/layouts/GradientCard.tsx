@@ -8,11 +8,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "../ui/slider";
 import { FaArrowRotateLeft } from "react-icons/fa6";
+import { toast } from "@/hooks/use-toast";
 
 interface GradientCardProps {
   gradient: { name: string; colors: string[] };
@@ -25,7 +25,6 @@ export default function GradientCard({
   isFavorite,
   onFavoriteToggle,
 }: GradientCardProps) {
-  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("tailwind");
   const [angle, setAngle] = useState(90);
   const [copiedStates, setCopiedStates] = useState({
@@ -39,7 +38,7 @@ export default function GradientCard({
     navigator.clipboard.writeText(text);
     setCopiedStates((prev) => ({ ...prev, [key]: true }));
     toast({
-      title: "Copied to clipboard",
+      title: "🎉Copied to clipboard",
       description: "The code has been copied to your clipboard.",
     });
   };
