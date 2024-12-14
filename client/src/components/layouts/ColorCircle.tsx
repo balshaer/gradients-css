@@ -16,4 +16,4 @@ export default function ColorCircle({ color, onClick }: ColorCircleProps) {
       aria-label={`Copy color: ${color}`}
     />
   )
-}
+}  

@@ -19,3 +19,20 @@ body {
 .App {
   @apply absolute top-0 z-[-2] h-screen w-screen bg-white bg-[radial-gradient(100%_50%_at_50%_0%,rgba(0,163,255,0.13)_0,rgba(0,163,255,0)_50%,rgba(0,163,255,0)_100%)];
 }
+
+/* For testing  */
+
+.test1 {
+  @apply border-2 border-black bg-green-300 text-black;
+}
+
+.test2 {
+  @apply border-2 border-black bg-red-300 text-black;
+}
+
+.test3 {
+  @apply border-2 border-black bg-blue-300 text-black;
+}
+.test4 {
+  @apply border-2 border-black bg-yellow-300 text-black;
+}

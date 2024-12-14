@@ -13,6 +13,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "../ui/slider";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 import { toast } from "@/hooks/use-toast";
+import { MagicCard } from "../ui/MagicCard";
+import { useTheme } from "next-themes";
 
 interface GradientCardProps {
   gradient: { name: string; colors: string[] };
@@ -61,19 +63,23 @@ export default function GradientCard({
   }]`;
 
   const cssCode = `background-image: linear-gradient(${angle}deg, ${gradient.colors.join(", ")});`;
+  const { theme } = useTheme();
 
   return (
-    <Card className="overflow-hidden shadow-md transition-all duration-300 hover:shadow-[0px_10px_30px_rgba(0,0,0,0.1)]">
-      <CardContent className="p-0">
+    <MagicCard
+      gradientColor={theme === "dark" ? "#262626" : "#D9D9D955"}
+      className="overflow-hidden transition-all duration-300"
+    >
+      <header className="w-full">
         <motion.div
-          className="h-48"
+          className="h-48 w-full"
           style={{
             backgroundImage: `linear-gradient(${angle}deg, ${gradient.colors.join(", ")})`,
           }}
           transition={{ duration: 0.3 }}
         />
-      </CardContent>
-      <CardFooter className="flex flex-col items-start space-y-4 p-4">
+      </header>
+      <footer className="flex flex-col items-start space-y-4 p-4">
         <div className="flex w-full items-center justify-between">
           <h3 className="text-lg font-semibold text-gray-600">
             {gradient.name}
@@ -105,7 +111,7 @@ export default function GradientCard({
             <Tooltip key={index}>
               <TooltipTrigger asChild>
                 <motion.div
-                  className="h-6 w-6 cursor-pointer rounded-full"
+                  className="hoverd h-6 w-6 cursor-pointer rounded-full"
                   style={{ backgroundColor: color }}
                   onClick={() => copyToClipboard(color, "colors")}
                   whileHover={{ scale: 1.2 }}
@@ -210,7 +216,7 @@ export default function GradientCard({
             </div>
           </TabsContent>
         </Tabs>
-      </CardFooter>
-    </Card>
+      </footer>
+    </MagicCard>
   );
 }
