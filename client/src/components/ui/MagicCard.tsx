@@ -15,7 +15,7 @@ export function MagicCard({
   children,
   className,
   gradientSize = 200,
-  gradientColor = "#262626",
+  gradientColor = "border",
   gradientOpacity = 0.8,
 }: MagicCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -73,13 +73,13 @@ export function MagicCard({
     <div
       ref={cardRef}
       className={cn(
-        "group relative flex size-full  overflow-hidden rounded-xl border bg-neutral-100 text-black dark:bg-neutral-900 dark:text-white",
+        "group relative flex size-full overflow-hidden rounded-xl border border-border bg-card text-black dark:bg-neutral-900 dark:text-white",
         className,
       )}
     >
-      <div className="relative z-10  w-full">{children}</div>
+      <div className="relative z-10 w-full">{children}</div>
       <motion.div
-        className="pointer-events-none absolute   -inset-px rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
           background: useMotionTemplate`
             radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px, ${gradientColor}, transparent 100%)

@@ -15,22 +15,22 @@ export default function Pagination({
 }: PaginationProps) {
   return (
     <motion.div
-      className="flex items-center justify-center max-md:py-4 gap-4 pt-16"
+      className="flex items-center justify-center gap-4 pt-16 max-md:py-4"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay: 0.3 }}
     >
       <Button
-        className="h-max w-max rounded-md border-gray-200 p-2 text-gray-700"
+        className="h-max w-max rounded-md border-border bg-card p-2 text-primary"
         onClick={() => onPageChange("prev")}
         disabled={currentPage === 1}
       >
-        <ChevronLeft className="h-4 w-4" />
+        <ChevronLeft className="h-4 w-4 text-primary" />
       </Button>
 
       {/* Display current page out of total pages */}
       <motion.div
-        className="text-lg font-semibold text-sm text-gray-500"
+        className="text-sm font-semibold text-muted-foreground"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, delay: 0.1 }}
@@ -39,7 +39,7 @@ export default function Pagination({
       </motion.div>
 
       <Button
-        className="h-max w-max rounded-md border-gray-200 p-2 text-gray-700"
+        className="h-max w-max rounded-md border-border bg-card p-2 text-primary"
         onClick={() => onPageChange("next")}
         disabled={currentPage === totalPages}
       >

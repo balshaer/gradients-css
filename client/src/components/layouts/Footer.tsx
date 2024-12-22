@@ -4,11 +4,11 @@ import { ExternalLinkIcon } from "lucide-react";
 export default function Footer() {
   return (
     <footer className="footer container flex h-[64px] items-center justify-between max-md:flex-col max-md:gap-3 max-md:py-10 max-md:text-center">
-      <p className="flex items-center justify-center text-sm">
+      <p className="flex items-center justify-center text-sm text-primary">
         Devlop by{" "}
         <a
           target="_blank"
-          className="hoverd flex items-center justify-center ps-1 font-medium text-blue-500 hover:text-blue-400"
+          className="hoverd flex items-center justify-center ps-1 font-medium text-[var(--link)] hover:text-[var(--link-hover)]"
           href={myWebsite}
         >
           Baraa
@@ -17,7 +17,7 @@ export default function Footer() {
       </p>
 
       <div>
-        <p className="text-xs text-gray-500 max-md:pb-6">
+        <p className="text-xs text-muted-foreground max-md:pb-6">
           &copy; {new Date().getFullYear()} GradientsCSS. All rights reserved.
         </p>
       </div>

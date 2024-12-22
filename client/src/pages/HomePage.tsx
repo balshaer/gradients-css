@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { ArrowRightIcon, SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,6 +15,7 @@ import Pagination from "@/components/layouts/Pagination";
 import { cn } from "@/lib/utils";
 import Footer from "@/components/layouts/Footer";
 import AnimatedShinyText from "@/components/ui/animated-shiny-text";
+import HeroUsers from "@/components/layouts/HeroUsers";
 
 export default function GradientGallery() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -63,64 +63,57 @@ export default function GradientGallery() {
   return (
     <TooltipProvider>
       <div className="container" style={{ background }}>
-        <div className="mx-auto max-w-6xl space-y-8 pt-12">
+        <div className="mx-auto max-w-6xl space-y-2 pt-12">
           <a href="https://github.com/balshaer/gradients-css" target="_blank">
             <div className="flex w-full items-center justify-center">
               <div
                 className={cn(
-                  "group rounded-full border border-black/5 bg-[#ffffff61] text-base text-white transition-all ease-in hover:cursor-pointer dark:border-white/5 dark:bg-neutral-900 dark:hover:bg-neutral-800",
+                  "group rounded-full border border-border bg-card text-base text-[var(--muted)] transition-all ease-in hover:cursor-pointer dark:border-white/5 dark:bg-neutral-900 dark:hover:bg-neutral-800",
                 )}
               >
-                <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400 max-md:text-xs">
+                <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 text-primary transition ease-out hover:duration-300 max-md:text-xs">
                   <span>✨ Contribute to The Project</span>
                   <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
                 </AnimatedShinyText>
               </div>
             </div>
           </a>
-          <motion.h1
-            className="text-center text-3xl font-medium text-gray-900 dark:text-gray-50 sm:text-6xl"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <h1 className="pt-6 text-center text-3xl font-medium text-primary dark:text-gray-50 sm:text-6xl">
             Collection of modern, <br />
-            <span className="animate-text-gradient inline-flex bg-gradient-to-r from-neutral-900 via-slate-500 to-neutral-500 bg-[200%_auto] bg-clip-text leading-tight text-transparent dark:from-neutral-100 dark:via-slate-400 dark:to-neutral-400">
+            <span className="animate-text-gradient inline-flex bg-gradient-to-r from-neutral-600 via-slate-200 to-neutral-200 bg-[200%_auto] bg-clip-text leading-tight text-transparent dark:from-neutral-100 dark:via-slate-400 dark:to-neutral-400">
               CSS gradients
             </span>
-          </motion.h1>
-
-          <p className="m-auto mt-6 max-w-2xl pb-8 text-center text-lg leading-6 text-gray-600 dark:text-gray-200">
+          </h1>
+          <p className="m-auto mt-[-120px] max-w-2xl py-0 pb-0 text-center text-lg leading-6 text-muted-foreground dark:text-gray-200">
             Ready-to-use, simply copy and paste into your next project. All
             gradients crafted with CSS and Tailwind CSS for easy integration.
           </p>
 
-          <motion.div
-            className="flex flex-col gap-4 sm:flex-row"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+          <div className="flex w-full items-center justify-center pb-6">
+            <HeroUsers />
+          </div>
+
+          <div className="flex flex-col gap-4 sm:flex-row">
             <div className="relative w-full" id="input">
               <Input
                 placeholder="Search by gradient name"
-                className="hover:border-brand-500-secondary invalid:border-error-500 invalid:focus:border-error-500 peer block h-full w-full appearance-none overflow-hidden overflow-ellipsis text-nowrap rounded-md border border-input border-slate-200 bg-background bg-white px-3 py-2 pr-[48px] text-sm text-slate-900 focus:border-none focus:border-transparent focus:outline focus:outline-2 focus:outline-slate-200 focus:ring-0"
+                className="hover:border-brand-500-secondary invalid:border-error-500 invalid:focus:border-error-500 text-placeholder peer block h-full w-full appearance-none overflow-hidden overflow-ellipsis text-nowrap rounded-md border border-border bg-input px-3 py-2 pr-[48px] text-sm focus:border-none focus:shadow-none"
                 id="floating_outlined"
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <label
-                className="peer-invalid:text-error-500 focus:invalid:text-error-500 data-[disabled]:bg-gray-50-background- absolute start-1 top-2 z-10 origin-[0] -translate-y-[1.2rem] scale-75 transform bg-white px-2 text-[14px] leading-[150%] text-primary duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-z-10 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:z-10 peer-focus:-translate-y-[1.2rem] peer-focus:scale-75 peer-focus:px-2 peer-focus:text-primary rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4"
-                htmlFor="floating_outlined"
-              >
-                Search...
-              </label>
 
-              <SearchIcon className="absolute bottom-0 right-2 top-0 m-auto h-5 w-5 text-gray-600" />
+              <SearchIcon className="absolute bottom-0 right-2 top-0 m-auto h-5 w-5 text-primary" />
             </div>
 
-            <Select value={filter} onValueChange={setFilter}>
+            <Select
+              value={filter}
+              onValueChange={(value) => {
+                setFilter(value);
+                setCurrentPage(1);
+              }}
+            >
               <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Filter" />
               </SelectTrigger>
@@ -129,7 +122,7 @@ export default function GradientGallery() {
                 <SelectItem value="favorites">Favorites</SelectItem>
               </SelectContent>
             </Select>
-          </motion.div>
+          </div>
 
           <GradientGrid
             gradients={currentGradients}

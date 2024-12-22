@@ -18,14 +18,7 @@ export default function GradientGrid({
   isLoading,
 }: GradientGridProps) {
   return (
-    <motion.div
-      className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-      initial="hidden"
-      animate="visible"
-      variants={{
-        visible: { transition: { staggerChildren: 0.1 } },
-      }}
-    >
+    <div className="grid grid-cols-1 gap-6 pt-6 sm:grid-cols-2 lg:grid-cols-3">
       <AnimatePresence>
         {isLoading ? (
           Array.from({ length: 6 }).map((_, index) => (
@@ -48,7 +41,7 @@ export default function GradientGrid({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3 }}
-            className="col-span-full text-center text-gray-500 flex justify-center items-center gap-1 pt-16"
+            className="col-span-full flex items-center justify-center gap-1 pt-16 text-center text-muted-foreground"
           >
             <FileWarningIcon />
 
@@ -56,23 +49,17 @@ export default function GradientGrid({
           </motion.div>
         ) : (
           gradients.map((gradient) => (
-            <motion.div
-              key={gradient.name}
-              layout
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.3 }}
-            >
+            <div key={gradient.name}>
               <GradientCard
                 gradient={gradient}
                 isFavorite={favorites.includes(gradient.name)}
                 onFavoriteToggle={() => toggleFavorite(gradient.name)}
+                favoriteCount={0}
               />
-            </motion.div>
+            </div>
           ))
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   );
 }
