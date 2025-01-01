@@ -95,13 +95,13 @@ export default function GradientCard({
           }}
           transition={{ duration: 0.3 }}
         >
-          <motion.div
+          {/* <motion.div
             className="absolute bottom-0 left-0 right-0 top-0 z-[-1] m-auto h-48 w-48 rounded-full border-2 blur-[230px] backdrop-blur-xl"
             style={{
               backgroundImage: `linear-gradient(${angle}deg, ${gradient.colors.join(", ")})`,
             }}
             transition={{ duration: 0.3 }}
-          />
+          /> */}
         </motion.div>
       </header>
       <footer className="flex flex-col items-start space-y-4 p-4">
@@ -175,17 +175,17 @@ export default function GradientCard({
               <span>{activeTab}</span>
               <ChevronDown className="h-4 w-4" />
             </div>
+            <DropdownMenuContent className="absolute left-0 right-0 ml-10 w-full border border-border bg-card">
+              {["tailwind", "css", "sass", "bootstrap"].map((format) => (
+                <DropdownMenuItem
+                  key={format}
+                  onSelect={() => setActiveTab(format)}
+                >
+                  {format.charAt(0).toUpperCase() + format.slice(1)}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="absolute left-0 right-0 ml-10 w-full border border-border bg-card">
-            {["tailwind", "css", "sass", "bootstrap"].map((format) => (
-              <DropdownMenuItem
-                key={format}
-                onSelect={() => setActiveTab(format)}
-              >
-                {format.charAt(0).toUpperCase() + format.slice(1)}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
         </DropdownMenu>
         <div className="relative mt-2 w-full">
           <pre className="w-full overflow-hidden rounded-md border border-border bg-secondary p-2 text-xs text-muted-foreground">
