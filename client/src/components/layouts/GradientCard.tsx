@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 interface GradientCardProps {
   gradient: { name: string; colors: string[] };
   isFavorite: boolean;
@@ -64,15 +65,16 @@ export default function GradientCard({
   }, [copiedStates]);
 
   const getCode = (format: string) => {
+    const gradientCode = `${gradient.colors.join(", ")}`;
     switch (format) {
       case "tailwind":
         return `bg-gradient-to-r from-[${gradient.colors[0]}] to-[${gradient.colors[gradient.colors.length - 1]}]`;
       case "css":
-        return `background-image: linear-gradient(${angle}deg, ${gradient.colors.join(", ")});`;
+        return `background-image: linear-gradient(${angle}deg, ${gradientCode});`;
       case "sass":
-        return `$gradient-colors: ${gradient.colors.join(", ")};\n$gradient-angle: ${angle}deg;\n\nbackground-image: linear-gradient($gradient-angle, $gradient-colors);`;
+        return `$gradient-colors: ${gradientCode};\n$gradient-angle: ${angle}deg;\n\nbackground-image: linear-gradient($gradient-angle, $gradient-colors);`;
       case "bootstrap":
-        return `$gradient: linear-gradient(${angle}deg, ${gradient.colors.join(", ")});\n\n.custom-gradient {\n  background-image: $gradient;\n}`;
+        return `$gradient: linear-gradient(${angle}deg, ${gradientCode});\n\n.custom-gradient {\n  background-image: $gradient;\n}`;
       default:
         return "";
     }
@@ -87,12 +89,20 @@ export default function GradientCard({
     >
       <header className="w-full">
         <motion.div
-          className="left-0 right-0 m-auto mt-6 h-48 w-48 rounded-full border-border"
+          className="relative left-0 right-0 m-auto mt-6 h-48 w-48 rounded-full border-border"
           style={{
             backgroundImage: `linear-gradient(${angle}deg, ${gradient.colors.join(", ")})`,
           }}
           transition={{ duration: 0.3 }}
-        />
+        >
+          <motion.div
+            className="absolute bottom-0 left-0 right-0 top-0 z-[-1] m-auto h-48 w-48 rounded-full border-2 blur-[230px] backdrop-blur-xl"
+            style={{
+              backgroundImage: `linear-gradient(${angle}deg, ${gradient.colors.join(", ")})`,
+            }}
+            transition={{ duration: 0.3 }}
+          />
+        </motion.div>
       </header>
       <footer className="flex flex-col items-start space-y-4 p-4">
         <div className="flex w-full items-center justify-between">
@@ -117,9 +127,6 @@ export default function GradientCard({
                     )}
                   />
                 </motion.button>
-                {/* <Badge variant="secondary" className="ml-2">
-                  {favoriteCount}
-                </Badge> */}
               </div>
             </TooltipTrigger>
             <TooltipContent>
@@ -165,20 +172,20 @@ export default function GradientCard({
         <DropdownMenu>
           <DropdownMenuTrigger className="relative w-full">
             <div className="flex items-center justify-between rounded-md border border-border bg-secondary p-2 text-sm text-primary">
-              <span> {activeTab} </span>
+              <span>{activeTab}</span>
               <ChevronDown className="h-4 w-4" />
             </div>
-            <DropdownMenuContent className="absolute left-0 right-0 ml-10 w-full border border-border bg-card">
-              {["tailwind", "css", "sass", "bootstrap"].map((format) => (
-                <DropdownMenuItem
-                  key={format}
-                  onSelect={() => setActiveTab(format)}
-                >
-                  {format.charAt(0).toUpperCase() + format.slice(1)}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
           </DropdownMenuTrigger>
+          <DropdownMenuContent className="absolute left-0 right-0 ml-10 w-full border border-border bg-card">
+            {["tailwind", "css", "sass", "bootstrap"].map((format) => (
+              <DropdownMenuItem
+                key={format}
+                onSelect={() => setActiveTab(format)}
+              >
+                {format.charAt(0).toUpperCase() + format.slice(1)}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
         </DropdownMenu>
         <div className="relative mt-2 w-full">
           <pre className="w-full overflow-hidden rounded-md border border-border bg-secondary p-2 text-xs text-muted-foreground">

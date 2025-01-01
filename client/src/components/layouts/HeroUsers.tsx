@@ -44,7 +44,7 @@ const HeroUsers = () => {
 
   return (
     <div>
-      <div className="mt-8 flex flex-col gap-4 lg:flex-row">
+      <div className="mt-3 flex flex-col gap-4 lg:flex-row">
         <div className="flex justify-center -space-x-4">
           {avatars.map((avatar, index) => (
             <Avatar key={index} src={avatar} />
