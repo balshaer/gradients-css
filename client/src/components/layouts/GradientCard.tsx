@@ -26,6 +26,49 @@ interface GradientCardProps {
   favoriteCount: number;
 }
 
+const colorUtils = {
+  hexToRGB: (hex: string) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return { r, g, b };
+  },
+
+  rgbToHSL: (r: number, g: number, b: number) => {
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h = 0;
+    let s = 0;
+    const l = (max + min) / 2;
+
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+      switch (max) {
+        case r:
+          h = ((g - b) / d + (g < b ? 6 : 0)) * 60;
+          break;
+        case g:
+          h = ((b - r) / d + 2) * 60;
+          break;
+        case b:
+          h = ((r - g) / d + 4) * 60;
+          break;
+      }
+    }
+    return {
+      h: Math.round(h),
+      s: Math.round(s * 100),
+      l: Math.round(l * 100)
+    };
+  }
+};
+
 export default function GradientCard({
   gradient,
   isFavorite,
@@ -33,6 +76,7 @@ export default function GradientCard({
 }: GradientCardProps) {
   const [activeTab, setActiveTab] = useState("tailwind");
   const [angle, setAngle] = useState(90);
+  const [selectedColorFormat, setSelectedColorFormat] = useState("HEX");
   const [copiedStates, setCopiedStates] = useState({
     tailwind: false,
     css: false,
@@ -40,6 +84,24 @@ export default function GradientCard({
     bootstrap: false,
     colors: false,
   });
+
+  const colorFormats = ["HEX", "RGB", "HSL"];
+
+  const getColorInFormat = (color: string) => {
+    switch (selectedColorFormat) {
+      case "RGB": {
+        const { r, g, b } = colorUtils.hexToRGB(color);
+        return `rgb(${r}, ${g}, ${b})`;
+      }
+      case "HSL": {
+        const { r, g, b } = colorUtils.hexToRGB(color);
+        const { h, s, l } = colorUtils.rgbToHSL(r, g, b);
+        return `hsl(${h}, ${s}%, ${l}%)`;
+      }
+      default:
+        return color.toUpperCase(); 
+    }
+  };
 
   const copyToClipboard = (text: string, key: keyof typeof copiedStates) => {
     navigator.clipboard.writeText(text);
@@ -64,17 +126,62 @@ export default function GradientCard({
     return () => clearTimeout(timer);
   }, [copiedStates]);
 
+  const getCodePreview = () => {
+    const formattedColors = gradient.colors.map((color) =>
+      getColorInFormat(color),
+    );
+    return {
+      backgroundImage: `linear-gradient(${angle}deg, ${formattedColors.join(
+        ", ",
+      )})`,
+    };
+  };
+
   const getCode = (format: string) => {
-    const gradientCode = `${gradient.colors.join(", ")}`;
+    const formattedColors = gradient.colors.map((color) =>
+      getColorInFormat(color),
+    );
+    const firstColor = formattedColors[0];
+    const lastColor = formattedColors[formattedColors.length - 1];
+    const hasMiddleColor = formattedColors.length === 3;
+    const middleColor = hasMiddleColor ? formattedColors[1] : null;
+
     switch (format) {
       case "tailwind":
-        return `bg-gradient-to-r from-[${gradient.colors[0]}] to-[${gradient.colors[gradient.colors.length - 1]}]`;
+        if (hasMiddleColor) {
+          return `bg-gradient-to-r from-[${firstColor}] via-[${middleColor}] to-[${lastColor}]`;
+        } else {
+          return `bg-gradient-to-r from-[${firstColor}] to-[${lastColor}]`;
+        }
       case "css":
-        return `background-image: linear-gradient(${angle}deg, ${gradientCode});`;
+        return `background-image: linear-gradient(${angle}deg, ${formattedColors.join(", ")});`;
       case "sass":
-        return `$gradient-colors: ${gradientCode};\n$gradient-angle: ${angle}deg;\n\nbackground-image: linear-gradient($gradient-angle, $gradient-colors);`;
+        return `// Gradient using ${selectedColorFormat} colors
+$color-1: ${firstColor};
+${hasMiddleColor ? `$color-2: ${middleColor};` : ""}
+$color-final: ${lastColor};
+$gradient-angle: ${angle}deg;
+background-image: linear-gradient(
+  $gradient-angle,
+  $color-1,
+  ${hasMiddleColor ? "$color-2," : ""}
+  $color-final
+);`;
       case "bootstrap":
-        return `$gradient: linear-gradient(${angle}deg, ${gradientCode});\n\n.custom-gradient {\n  background-image: $gradient;\n}`;
+        return `// Bootstrap gradient using ${selectedColorFormat} colors
+$gradient-degrees: ${angle};
+$start-color: ${firstColor};
+${hasMiddleColor ? `$middle-color: ${middleColor};` : ""}
+$end-color: ${lastColor};
+
+.gradient {
+  background-image: linear-gradient(
+    #{$gradient-degrees}deg,
+    $start-color,
+    ${hasMiddleColor ? "$middle-color," : ""}
+    $end-color
+  );
+}`;
       default:
         return "";
     }
@@ -90,18 +197,9 @@ export default function GradientCard({
       <header className="w-full">
         <motion.div
           className="relative left-0 right-0 m-auto mt-6 h-48 w-48 rounded-full border-border"
-          style={{
-            backgroundImage: `linear-gradient(${angle}deg, ${gradient.colors.join(", ")})`,
-          }}
+          style={getCodePreview()}
           transition={{ duration: 0.3 }}
         >
-          {/* <motion.div
-            className="absolute bottom-0 left-0 right-0 top-0 z-[-1] m-auto h-48 w-48 rounded-full border-2 blur-[230px] backdrop-blur-xl"
-            style={{
-              backgroundImage: `linear-gradient(${angle}deg, ${gradient.colors.join(", ")})`,
-            }}
-            transition={{ duration: 0.3 }}
-          /> */}
         </motion.div>
       </header>
       <footer className="flex flex-col items-start space-y-4 p-4">
@@ -135,23 +233,49 @@ export default function GradientCard({
           </Tooltip>
         </div>
 
-        <div className="flex w-full flex-wrap gap-2">
-          {gradient.colors.map((color, index) => (
-            <Tooltip key={index}>
-              <TooltipTrigger asChild>
-                <motion.div
-                  className="hoverd h-6 w-6 cursor-pointer rounded-full border border-border"
-                  style={{ backgroundColor: color }}
-                  onClick={() => copyToClipboard(color, "colors")}
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
-                />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-muted-foreground">Click to copy: {color}</p>
-              </TooltipContent>
-            </Tooltip>
-          ))}
+        <div className="flex w-full items-center justify-between gap-2">
+          <div className="flex flex-wrap gap-2">
+            {gradient.colors.map((color, index) => (
+              <Tooltip key={index}>
+                <TooltipTrigger asChild>
+                  <motion.div
+                    className="hoverd h-6 w-6 cursor-pointer rounded-full border border-border"
+                    style={{ backgroundColor: color }}
+                    onClick={() =>
+                      copyToClipboard(getColorInFormat(color), "colors")
+                    }
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.9 }}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-muted-foreground">
+                    Click to copy: {getColorInFormat(color)}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger className="inline-flex">
+              <div className="flex w-24 items-center justify-between rounded-md border border-border bg-secondary p-2 text-sm text-primary">
+                <span>{selectedColorFormat}</span>
+                <ChevronDown className="h-4 w-4" />
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-24 rounded-md border border-border bg-secondary p-1">
+              {colorFormats.map((format) => (
+                <DropdownMenuItem
+                  key={format}
+                  onSelect={() => setSelectedColorFormat(format)}
+                  className="cursor-pointer rounded px-2 py-1.5 text-sm text-primary hover:bg-primary/10"
+                >
+                  {format}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <div className="flex w-full items-center space-x-2">
@@ -175,17 +299,18 @@ export default function GradientCard({
               <span>{activeTab}</span>
               <ChevronDown className="h-4 w-4" />
             </div>
-            <DropdownMenuContent className="absolute left-0 right-0 ml-10 w-full border border-border bg-card">
-              {["tailwind", "css", "sass", "bootstrap"].map((format) => (
-                <DropdownMenuItem
-                  key={format}
-                  onSelect={() => setActiveTab(format)}
-                >
-                  {format.charAt(0).toUpperCase() + format.slice(1)}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
           </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48 rounded-md border border-border bg-secondary p-1">
+            {["tailwind", "css", "sass", "bootstrap"].map((format) => (
+              <DropdownMenuItem
+                key={format}
+                onSelect={() => setActiveTab(format)}
+                className="cursor-pointer rounded px-2 py-1.5 text-sm text-primary hover:bg-primary/10"
+              >
+                {format.charAt(0).toUpperCase() + format.slice(1)}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
         </DropdownMenu>
         <div className="relative mt-2 w-full">
           <pre className="w-full overflow-hidden rounded-md border border-border bg-secondary p-2 text-xs text-muted-foreground">
