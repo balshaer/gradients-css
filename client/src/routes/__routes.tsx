@@ -2,10 +2,10 @@ import { Routes, Route } from "react-router-dom";
 import React, { Suspense } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { NotFoundPage } from "@/pages/NotFoundPage";
 
 // Lazy load components for better performance
 const HomePage = React.lazy(() => import("@/pages/HomePage"));
-const NotFoundPage = React.lazy(() => import("@/pages/NotFoundPage"));
 
 const AppRoutes: React.FC = () => {
   // Loading component

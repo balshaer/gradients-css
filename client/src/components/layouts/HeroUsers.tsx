@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Skeleton } from "../ui/skeleton";
+import { NumberTicker } from "../ui/NumberTicker";
 
 const HeroUsers = () => {
   const avatars = [
@@ -57,7 +58,8 @@ const HeroUsers = () => {
             ))}
           </span>
           <span className="text-sm text-muted-foreground">
-            More than <b>50+</b> happy users
+            More than
+            <NumberTicker value={50} />+ happy users
           </span>
         </div>
       </div>
