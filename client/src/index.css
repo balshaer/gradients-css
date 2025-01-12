@@ -88,7 +88,6 @@ body {
 }
 
 /* For testing  */
-
 .test1 {
   @apply border-2 border-black bg-green-300 text-black;
 }

@@ -85,7 +85,7 @@ export default function GradientGallery() {
               <img
                 className="absolute bottom-[-10px] left-0 right-0"
                 src="https://uploads-ssl.webflow.com/618ce467f09b34ebf2fdf6be/62779adeac94b82ea2fe08ec_Underline%202.svg"
-                alt="effect"
+                alt=""
               />
             </span>
           </h1>
@@ -102,8 +102,8 @@ export default function GradientGallery() {
           <div className="flex flex-col gap-4 sm:flex-row">
             <div className="relative w-full" id="input">
               <Input
-                placeholder="Search by gradient name"
-                className="hover:border-brand-500-secondary outline-none focus:outline-none focus:border-none invalid:border-error-500 invalid:focus:border-error-500 text-placeholder peer block h-full w-full appearance-none overflow-hidden overflow-ellipsis text-nowrap rounded-md border border-border bg-input px-3 py-2 pr-[48px] text-sm focus:shadow-none"
+                placeholder="Search by color name..."
+                className="hover:border-brand-500-secondary invalid:border-error-500 invalid:focus:border-error-500 text-placeholder peer block h-full w-full appearance-none overflow-hidden overflow-ellipsis text-nowrap rounded-md border border-border bg-input px-3 py-2 pr-[48px] text-sm outline-none focus:border-none focus:shadow-none focus:outline-none"
                 id="floating_outlined"
                 type="text"
                 value={searchTerm}

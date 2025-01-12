@@ -29,7 +29,7 @@ export const GradientPreview: React.FC<GradientPreviewProps> = ({
       >
         {gradientType === "text" ? (
           <motion.span
-            className="text-4xl font-bold"
+            className="overflow-hidden text-nowrap p-2 text-2xl font-bold"
             style={style}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

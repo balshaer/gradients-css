@@ -1,3 +1,5 @@
+// @TODO : Make a new feat allow users copy code as animation
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
@@ -9,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MagicCard } from "@/components/ui/MagicCard";
-
 import { GradientPreview } from "./GradientPreview";
 import { GradientHeader } from "./GradientHeader";
 import { ColorSwatches } from "./ColorSwatches";
@@ -21,6 +22,9 @@ import { useCopyState } from "@/hooks/useCopyState";
 import { useCustomToast } from "@/hooks/useCustomToast";
 import { useFavoriteCount } from "@/hooks/useFavoriteCount";
 import { GradientCardProps } from "@/types/types";
+import { CheckboxItem } from "@radix-ui/react-dropdown-menu";
+import { FaCheckDouble } from "react-icons/fa6";
+import { Checkbox } from "../ui/checkbox";
 
 export default function GradientCard({
   gradient,
@@ -193,10 +197,6 @@ $end-color: ${lastColor};
             getColorInFormat={getColorInFormat}
             copyToClipboard={(text, key) => {
               copyToClipboard(text, key);
-              showToast(
-                "Color Copied",
-                `The ${key} color has been copied to your clipboard.`,
-              );
             }}
           />
 
@@ -217,10 +217,6 @@ $end-color: ${lastColor};
                     key={format}
                     onSelect={() => {
                       setSelectedColorFormat(format);
-                      showToast(
-                        "Color Format Changed",
-                        `The color format has been changed to ${format}.`,
-                      );
                     }}
                     className="hover:bg-primary/10 cursor-pointer rounded px-2 py-1.5 text-sm text-primary"
                   >
@@ -230,14 +226,12 @@ $end-color: ${lastColor};
               </DropdownMenuContent>
             </DropdownMenu>
 
+            <div>{/* <Checkbox /> */}</div>
+
             <GradientTypeSelector
               gradientType={gradientType}
               setGradientType={(type) => {
                 setGradientType(type);
-                showToast(
-                  "Gradient Type Changed",
-                  `The gradient type has been changed to ${type}.`,
-                );
               }}
             />
           </div>
@@ -247,10 +241,6 @@ $end-color: ${lastColor};
           angle={angle}
           setAngle={(newAngle) => {
             setAngle(newAngle);
-            showToast(
-              "Angle Changed",
-              `The gradient angle has been changed to ${newAngle}°.`,
-            );
           }}
         />
 
@@ -270,10 +260,6 @@ $end-color: ${lastColor};
                 key={format}
                 onSelect={() => {
                   setActiveTab(format);
-                  showToast(
-                    "Code Format Changed",
-                    `The code format has been changed to ${format}.`,
-                  );
                 }}
                 className="hover:bg-primary/10 cursor-pointer rounded px-2 py-1.5 text-sm text-primary"
               >
@@ -288,10 +274,6 @@ $end-color: ${lastColor};
           activeTab={activeTab}
           copyToClipboard={(text, key) => {
             copyToClipboard(text, key);
-            showToast(
-              "Code Copied",
-              `The ${key} code has been copied to your clipboard.`,
-            );
           }}
         />
       </footer>

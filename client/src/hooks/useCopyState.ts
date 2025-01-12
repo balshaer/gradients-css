@@ -14,7 +14,7 @@ export const useCopyState = () => {
     navigator.clipboard.writeText(text);
     setCopiedStates((prev) => ({ ...prev, [key]: true }));
     toast({
-      title: "Copied to clipboard",
+      title: "Copied to clipboard ✅",
       description: `The ${key} code has been copied to your clipboard.`,
     });
   };

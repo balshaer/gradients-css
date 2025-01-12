@@ -7,6 +7,9 @@ interface CodePreviewProps {
   activeTab: any;
   copyToClipboard: (
     text: string,
+
+    // TODO : add more options like scss , less , img(for desingers) and more
+
     key: "tailwind" | "css" | "sass" | "bootstrap",
   ) => void;
 }
