@@ -15,16 +15,12 @@ import { GradientPreview } from "./GradientPreview";
 import { GradientHeader } from "./GradientHeader";
 import { ColorSwatches } from "./ColorSwatches";
 import { AngleSlider } from "./AngleSlider";
-import { CodePreview } from "./CodePreview";
 import { GradientTypeSelector } from "./GradientTypeSelector";
 import { useColorFormat } from "@/hooks/useColorFormat";
 import { useCopyState } from "@/hooks/useCopyState";
-import { useCustomToast } from "@/hooks/useCustomToast";
 import { useFavoriteCount } from "@/hooks/useFavoriteCount";
 import { GradientCardProps } from "@/types/types";
-import { CheckboxItem } from "@radix-ui/react-dropdown-menu";
-import { FaCheckDouble } from "react-icons/fa6";
-import { Checkbox } from "../ui/checkbox";
+import { CodePreview } from "./CodePreview";
 
 export default function GradientCard({
   gradient,
@@ -41,7 +37,6 @@ export default function GradientCard({
     setGradientType,
   } = useColorFormat();
   const { copiedStates, copyToClipboard } = useCopyState();
-  const { showToast } = useCustomToast();
   const { favoriteCount, incrementFavoriteCount, decrementFavoriteCount } =
     useFavoriteCount(gradient.name);
 

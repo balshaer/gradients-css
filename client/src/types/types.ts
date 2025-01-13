@@ -3,4 +3,9 @@ export interface GradientCardProps {
   isFavorite: boolean;
   onFavoriteToggle: (name: string) => void;
   favoriteCount: number;
+  name: string;
+  colorsname: string[];
+  keywords: string[][];
 }
+
+

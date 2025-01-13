@@ -54,8 +54,7 @@ export default function GradientGrid({
                 gradient={gradient}
                 isFavorite={favorites.includes(gradient.name)}
                 onFavoriteToggle={() => toggleFavorite(gradient.name)}
-                favoriteCount={0}
-              />
+                favoriteCount={0} name={""} colorsname={[]} keywords={[]}              />
             </div>
           ))
         )}
