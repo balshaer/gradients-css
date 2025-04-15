@@ -257,3 +257,11 @@ h6 {
 p {
   @apply text-gray-700;
 }
+
+.nofocus {
+  @apply focus:border-none focus:outline-none;
+}
+
+.nohover {
+  @apply hover:border-none hover:outline-none;
+}

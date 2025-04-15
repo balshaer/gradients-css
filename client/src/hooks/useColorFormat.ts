@@ -1,20 +1,14 @@
 import { useState } from "react";
 import { colorUtils } from "../utils/colorUtils";
-import { useToast } from "@/hooks/use-toast";
 
 export const useColorFormat = () => {
   const [selectedColorFormat, setSelectedColorFormat] = useState("HEX");
   const [gradientType, setGradientType] = useState<"background" | "text">(
     "background",
   );
-  const { toast } = useToast();
 
   const updateColorFormat = (format: string) => {
     setSelectedColorFormat(format);
-    toast({
-      title: `Color format changed to ${format}`,
-      description: `The gradient colors will now be displayed in ${format} format.`,
-    });
   };
 
   const getColorInFormat = (color: string) => {

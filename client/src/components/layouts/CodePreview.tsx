@@ -21,7 +21,7 @@ export const CodePreview: React.FC<CodePreviewProps> = ({
   copyToClipboard,
 }) => (
   <div className="relative mt-2 w-full">
-    <pre className="w-full overflow-hidden rounded-md border border-border bg-secondary p-2 text-xs text-muted-foreground">
+    <pre className="line-clamp-1 w-full overflow-hidden rounded-md border border-border bg-secondary p-2 text-xs text-muted-foreground">
       {code}
     </pre>
     <button

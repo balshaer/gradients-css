@@ -195,9 +195,9 @@ $end-color: ${lastColor};
             }}
           />
 
-          <div className="flex gap-2">
+          <div className="flex gap-1">
             <DropdownMenu>
-              <DropdownMenuTrigger className="inline-flex">
+              <DropdownMenuTrigger className="nofocus inline-flex">
                 <div className="flex w-24 items-center justify-between rounded-md border border-border bg-secondary p-2 text-sm text-primary">
                   <span>{selectedColorFormat}</span>
                   <ChevronDown className="h-4 w-4" />
@@ -240,7 +240,7 @@ $end-color: ${lastColor};
         />
 
         <DropdownMenu>
-          <DropdownMenuTrigger className="relative w-full">
+          <DropdownMenuTrigger className="nofocus relative w-full">
             <div className="flex items-center justify-between rounded-md border border-border bg-secondary p-2 text-sm text-primary">
               <span>{activeTab}</span>
               <ChevronDown className="h-4 w-4" />

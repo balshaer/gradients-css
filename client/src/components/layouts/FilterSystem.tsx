@@ -42,7 +42,7 @@ export function FilterSystem({
           <SelectTrigger id="filter">
             <SelectValue placeholder="Filter" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="nofocus">
             <SelectItem value="all">All Gradients</SelectItem>
             <SelectItem value="favorites">Favorites</SelectItem>
           </SelectContent>

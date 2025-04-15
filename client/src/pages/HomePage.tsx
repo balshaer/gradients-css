@@ -70,7 +70,7 @@ export default function GradientGallery() {
   return (
     <TooltipProvider>
       <div className="container relative" style={{ background }}>
-        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+     
         <div className="mx-auto max-w-6xl space-y-2 pt-12">
           <a href="https://github.com/balshaer/gradients-css" target="_blank">
             <div className="flex w-full items-center justify-center">
@@ -128,10 +128,10 @@ export default function GradientGallery() {
                 setCurrentPage(1);
               }}
             >
-              <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectTrigger className="nofocus nohover w-full border-none outline-none sm:w-[180px]">
                 <SelectValue placeholder="Filter" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="nofocus nohover border-none outline-none">
                 <SelectItem value="all">All Gradients</SelectItem>
                 <SelectItem value="favorites">Favorites</SelectItem>
               </SelectContent>
