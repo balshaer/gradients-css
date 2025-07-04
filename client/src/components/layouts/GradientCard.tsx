@@ -18,7 +18,7 @@ import { AngleSlider } from "./AngleSlider";
 import { GradientTypeSelector } from "./GradientTypeSelector";
 import { useColorFormat } from "@/hooks/useColorFormat";
 import { useCopyState } from "@/hooks/useCopyState";
-import { useFavoriteCount } from "@/hooks/useFavoriteCount";
+
 import { GradientCardProps } from "@/types/types";
 import { CodePreview } from "./CodePreview";
 
@@ -37,8 +37,6 @@ export default function GradientCard({
     setGradientType,
   } = useColorFormat();
   const { copiedStates, copyToClipboard } = useCopyState();
-  const { favoriteCount, incrementFavoriteCount, decrementFavoriteCount } =
-    useFavoriteCount(gradient.name);
 
   const colorFormats = ["HEX", "RGB", "HSL"];
 
@@ -144,11 +142,6 @@ $end-color: ${lastColor};
   };
 
   const handleFavoriteToggle = () => {
-    if (isFavorite) {
-      decrementFavoriteCount();
-    } else {
-      incrementFavoriteCount();
-    }
     onFavoriteToggle(gradient.name);
   };
 
@@ -181,9 +174,6 @@ $end-color: ${lastColor};
             isFavorite={isFavorite}
             onFavoriteToggle={handleFavoriteToggle}
           />
-          <div className="flex items-center space-x-2 text-sm text-gray-500">
-            <span>{favoriteCount}</span>
-          </div>
         </div>
 
         <div className="flex w-full items-center justify-between gap-2">

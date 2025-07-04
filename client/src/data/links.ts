@@ -1,1 +1,1 @@
-export const myWebsite = `https://alshaer.vercel.app/`
+export const myWebsite = `https://alshaer.vercel.app/`;

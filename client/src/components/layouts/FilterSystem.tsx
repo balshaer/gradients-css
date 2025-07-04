@@ -56,7 +56,6 @@ export function FilterSystem({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="name">Name</SelectItem>
-            <SelectItem value="favoriteCount">Favorite Count</SelectItem>
           </SelectContent>
         </Select>
       </div>

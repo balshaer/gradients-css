@@ -3710,6 +3710,15 @@
         ["bright", "cyan", "fresh", "cool"],
         ["dark", "blue", "depth", "serious"]
       ]
+    },
+    {
+      "name": "My New Gradient",
+      "colors": ["#FF00FF", "#00FF00"],
+      "colorsname": ["bright pink", "bright green"],
+      "keywords": [
+        ["bright", "pink", "vibrant", "modern"],
+        ["bright", "green", "fresh", "energetic"]
+      ]
     }
   ]
 ]

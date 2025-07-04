@@ -7,7 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 const App: React.FC = () => {
   inject();
 
-return (
+  return (
     <div dir="ltr" className="App">
       <Toaster />
       <AppRoutes />
