@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import GradientCard from "./GradientCard";
 import SkeletonGradientCard from "./SkeletonGradientCard";
 import { FileWarningIcon } from "lucide-react";
