@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .container {
+    @apply max-w-7xl max-md:px-4;
+  }
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+
+  --nav: #000000b5;
+
+  --placeholder: #ffffff54;
+
+  --border: #85858558;
+
+  --muted: #1e1e1e;
+  --muted-foreground: #a1a1aa;
+
+  --muted: #1e1e1e;
+  --muted-foreground: #ffffff;
+
+  --card: #1e1e1e;
+  --card-foreground: #ffffff;
+
+  --border: #333333;
+  --input: #333333;
+
+  --primary: #ffffff;
+  --primary-foreground: #000000;
+
+  --secondary: #1e1e1e;
+  --secondary-foreground: #ffffff;
+
+  --accent: #1e1e1e;
+  --accent-foreground: #ffffff;
+
+  --destructive: #ff4a4a;
+  --destructive-foreground: #ffffff;
+
+  --ring: #333333;
+
+  --radius: 0.5rem;
+
+  /* Additional colors */
+  --success: #0070f3;
+  --success-foreground: #ffffff;
+
+  --warning: #f5a623;
+  --warning-foreground: #000000;
+
+  --info: #56b6c2;
+  --info-foreground: #ffffff;
+
+  --highlight: #79ffe1;
+  --highlight-foreground: #000000;
+
+  --focus: #888888;
+
+  --selection: #0070f3;
+  --selection-foreground: #ffffff;
+
+  --code: #79ffe1;
+  --code-background: #1e1e1e;
+
+  --link: #3291ff;
+  --link-hover: #0070f3;
+
+  --grid-color: rgba(139,92,246,0.025); /* Light purple for grid */
+}
+
+::selection {
+  background-color: var(--selection);
+  color: var(--selection-foreground);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "IBM Plex Sans", sans-serif !important;
+
+}
+
+/* For testing  */
+.test1 {
+  @apply border-2 border-black bg-green-300 text-black;
+}
+
+.test2 {
+  @apply border-2 border-black bg-red-300 text-black;
+}
+
+.test3 {
+  @apply border-2 border-black bg-blue-300 text-black;
+}
+.test4 {
+  @apply border-2 border-black bg-yellow-300 text-black;
+}

@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  * {
+    @apply m-0 box-border scroll-smooth p-0;
+  }
+
+  html {
+    @apply text-base;
+  }
+
+  a {
+    @apply cursor-pointer;
+  }
+}
+
+.hoverd {
+  transition: all 0.3s ease 0s !important;
+}
+
+@layer components {
+  .cardsGroup {
+    @apply flex min-h-[100px] w-full flex-col gap-5 max-md:w-full;
+  }
+
+  .loader {
+    @apply relative block h-[4px] w-[130px] rounded-[30px] bg-black/20;
+  }
+
+  .loader::before {
+    @apply absolute left-0 top-0 h-full w-0 rounded-[30px] bg-[var(--button)] content-[''];
+  }
+
+  .section {
+    @apply py-[20px];
+  }
+
+  form {
+    @apply flex w-full flex-col gap-4 bg-[var(--background)];
+  }
+
+  form .form-title {
+    @apply text-center text-[var(--headline)];
+  }
+
+  .project-cards-container a:hover .overed {
+    @apply opacity-40;
+  }
+
+  .project-cards-container a:not(:hover) .overed {
+    @apply transition-opacity duration-300 ease-in-out;
+  }
+
+  .title {
+    @apply inline-block scale-[0.94];
+  }
+
+  .span-title {
+    @apply w-max opacity-0 blur-[4px];
+  }
+
+  .link {
+    @apply font-bold text-[var(--paragraph)] underline transition-all hover:text-[var(--link-hover)];
+  }
+
+  .header {
+    @apply flex flex-col items-start justify-start pt-8 max-md:pt-4;
+  }
+
+  .header-title {
+    @apply flex flex-col gap-4 py-[4px] text-2xl font-bold capitalize text-[var(--headline)];
+  }
+
+  .subtitle {
+    @apply w-full text-base text-[var(--headline)] opacity-80 max-md:max-w-none;
+  }
+
+  .section-subtitle {
+    @apply w-full pb-[18px] text-base text-[var(--paragraph)] max-md:max-w-none;
+  }
+
+  .section-title {
+    @apply flex flex-col gap-4 py-6 pb-3 text-center text-2xl font-bold capitalize text-[var(--headline)];
+  }
+
+  .description {
+    @apply w-full py-2 text-base text-[var(--paragraph)] max-md:max-w-none;
+  }
+
+  .main-navbar {
+    @apply flex w-full flex-row items-center justify-between rounded-3xl py-3 max-md:m-auto max-md:border-b max-md:border-none max-md:px-0 max-md:backdrop-blur-2xl;
+  }
+
+  .gradients-bg {
+    @apply bg-gradient-to-r from-[#4e1ecf] to-[#e52d5b];
+  }
+
+  .cardGroup {
+    @apply grid grid-cols-3 gap-4 max-md:grid-cols-1;
+  }
+
+  .cardContainer {
+    @apply h-max w-1/3 border border-[var(--border)] bg-[var(--card-background)] p-4 max-md:w-full;
+  }
+
+  .inputWithIcon {
+    @apply flex items-center justify-start gap-1 rounded-md border-2 border-[var(--input-border-color)] bg-[var(--card-background)] px-2 text-[var(--paragraph)];
+  }
+
+  .badeIcon {
+    @apply cursor-pointer font-bold text-[var(--headline)];
+  }
+
+  .activeLink {
+    @apply relative max-md:hidden;
+  }
+
+  .sectionIcon {
+    @apply h-8 w-8 cursor-pointer rounded-md bg-[var(--card-background)] p-2 text-[var(--headline)];
+  }
+}
+
+@layer utilities {
+  .fade-in-right {
+    animation: fade-in-right 0.3s ease-out;
+  }
+
+  .fade-out-right {
+    animation: fade-out-right 0.3s ease-in;
+  }
+
+  @keyframes fade-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fade-out-right {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes scale {
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fade-in {
+    100% {
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+
+  @keyframes moving {
+    50% {
+      width: 100%;
+    }
+    100% {
+      width: 0;
+      right: 0;
+      left: unset;
+    }
+  }
+}
+
+@screen md {
+  .activeLink span:first-child::after {
+    @apply absolute bottom-0 left-[-5px] top-0 z-[9999] m-auto h-[90%] w-[2px] rounded-lg bg-[var(--headline)] content-[''];
+  }
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background-color: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--headline);
+  border-radius: 10px;
+  opacity: 70%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply text-gray-900;
+}
+
+p {
+  @apply text-gray-700;
+}
+
+.nofocus {
+  @apply focus:border-none focus:outline-none;
+}
+
+.nohover {
+  @apply hover:border-none hover:outline-none;
+}
