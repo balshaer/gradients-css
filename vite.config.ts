@@ -11,7 +11,9 @@ export default defineConfig({
     host: "localhost",
     port: 3000,
   },
-
+  optimizeDeps: {
+    include: ["react", "react-dom"],
+  },
   define: {
     "process.env": process.env,
   },
