@@ -8,7 +8,6 @@ import { Button } from "../ui/button";
 const USDT_TRC20_ADDRESS = "TUpNv8wRALuuKuDpH9PbbCatSFHVtqeByk";
 const TRUST_WALLET_LINK =
   "https://link.trustwallet.com/send?coin=195&address=TUpNv8wRALuuKuDpH9PbbCatSFHVtqeByk&token_id=TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
-const QR_CODE_SRC = "../../assets/qrcode.jpg";
 
 // -- Animation variants
 const buttonVariants = {
@@ -178,7 +177,7 @@ export function SupportWidget() {
                   tabIndex={-1}
                 >
                   <img
-                    src={QR_CODE_SRC}
+                    src={"@/assets/qrcode.jpg"}
                     alt="QR code to send USDT (TRC20)"
                     width={104}
                     height={104}
