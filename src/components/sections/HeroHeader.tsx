@@ -35,7 +35,7 @@ export const HeroHeader: React.FC = () => (
         </span>
        <img
   className="absolute h-[150px] left-[190px] w-[120px] bottom-0 top-[45px] right-0 -rotate-45 max-[923px]:hidden"
-  src="/app/assets/arrow.svg"
+  src="@/assets/arrow.svg"
   alt="icon"
 />
 
