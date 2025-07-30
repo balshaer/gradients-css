@@ -177,7 +177,7 @@ export function SupportWidget() {
                   tabIndex={-1}
                 >
                   <img
-                    src={"/src/assets/qrcode.jpg"}
+                    src="/qrcode.jpg"
                     alt="QR code to send USDT (TRC20)"
                     width={104}
                     height={104}
