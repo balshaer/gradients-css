@@ -3720,5 +3720,255 @@
         ["bright", "green", "fresh", "energetic"]
       ]
     }
-  ]
+  ],
+  {
+    "name": "Neon Cyberpunk",
+    "colors": ["#FF006E", "#8338EC", "#3A86FF"],
+    "colorsname": ["bright pink", "purple", "bright blue"],
+    "keywords": [
+      ["bright", "pink", "neon", "futuristic"],
+      ["purple", "electric", "modern", "tech"],
+      ["bright", "blue", "cyber", "digital"]
+    ]
+  },
+  {
+    "name": "Sunset Vibes",
+    "colors": ["#FF9500", "#FF5722", "#E91E63"],
+    "colorsname": ["orange", "red orange", "pink"],
+    "keywords": [
+      ["orange", "warm", "sunset", "vibrant"],
+      ["red", "orange", "energy", "bold"],
+      ["pink", "romantic", "evening", "soft"]
+    ]
+  },
+  {
+    "name": "Ocean Depths",
+    "colors": ["#006A6B", "#0891B2", "#33D4FF"],
+    "colorsname": ["dark teal", "blue", "light blue"],
+    "keywords": [
+      ["dark", "teal", "ocean", "deep"],
+      ["blue", "water", "calm", "serene"],
+      ["light", "blue", "sky", "fresh"]
+    ]
+  },
+  {
+    "name": "Forest Mist",
+    "colors": ["#134E5E", "#71B280", "#A8E6CF"],
+    "colorsname": ["dark green", "green", "light green"],
+    "keywords": [
+      ["dark", "green", "forest", "nature"],
+      ["green", "fresh", "natural", "organic"],
+      ["light", "green", "mint", "peaceful"]
+    ]
+  },
+  {
+    "name": "Purple Haze",
+    "colors": ["#667eea", "#764ba2", "#f093fb"],
+    "colorsname": ["blue purple", "purple", "light pink"],
+    "keywords": [
+      ["blue", "purple", "dreamy", "mystical"],
+      ["purple", "royal", "elegant", "sophisticated"],
+      ["light", "pink", "soft", "ethereal"]
+    ]
+  },
+  {
+    "name": "Golden Hour",
+    "colors": ["#FFD700", "#FFA500", "#FF6347"],
+    "colorsname": ["gold", "orange", "red orange"],
+    "keywords": [
+      ["gold", "luxury", "warm", "precious"],
+      ["orange", "sunset", "energetic", "vibrant"],
+      ["red", "orange", "fire", "passionate"]
+    ]
+  },
+  {
+    "name": "Arctic Aurora",
+    "colors": ["#00F5FF", "#00CED1", "#20B2AA"],
+    "colorsname": ["cyan", "turquoise", "light sea green"],
+    "keywords": [
+      ["cyan", "ice", "arctic", "cool"],
+      ["turquoise", "aurora", "magical", "northern"],
+      ["light", "sea", "green", "mystical"]
+    ]
+  },
+  {
+    "name": "Cosmic Dust",
+    "colors": ["#2E0249", "#570A57", "#A91079"],
+    "colorsname": ["dark purple", "purple", "magenta"],
+    "keywords": [
+      ["dark", "purple", "space", "cosmic"],
+      ["purple", "galaxy", "mysterious", "deep"],
+      ["magenta", "nebula", "bright", "stellar"]
+    ]
+  },
+  {
+    "name": "Tropical Paradise",
+    "colors": ["#00B4DB", "#0083B0", "#00A8CC"],
+    "colorsname": ["light blue", "blue", "cyan"],
+    "keywords": [
+      ["light", "blue", "tropical", "paradise"],
+      ["blue", "ocean", "vacation", "relaxing"],
+      ["cyan", "lagoon", "crystal", "clear"]
+    ]
+  },
+  {
+    "name": "Velvet Dreams",
+    "colors": ["#8E2DE2", "#4A00E0", "#FF006E"],
+    "colorsname": ["purple", "dark purple", "pink"],
+    "keywords": [
+      ["purple", "velvet", "luxury", "rich"],
+      ["dark", "purple", "deep", "mysterious"],
+      ["pink", "dreams", "romantic", "soft"]
+    ]
+  },
+  {
+    "name": "Emerald City",
+    "colors": ["#11998e", "#38ef7d", "#7fefb2"],
+    "colorsname": ["teal", "green", "light green"],
+    "keywords": [
+      ["teal", "emerald", "precious", "sophisticated"],
+      ["green", "city", "modern", "fresh"],
+      ["light", "green", "nature", "peaceful"]
+    ]
+  },
+  {
+    "name": "Fire Storm",
+    "colors": ["#FF4B1F", "#FF9068", "#FFAD68"],
+    "colorsname": ["red", "orange", "light orange"],
+    "keywords": [
+      ["red", "fire", "intense", "powerful"],
+      ["orange", "storm", "energy", "dynamic"],
+      ["light", "orange", "warm", "glowing"]
+    ]
+  },
+  {
+    "name": "Midnight Blue",
+    "colors": ["#191654", "#43C6AC", "#F8FFAE"],
+    "colorsname": ["dark blue", "teal", "light yellow"],
+    "keywords": [
+      ["dark", "blue", "midnight", "deep"],
+      ["teal", "ocean", "calm", "serene"],
+      ["light", "yellow", "moon", "gentle"]
+    ]
+  },
+  {
+    "name": "Rose Gold",
+    "colors": ["#ED4264", "#FFEDBC", "#FFD700"],
+    "colorsname": ["pink", "cream", "gold"],
+    "keywords": [
+      ["pink", "rose", "romantic", "elegant"],
+      ["cream", "soft", "luxurious", "smooth"],
+      ["gold", "precious", "valuable", "rich"]
+    ]
+  },
+  {
+    "name": "Electric Lime",
+    "colors": ["#8EE000", "#32CD32", "#00FF7F"],
+    "colorsname": ["lime", "green", "spring green"],
+    "keywords": [
+      ["lime", "electric", "bright", "energetic"],
+      ["green", "nature", "fresh", "vibrant"],
+      ["spring", "green", "new", "growth"]
+    ]
+  },
+  {
+    "name": "Lavender Fields",
+    "colors": ["#E6E6FA", "#DDA0DD", "#9370DB"],
+    "colorsname": ["lavender", "plum", "medium orchid"],
+    "keywords": [
+      ["lavender", "fields", "peaceful", "calming"],
+      ["plum", "soft", "gentle", "soothing"],
+      ["medium", "orchid", "floral", "elegant"]
+    ]
+  },
+  {
+    "name": "Coral Reef",
+    "colors": ["#FF7F7F", "#FF6B6B", "#FF5722"],
+    "colorsname": ["coral", "salmon", "red orange"],
+    "keywords": [
+      ["coral", "reef", "ocean", "vibrant"],
+      ["salmon", "warm", "tropical", "lively"],
+      ["red", "orange", "energetic", "bold"]
+    ]
+  },
+  {
+    "name": "Steel Blue",
+    "colors": ["#4682B4", "#5F9EA0", "#87CEEB"],
+    "colorsname": ["steel blue", "cadet blue", "sky blue"],
+    "keywords": [
+      ["steel", "blue", "strong", "industrial"],
+      ["cadet", "blue", "professional", "reliable"],
+      ["sky", "blue", "open", "free"]
+    ]
+  },
+  {
+    "name": "Mint Chocolate",
+    "colors": ["#98FB98", "#3CB371", "#2E8B57"],
+    "colorsname": ["pale green", "medium sea green", "sea green"],
+    "keywords": [
+      ["pale", "green", "mint", "fresh"],
+      ["medium", "sea", "green", "natural"],
+      ["sea", "green", "chocolate", "rich"]
+    ]
+  },
+  {
+    "name": "Sunset Orange",
+    "colors": ["#FF8C00", "#FF7F50", "#FF6347"],
+    "colorsname": ["dark orange", "coral", "tomato"],
+    "keywords": [
+      ["dark", "orange", "sunset", "warm"],
+      ["coral", "tropical", "vibrant", "lively"],
+      ["tomato", "fresh", "natural", "organic"]
+    ]
+  },
+  {
+    "name": "Deep Ocean",
+    "colors": ["#000080", "#191970", "#4169E1"],
+    "colorsname": ["navy", "midnight blue", "royal blue"],
+    "keywords": [
+      ["navy", "deep", "ocean", "mysterious"],
+      ["midnight", "blue", "dark", "profound"],
+      ["royal", "blue", "majestic", "elegant"]
+    ]
+  },
+  {
+    "name": "Cherry Blossom",
+    "colors": ["#FFB6C1", "#FFC0CB", "#FF69B4"],
+    "colorsname": ["light pink", "pink", "hot pink"],
+    "keywords": [
+      ["light", "pink", "cherry", "blossom"],
+      ["pink", "spring", "delicate", "beautiful"],
+      ["hot", "pink", "vibrant", "bold"]
+    ]
+  },
+  {
+    "name": "Autumn Leaves",
+    "colors": ["#FF4500", "#FF6347", "#FFD700"],
+    "colorsname": ["orange red", "tomato", "gold"],
+    "keywords": [
+      ["orange", "red", "autumn", "leaves"],
+      ["tomato", "fall", "seasonal", "warm"],
+      ["gold", "harvest", "rich", "abundant"]
+    ]
+  },
+  {
+    "name": "Glacier Ice",
+    "colors": ["#F0F8FF", "#E0FFFF", "#B0E0E6"],
+    "colorsname": ["alice blue", "light cyan", "powder blue"],
+    "keywords": [
+      ["alice", "blue", "glacier", "ice"],
+      ["light", "cyan", "frozen", "pure"],
+      ["powder", "blue", "arctic", "clean"]
+    ]
+  },
+  {
+    "name": "Neon Nights",
+    "colors": ["#FF1493", "#00FFFF", "#ADFF2F"],
+    "colorsname": ["deep pink", "cyan", "green yellow"],
+    "keywords": [
+      ["deep", "pink", "neon", "nights"],
+      ["cyan", "electric", "bright", "glowing"],
+      ["green", "yellow", "vibrant", "energetic"]
+    ]
+  }
 ]

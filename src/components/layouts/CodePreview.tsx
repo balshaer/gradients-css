@@ -7,10 +7,7 @@ interface CodePreviewProps {
   activeTab: any;
   copyToClipboard: (
     text: string,
-
-    // TODO : add more options like scss , less , img(for desingers) and more
-
-    key: "tailwind" | "css" | "sass" | "bootstrap",
+    key: "tailwind" | "css" | "sass" | "bootstrap" | "xml" | "svg" | "json" | "colors",
   ) => void;
 }
 
@@ -20,8 +17,8 @@ export const CodePreview: React.FC<CodePreviewProps> = ({
   activeTab,
   copyToClipboard,
 }) => (
-  <div className="relative mt-2 w-full">
-    <pre className="line-clamp-1 w-full overflow-hidden rounded-md border border-border bg-secondary p-2 text-xs text-muted-foreground">
+  <div className="relative mt-2 max-w-full">
+    <pre className="truncate w-full max-w-full overflow-hidden whitespace-nowrap rounded-md border border-border bg-secondary p-2 pr-10 text-xs text-muted-foreground">
       {code}
     </pre>
     <button

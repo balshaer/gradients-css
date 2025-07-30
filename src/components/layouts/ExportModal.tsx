@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { Download, Image, FileImage, Palette } from "lucide-react";
+import { Download, Image, FileImage, Palette, Code, Smartphone, Monitor, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -32,12 +30,14 @@ export function ExportModal({
   gradientData,
 }: ExportModalProps) {
   const [selectedFormat, setSelectedFormat] = useState<
-    "svg" | "png" | "jpg" | "webp"
+    "png" | "jpg" | "webp" | "mesh"
   >("png");
   const [selectedSize, setSelectedSize] = useState("Medium");
   const [customWidth, setCustomWidth] = useState(800);
   const [customHeight, setCustomHeight] = useState(600);
   const [quality, setQuality] = useState([90]);
+  const [angle] = useState([45]);
+  const [meshComplexity, setMeshComplexity] = useState([5]);
   const [isExporting, setIsExporting] = useState(false);
 
   const sizePresets = exportUtils.getSizePresets();
@@ -63,10 +63,13 @@ export function ExportModal({
           selectedFormat === "jpg" || selectedFormat === "webp"
             ? quality[0] / 100
             : undefined,
+        angle: angle[0],
+        meshComplexity: meshComplexity[0],
       };
 
       await exportUtils.exportGradient(gradientData, options);
 
+      // Show success message for download
       toast({
         title: "Export Successful",
         description: `${gradientData.name} exported as ${selectedFormat.toUpperCase()}`,
@@ -90,11 +93,24 @@ export function ExportModal({
       case "svg":
         return <Palette className="h-4 w-4" />;
       case "png":
-        return <Image className="h-4 w-4" />;
       case "jpg":
-        return <FileImage className="h-4 w-4" />;
       case "webp":
+        return <Image className="h-4 w-4" />;
+      case "json":
         return <FileImage className="h-4 w-4" />;
+      case "css":
+      case "less":
+      case "scss":
+        return <Code className="h-4 w-4" />;
+      case "android":
+        return <Smartphone className="h-4 w-4" />;
+      case "ios":
+        return <Monitor className="h-4 w-4" />;
+      case "figma":
+      case "sketch":
+        return <Layers className="h-4 w-4" />;
+      case "mesh":
+        return <Palette className="h-4 w-4" />;
       default:
         return <Image className="h-4 w-4" />;
     }
@@ -104,13 +120,8 @@ export function ExportModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Download className="h-5 w-5" />
-            Export Gradient
-          </DialogTitle>
-          <DialogDescription>
-            Export "{gradientData.name}" as an image file
-          </DialogDescription>
+     
+   
         </DialogHeader>
 
         <div className="space-y-6">
@@ -119,7 +130,7 @@ export function ExportModal({
             <Label>Format</Label>
             <Select
               value={selectedFormat}
-              onValueChange={(value: any) => setSelectedFormat(value)}
+              onValueChange={(value) => setSelectedFormat(value as "png" | "jpg" | "webp" | "mesh")}
             >
               <SelectTrigger>
                 <SelectValue />
@@ -127,9 +138,9 @@ export function ExportModal({
               <SelectContent>
                 {formatOptions.map((format) => (
                   <SelectItem key={format.value} value={format.value}>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1  ">
                       {getFormatIcon(format.value)}
-                      <div>
+                      <div className="flex items-center gap-3">
                         <div className="font-medium">{format.label}</div>
                         <div className="text-xs text-muted-foreground">
                           {format.description}
@@ -142,26 +153,106 @@ export function ExportModal({
             </Select>
           </div>
 
-          {/* Size Selection */}
-          <div className="space-y-2">
-            <Label>Size</Label>
-            <Select value={selectedSize} onValueChange={setSelectedSize}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {sizePresets.map((preset) => (
-                  <SelectItem key={preset.name} value={preset.name}>
-                    {preset.name} ({preset.width} × {preset.height})
-                  </SelectItem>
-                ))}
-                <SelectItem value="Custom">Custom Size</SelectItem>
-              </SelectContent>
-            </Select>
+          {/* Gradient Preview */}
+          <div className="space-y-3">
+        
+
+            {/* Frame-like preview container */}
+            <div className="">
+              {/* Photo frame effect */}
+              <div className="relative overflow-hidden rounded-lg border-4 border-[var(--border)] shadow-lg bg-[var(--card)] transition-transform duration-300 ">
+                <div className="relative">
+                  {/* Dynamic height based on aspect ratio */}
+                  <div
+                    className={`w-full ${
+                      selectedSize === "Large" || selectedSize === "4K" ? "h-24" : // 16:9 aspect ratio
+                      selectedSize === "Small" ? "h-32" : // 1:1 aspect ratio
+                      selectedSize === "Custom" ?
+                        (customWidth > customHeight ? "h-24" : "h-32") :
+                        "h-28" // Default medium
+                    }`}
+                    style={{
+                      background: `linear-gradient(${gradientData.angle || 45}deg, ${gradientData.colors.join(", ")})`,
+                    }}
+                  />
+
+                  {/* Overlay with gradient name */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="rounded-lg bg-black/30 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm border border-white/20">
+                      {gradientData.name}
+                    </div>
+                  </div>
+
+                  {/* Format badge with download icon */}
+                  <div className="absolute top-3 right-3">
+                    <div className="rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-gray-800 shadow-sm border border-gray-200 flex items-center gap-1">
+                      {selectedFormat.toUpperCase()}
+                    </div>
+                  </div>
+
+                  {/* Quality indicator for image formats */}
+                  {selectedFormat !== "mesh" && (
+                    <div className="absolute top-3 left-3">
+                      <div className="rounded-full bg-green-500/90 px-2 py-1 text-xs font-medium text-white shadow-sm">
+                        {quality[0]}% Quality
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Size indicator */}
+                  <div className="absolute bottom-3 left-3">
+                    <div className="rounded-lg bg-black/30 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm border border-white/20">
+                      {selectedSize === "Custom" ? `${customWidth}×${customHeight}px` :
+                       selectedSize === "Small" ? "400×400px" :
+                       selectedSize === "Medium" ? "800×600px" :
+                       selectedSize === "Large" ? "1920×1080px" :
+                       selectedSize === "4K" ? "3840×2160px" : selectedSize}
+                    </div>
+                  </div>
+
+                  {/* Mesh gradient special effect */}
+                  {selectedFormat === "mesh" && (
+                    <>
+                      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent pointer-events-none" />
+                      <div className="absolute bottom-3 right-3">
+                        <div className="rounded-full bg-purple-500/90 px-2 py-1 text-xs font-medium text-white shadow-sm">
+                          Mesh
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Frame shadow effect */}
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-transparent to-black/5 pointer-events-none" />
+            </div>
+
+     
           </div>
 
+          {/* Size Selection - only for image formats */}
+          {!["css", "ios", "less", "scss", "figma", "sketch", "json"].includes(selectedFormat) && (
+            <div className="space-y-2">
+              <Label>Size</Label>
+              <Select value={selectedSize} onValueChange={setSelectedSize}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {sizePresets.map((preset) => (
+                    <SelectItem key={preset.name} value={preset.name}>
+                      {preset.name} ({preset.width} × {preset.height})
+                    </SelectItem>
+                  ))}
+                  <SelectItem value="Custom">Custom Size</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
           {/* Custom Size Inputs */}
-          {selectedSize === "Custom" && (
+          {selectedSize === "Custom" && !["css", "ios", "less", "scss", "figma", "sketch", "json"].includes(selectedFormat) && (
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Width</Label>
@@ -203,14 +294,35 @@ export function ExportModal({
             </div>
           )}
 
+
+
+          {/* Mesh Complexity for mesh gradients */}
+          {selectedFormat === "mesh" && (
+            <div className="space-y-2">
+              <Label>Mesh Complexity: {meshComplexity[0]}</Label>
+              <Slider
+                value={meshComplexity}
+                onValueChange={setMeshComplexity}
+                max={10}
+                min={1}
+                step={1}
+                className="w-full"
+              />
+            </div>
+          )}
+
           {/* Preview Info */}
           <div className="rounded-lg bg-muted p-3 text-sm">
-            <div className="mb-1 font-medium">Export Preview</div>
             <div className="text-muted-foreground">
-              Format: {selectedFormat.toUpperCase()} • Size:{" "}
-              {getCurrentSize().width} × {getCurrentSize().height}px
+              Format: {selectedFormat.toUpperCase()}
+              {!["css", "ios", "less", "scss", "figma", "sketch"].includes(selectedFormat) &&
+                ` • Size: ${getCurrentSize().width} × ${getCurrentSize().height}px`}
               {(selectedFormat === "jpg" || selectedFormat === "webp") &&
                 ` • Quality: ${quality[0]}%`}
+              {!["json", "figma", "sketch"].includes(selectedFormat) &&
+                ` • Angle: ${angle[0]}°`}
+              {selectedFormat === "mesh" &&
+                ` • Complexity: ${meshComplexity[0]}`}
             </div>
           </div>
         </div>

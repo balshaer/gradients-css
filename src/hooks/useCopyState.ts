@@ -7,6 +7,9 @@ export const useCopyState = () => {
     css: false,
     sass: false,
     bootstrap: false,
+    xml: false,
+    svg: false,
+    json: false,
     colors: false,
   });
 
@@ -26,6 +29,9 @@ export const useCopyState = () => {
         css: false,
         sass: false,
         bootstrap: false,
+        xml: false,
+        svg: false,
+        json: false,
         colors: false,
       });
     }, 2000);

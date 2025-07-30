@@ -38,7 +38,6 @@ body {
   --card: #1e1e1e;
   --card-foreground: #ffffff;
 
-  --border: #333333;
   --input: #333333;
 
   --primary: #ffffff;
@@ -80,8 +79,11 @@ body {
 
   --link: #3291ff;
   --link-hover: #0070f3;
+  --button: #3291ff;
+  --button-border: #ffffff2f;
 
-  --grid-color: rgba(139,92,246,0.025); /* Light purple for grid */
+  --grid-color: rgba(139, 92, 246, 0.025);
+  /* Light purple for grid */
 }
 
 ::selection {
@@ -108,6 +110,7 @@ body {
 .test3 {
   @apply border-2 border-black bg-blue-300 text-black;
 }
+
 .test4 {
   @apply border-2 border-black bg-yellow-300 text-black;
 }

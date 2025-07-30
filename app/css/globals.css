@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;700&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -60,6 +63,32 @@
 
   .span-title {
     @apply w-max opacity-0 blur-[4px];
+  }
+
+  /* Gradient Animation Keyframes */
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 100% 50%; }
+    50% { background-position: 100% 100%; }
+    75% { background-position: 0% 100%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Gradient Animation Utilities */
+  .animate-gradient-slow {
+    animation: gradientShift 8s ease infinite;
+  }
+
+  .animate-gradient-normal {
+    animation: gradientShift 4s ease infinite;
+  }
+
+  .animate-gradient-fast {
+    animation: gradientShift 2s ease infinite;
+  }
+
+  .animate-gradient-very-fast {
+    animation: gradientShift 1.33s ease infinite;
   }
 
   .link {
@@ -217,4 +246,16 @@ p {
 
 .nohover {
   @apply hover:border-none hover:outline-none;
+}
+
+@layer base {
+  *, ::after, ::before {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+
+.codefont{
+    font-family: 'Google Sans Code', monospace;
+
 }

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useMemo } from "react";
-import axios from "axios";
-import { ArrowRightIcon, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -13,17 +12,18 @@ import {
 import { TooltipProvider } from "@/components/ui/tooltip";
 import GradientGrid from "@/components/sections/GradientGrid";
 import Pagination from "@/components/layouts/Pagination";
-import { cn } from "@/lib/utils";
 import Footer from "@/components/layouts/Footer";
-import AnimatedShinyText from "@/components/ui/animated-shiny-text";
-import HeroUsers from "@/components/layouts/HeroUsers";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { ColorFilter } from "@/components/controls/ColorFilter";
+import { colorUtils } from "@/utils/colorUtils";
+import gradientsData from "@/data/gradients.json";
 
 // --- Types ---
 interface Gradient {
-  name: string;
-  colors: string[];
-  colorsname: string[];
-  keywords: string[][];
+  name?: string;                // allow possibly undefined!
+  colors?: string[];
+  colorsname?: string[];
+  keywords?: string[][];
 }
 
 // --- Custom Hooks ---
@@ -33,26 +33,19 @@ function useGradients() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let cancelled = false;
-    const fetchGradients = async () => {
+    const loadGradients = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await axios.get<Gradient[]>(
-          "https://gist.githubusercontent.com/balshaer/69d1f26f366d2dcf2d58d6d644f0aff4/raw/6350bd8c935e9d9f937ec95cd250f819bfc57afc/data.json"
-        );
-        if (!cancelled) setGradients(response.data);
+        // Use the imported local data
+        setGradients(gradientsData as Gradient[]);
       } catch (err) {
-        if (!cancelled)
-          setError(err instanceof Error ? err.message : "Failed to fetch gradients");
+        setError(err instanceof Error ? err.message : "Failed to load gradients");
       } finally {
-        if (!cancelled) setIsLoading(false);
+        setIsLoading(false);
       }
     };
-    fetchGradients();
-    return () => {
-      cancelled = true;
-    };
+    loadGradients();
   }, []);
 
   return { gradients, isLoading, error };
@@ -97,36 +90,73 @@ const GradientGallery: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("all");
   const [background, setBackground] = useState("");
-  const selectedColors: string[] = []; // Placeholder for future color filter
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
 
   const gradientsPerPage = 9;
 
   const { gradients, isLoading, error } = useGradients();
   const { favorites, toggleFavorite } = useFavorites();
 
+  // Get available colors for filtering (simplified)
+  const availableColors = useMemo(() => {
+    return colorUtils.getSimplifiedColors(gradients);
+  }, [gradients]);
+
+
+
   // --- Filtering Logic ---
   const filteredGradients = useMemo(() => {
     if (!gradients.length) return [];
+    const debouncedLower = debouncedSearch.toLowerCase();
+
     return gradients.filter((gradient) => {
+      // Defensive fallback for missing data!
+      const name = gradient.name ?? "";
+      const colorsname = gradient.colorsname ?? [];
+      const keywords = gradient.keywords ?? [];
+
+      // Search match
       const matchesSearch =
         !debouncedSearch ||
-        gradient.colorsname.some((color) =>
-          color.toLowerCase().includes(debouncedSearch.toLowerCase())
+        name.toLowerCase().includes(debouncedLower) ||
+        colorsname.some((color) =>
+          (color ?? "").toLowerCase().includes(debouncedLower)
         ) ||
-        gradient.keywords.some((kwList) =>
-          kwList.some((kw) =>
-            kw.toLowerCase().includes(debouncedSearch.toLowerCase())
+        keywords.some((kwList) =>
+          (kwList ?? []).some((kw) =>
+            (kw ?? "").toLowerCase().includes(debouncedLower)
           )
         );
+
+      // Favorites match
       const matchesFavorites =
         filter === "all" ||
-        (filter === "favorites" && favorites.includes(gradient.name));
+        (filter === "favorites" && favorites.includes(name));
+
+      // Color match
       const matchesColors =
         selectedColors.length === 0 ||
         selectedColors.some((selectedColor) =>
-          gradient.colorsname.some((gradientColor) =>
-            gradientColor.toLowerCase().includes(selectedColor.toLowerCase())
-          )
+          colorsname.some((gradientColor) => {
+            const lowerGradientColor = (gradientColor ?? "").toLowerCase();
+            const lowerSelectedColor = (selectedColor ?? "").toLowerCase();
+
+            if (lowerSelectedColor === "red" && lowerGradientColor.includes("red")) return true;
+            if (lowerSelectedColor === "pink" && lowerGradientColor.includes("pink")) return true;
+            if (lowerSelectedColor === "orange" && lowerGradientColor.includes("orange")) return true;
+            if (lowerSelectedColor === "yellow" && lowerGradientColor.includes("yellow")) return true;
+            if (lowerSelectedColor === "green" && lowerGradientColor.includes("green")) return true;
+            if (lowerSelectedColor === "blue" && lowerGradientColor.includes("blue")) return true;
+            if (lowerSelectedColor === "purple" && (lowerGradientColor.includes("purple") || lowerGradientColor.includes("violet"))) return true;
+            if (lowerSelectedColor === "brown" && (lowerGradientColor.includes("brown") || lowerGradientColor.includes("beige"))) return true;
+            if (lowerSelectedColor === "black" && lowerGradientColor.includes("black")) return true;
+            if (lowerSelectedColor === "white" && lowerGradientColor.includes("white")) return true;
+            if (lowerSelectedColor === "gray" && (lowerGradientColor.includes("gray") || lowerGradientColor.includes("grey"))) return true;
+            if (lowerSelectedColor === "teal" && lowerGradientColor.includes("teal")) return true;
+            if (lowerSelectedColor === "cyan" && lowerGradientColor.includes("cyan")) return true;
+
+            return false;
+          })
         );
       return matchesSearch && matchesFavorites && matchesColors;
     });
@@ -135,7 +165,14 @@ const GradientGallery: React.FC = () => {
   const totalPages = Math.ceil(filteredGradients.length / gradientsPerPage);
   const currentGradients = useMemo(() => {
     const start = (currentPage - 1) * gradientsPerPage;
-    return filteredGradients.slice(start, start + gradientsPerPage);
+    return filteredGradients
+      .slice(start, start + gradientsPerPage)
+      .filter((gradient): gradient is { name: string; colors: string[] } =>
+        gradient.name !== undefined &&
+        gradient.colors !== undefined &&
+        gradient.name.length > 0 &&
+        gradient.colors.length > 0
+      );
   }, [currentPage, filteredGradients, gradientsPerPage]);
 
   // --- Handlers ---
@@ -148,48 +185,14 @@ const GradientGallery: React.FC = () => {
     <TooltipProvider>
       <div className="container relative" style={{ background }}>
         <div className="mx-auto max-w-6xl space-y-2 pt-12">
-          <header className="relative mx-auto max-w-6xl space-y-2 pt-12">
-            <a
-              href="https://github.com/balshaer/gradients-css"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="flex w-full items-center justify-center">
-                <div
-                  className={cn(
-                    "group rounded-full border border-border bg-card text-base text-[var(--muted)] transition-all ease-in hover:cursor-pointer dark:border-white/5 dark:bg-neutral-900 dark:hover:bg-neutral-800"
-                  )}
-                >
-                  <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 text-primary transition ease-out hover:duration-300 max-md:text-xs">
-                    <span>✨ Contribute to The Project</span>
-                    <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
-                  </AnimatedShinyText>
-                </div>
-              </div>
-            </a>
-            <h1 className="pt-6 text-center text-3xl font-medium text-primary dark:text-gray-50 sm:text-6xl">
-              Collection of modern,
-              <span className="relative ps-1">
-                Gradients
-                <img
-                  className="absolute bottom-[-10px] left-0 right-0"
-                  src="https://uploads-ssl.webflow.com/618ce467f09b34ebf2fdf6be/62779adeac94b82ea2fe08ec_Underline%202.svg"
-                  alt=""
-                />
-              </span>
-            </h1>
-            <p className="m-auto mt-[-120px] max-w-2xl py-0 pb-0 pt-3 text-center text-lg leading-6 text-muted-foreground dark:text-gray-200">
-              Ready-to-use, simply copy and paste into your next project. All
-              gradients crafted with CSS and Tailwind CSS for easy integration.
-            </p>
-            <div className="flex w-full items-center justify-center pb-6">
-              <HeroUsers />
-            </div>
-          </header>
+          <HeroSection />
 
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 sm:flex-row">
+
+              
               <div className="relative w-full" id="input">
+
                 <Input
                   placeholder="Search by color name or keyword..."
                   className="hover:border-brand-500-secondary invalid:border-error-500 invalid:focus:border-error-500 text-placeholder peer block h-full w-full appearance-none overflow-hidden overflow-ellipsis text-nowrap rounded-md border border-border bg-input px-3 py-2 pr-[48px] text-sm outline-none focus:border-none focus:shadow-none focus:outline-none"
@@ -203,6 +206,20 @@ const GradientGallery: React.FC = () => {
                 />
                 <SearchIcon className="absolute bottom-0 right-2 top-0 m-auto h-5 w-5 text-primary" />
               </div>
+
+
+              <div className=" ">
+
+                  <ColorFilter
+                availableColors={availableColors}
+                selectedColors={selectedColors}
+                onColorChange={(colors) => {
+                  setSelectedColors(colors);
+                  setCurrentPage(1);
+                }}
+              />
+              </div>
+
               <Select
                 value={filter}
                 onValueChange={(value) => {
@@ -218,7 +235,12 @@ const GradientGallery: React.FC = () => {
                   <SelectItem value="favorites">Favorites</SelectItem>
                 </SelectContent>
               </Select>
+
+
+              
             </div>
+
+     
             {(selectedColors.length > 0 || searchTerm || filter !== "all") && (
               <div className="text-sm text-muted-foreground">
                 Showing {filteredGradients.length} gradient

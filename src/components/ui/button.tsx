@@ -11,13 +11,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "h-full gap-1 flex bg-[var(--button)] max-md:h-12 capitalize font-bold items-center hover:shadow-xl justify-center rounded-full cursor-pointer px-6 py-3 transition duration-100 transform bg-[var(--button)] border-2 border-[var(--button-border)] text-[var(--button-text)] hoverd hover:bg-[var(--button-hover)] hover:text-[var(--button-text-hover)]",
+          "h-full gap-1 flex bg-[var(--link)] max-md:h-12 capitalize font-bold items-center hover:shadow-xl justify-center rounded-lg cursor-pointer px-6 py-3 transition duration-100 transform bg-[var(--button)] border-2 border-[var(--button-border)] text-[var(--button-text)] hoverd hover:bg-[var(--button-hover)] hover:text-[var(--button-text-hover)]",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "h-full gap-1 flex max-md:h-12 capitalize font-bold items-center justify-center  bg-transparent rounded-full cursor-pointer px-6 py-3 transition duration-100 transform border-[var(--button)] border-2 border-[var(--button-border)] text-[var(--outline-button-text)] hoverd hover:bg-[var(--button-hover)] hover:text-[var(--button-text-hover)]",
+          "h-full gap-1 flex max-md:h-12 capitalize font-bold items-center justify-center  bg-transparent rounded-lg cursor-pointer px-6 py-3 transition duration-100 transform border-[var(--button)] border-2 border-[var(--button-border)] text-[var(--outline-button-text)] hoverd hover:bg-[var(--button-hover)] hover:text-[var(--button-text-hover)]",
         secondary:
-          "h-full gap-1 flex max-md:h-12 capitalize font-bold items-center justify-center rounded-full cursor-pointer px-6 py-3 transition duration-100 transform bg-[var(--button)] border-2 border-[var(--button-border)] text-[var(--button-text)] hoverd hover:bg-[var(--button-hover)] hover:text-[var(--button-text-hover)]",
+          "h-full gap-1 flex max-md:h-12 capitalize font-bold items-center justify-center rounded-lg cursor-pointer px-6 py-3 transition duration-100 transform bg-[var(--button)] border-2 border-[var(--button-border)] text-[var(--button-text)] hoverd hover:bg-[var(--button-hover)] hover:text-[var(--button-text-hover)]",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         active:
