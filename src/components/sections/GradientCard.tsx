@@ -1,5 +1,3 @@
-// @TODO : Make a new feat allow users copy code as animation
-
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
@@ -31,7 +29,7 @@ export default function GradientCard({
     gradientType,
     setGradientType,
   } = useColorFormat();
-  const { copiedStates, copyToClipboard } = useCopyState();
+  const { copiedStates, copyToClipboard } = useCopyState(gradient.name, gradient.colors);
 
   const colorFormats = ["HEX", "RGB", "HSL"];
 

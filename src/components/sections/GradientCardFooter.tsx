@@ -2,6 +2,7 @@ import { ColorSwatches } from "../controls/ColorSwatches";
 import { AngleSlider } from "../controls/AngleSlider";
 import { GradientControls } from "./GradientControls";
 import { CopyCodeSection } from "./CopyCodeSection";
+import { ColorPalette } from "./ColorPalette";
 import { AnimatedCheckbox } from "../controls/AnimatedCheckbox";
 import { AnimationSpeedControl } from "../controls/AnimationSpeedControl";
 
@@ -82,6 +83,9 @@ export const GradientCardFooter: React.FC<GradientCardFooterProps> = ({
         disabled={!isAnimated}
       />
     </div>
+
+    {/* Color Palette */}
+    <ColorPalette colors={gradient.colors} gradientName={gradient.name} />
 
     {/* Copy Code Section */}
     <CopyCodeSection
