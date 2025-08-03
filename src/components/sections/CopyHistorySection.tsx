@@ -70,13 +70,13 @@ export function CopyHistorySection({ onGradientSelect }: CopyHistorySectionProps
         align="end" 
         className="w-80 max-h-96 overflow-y-auto"
       >
-        <div className="px-2 py-1.5 text-sm font-medium text-muted-foreground">
+        <div className="px-2 py-1.5 text-sm font-medium text-white">
           Recent Copies
         </div>
         <DropdownMenuSeparator />
         
         {recentCopies.length === 0 ? (
-          <div className="px-2 py-4 text-sm text-muted-foreground text-center">
+          <div className="px-2 py-4 text-sm text-white/70 text-center">
             No recent copies
           </div>
         ) : (
@@ -107,7 +107,7 @@ export function CopyHistorySection({ onGradientSelect }: CopyHistorySectionProps
                   <Copy className="h-3 w-3" />
                 </Button>
               </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground w-full">
+              <div className="flex items-center gap-2 text-xs text-white/70 w-full">
                 <span className="capitalize">{item.copyType}</span>
                 <span>•</span>
                 <span>{formatTimestamp(item.timestamp)}</span>
@@ -122,7 +122,7 @@ export function CopyHistorySection({ onGradientSelect }: CopyHistorySectionProps
                   />
                 ))}
                 {item.colors.length > 4 && (
-                  <div className="w-3 h-3 rounded-full border border-border bg-muted flex items-center justify-center text-[8px] text-muted-foreground">
+                  <div className="w-3 h-3 rounded-full border border-border bg-muted flex items-center justify-center text-[8px] text-white/90">
                     +{item.colors.length - 4}
                   </div>
                 )}

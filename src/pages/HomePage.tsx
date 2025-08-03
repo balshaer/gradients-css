@@ -372,7 +372,7 @@ const GradientGallery: React.FC = () => {
 
      
             {(selectedColors.length > 0 || searchTerm || filter !== "all") && (
-              <div className="text-muted-foreground text-sm">
+              <div className="text-foreground/70 text-sm">
                 Showing {filteredGradients.length} gradient
                 {filteredGradients.length !== 1 ? "s" : ""}
                 {selectedColors.length > 0 && (

@@ -50,7 +50,7 @@ export function ColorPalette({ colors }: ColorPaletteProps) {
   return (
     <div className="space-y-3">
       <div className="flex justify-between items-center">
-        <h4 className="flex items-center gap-2 font-medium text-sm">
+        <h4 className="flex items-center gap-2 font-medium text-sm text-white">
           <Palette className="w-4 h-4" />
           Color Palette ({palette.length} colors)
         </h4>
@@ -58,7 +58,7 @@ export function ColorPalette({ colors }: ColorPaletteProps) {
           variant="ghost"
           size="sm"
           onClick={() => setIsExpanded(!isExpanded)}
-          className="p-0 w-6 h-6"
+          className="p-0 w-6 h-6 text-white hover:bg-white/10 flex items-center justify-center"
         >
           {isExpanded ? (
             <ChevronUp className="w-4 h-4" />
@@ -97,7 +97,7 @@ export function ColorPalette({ colors }: ColorPaletteProps) {
                 size="sm"
                 variant="outline"
                 onClick={() => copyAllColors("hex")}
-                className="h-7 text-xs"
+                className="h-7 text-xs text-white border-white/30 hover:bg-white/10"
               >
                 Copy HEX
               </Button>
@@ -105,7 +105,7 @@ export function ColorPalette({ colors }: ColorPaletteProps) {
                 size="sm"
                 variant="outline"
                 onClick={() => copyAllColors("rgb")}
-                className="h-7 text-xs"
+                className="h-7 text-xs text-white border-white/30 hover:bg-white/10"
               >
                 Copy RGB
               </Button>
@@ -113,7 +113,7 @@ export function ColorPalette({ colors }: ColorPaletteProps) {
                 size="sm"
                 variant="outline"
                 onClick={() => copyAllColors("hsl")}
-                className="h-7 text-xs"
+                className="h-7 text-xs text-white border-white/30 hover:bg-white/10"
               >
                 Copy HSL
               </Button>
@@ -131,30 +131,30 @@ export function ColorPalette({ colors }: ColorPaletteProps) {
                     style={{ backgroundColor: colorInfo.hex }}
                   />
                   <div className="flex-1 min-w-0">
-                    <div className="flex gap-4 text-muted-foreground text-xs">
+                    <div className="flex gap-4 text-white/90 text-xs">
                       <button
                         onClick={() => copyColor(colorInfo.hex)}
-                        className="font-mono hover:text-foreground transition-colors"
+                        className="font-mono hover:text-white transition-colors"
                         title="Click to copy HEX"
                       >
                         {colorInfo.hex}
                       </button>
                       <button
                         onClick={() => copyColor(colorInfo.rgb)}
-                        className="font-mono hover:text-foreground transition-colors"
+                        className="font-mono hover:text-white transition-colors"
                         title="Click to copy RGB"
                       >
                         {colorInfo.rgb}
                       </button>
                       <button
                         onClick={() => copyColor(colorInfo.hsl)}
-                        className="font-mono hover:text-foreground transition-colors"
+                        className="font-mono hover:text-white transition-colors"
                         title="Click to copy HSL"
                       >
                         {colorInfo.hsl}
                       </button>
                     </div>
-                    <div className="mt-1 text-muted-foreground text-xs">
+                    <div className="mt-1 text-white/70 text-xs">
                       <span>H: {colorInfo.hue}°</span>
                       <span className="ml-3">S: {colorInfo.saturation}%</span>
                       <span className="ml-3">L: {colorInfo.lightness}%</span>
@@ -170,14 +170,14 @@ export function ColorPalette({ colors }: ColorPaletteProps) {
             {/* Complementary colors */}
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <h5 className="font-medium text-muted-foreground text-xs">
+                <h5 className="font-medium text-white/90 text-xs">
                   Complementary Colors
                 </h5>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowComplementary(!showComplementary)}
-                  className="p-1 h-5 text-xs"
+                  className="p-1 h-5 text-xs text-white/90 hover:text-white hover:bg-white/10"
                 >
                   {showComplementary ? "Hide" : "Show"}
                 </Button>

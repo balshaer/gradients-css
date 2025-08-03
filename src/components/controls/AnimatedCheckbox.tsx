@@ -40,7 +40,7 @@ export const AnimatedCheckbox: React.FC<AnimatedCheckboxProps> = ({
       </motion.button>
       
       <motion.div
-        className="flex items-center gap-1 text-sm text-muted-foreground"
+        className="flex items-center gap-1 text-sm text-white/90"
         whileHover={{ scale: 1.02 }}
       >
         <Play className="h-3 w-3" />

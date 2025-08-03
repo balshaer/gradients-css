@@ -106,7 +106,7 @@ export function GradientCreator({ onSave }: GradientCreatorProps) {
   return (
     <div className="w-full max-w-2xl mx-auto border rounded-lg p-6 bg-card">
       <div className="mb-6">
-        <h3 className="text-xl font-semibold flex items-center gap-2">
+        <h3 className="text-xl font-semibold flex items-center gap-2 text-white">
           <Palette className="h-5 w-5" />
           Gradient Creator
         </h3>

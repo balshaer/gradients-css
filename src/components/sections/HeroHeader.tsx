@@ -46,7 +46,7 @@ export const HeroHeader: React.FC = () => (
     </h1>
 
     {/* Subtitle */}
-    <p className="mx-auto max-w-[600px] text-center text-muted-foreground">
+    <p className="mx-auto max-w-[600px] text-center text-white/80">
       Discover beautiful CSS gradients for your next project. Copy, export, and use them anywhere.
     </p>
   </div>
