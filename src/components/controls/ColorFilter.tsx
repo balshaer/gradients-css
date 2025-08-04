@@ -14,12 +14,14 @@ interface ColorFilterProps {
   availableColors: string[];
   selectedColors: string[];
   onColorChange: (colors: string[]) => void;
+  className?: string;
 }
 
 export function ColorFilter({
   availableColors,
   selectedColors,
   onColorChange,
+  className,
 }: ColorFilterProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -44,22 +46,34 @@ export function ColorFilter({
     let colorValue = "#cbd5e1"; // default grey (tailwind slate-400)
     if (lowerColor.includes("red")) colorValue = "#ef4444";
     else if (lowerColor.includes("pink")) colorValue = "#ec4899";
-    else if (lowerColor.includes("orange") || lowerColor.includes("peach")) colorValue = "#f97316";
+    else if (lowerColor.includes("orange") || lowerColor.includes("peach"))
+      colorValue = "#f97316";
     else if (lowerColor.includes("yellow")) colorValue = "#eab308";
-    else if (lowerColor.includes("green") || lowerColor.includes("olive")) colorValue = "#22c55e";
-    else if (lowerColor.includes("teal") || lowerColor.includes("cyan")) colorValue = "#14b8a6";
-    else if (lowerColor.includes("blue") || lowerColor.includes("indigo")) colorValue = "#3b82f6";
-    else if (lowerColor.includes("purple") || lowerColor.includes("violet") || lowerColor.includes("magenta")) colorValue = "#a21caf";
-    else if (lowerColor.includes("brown") || lowerColor.includes("beige")) colorValue = "#b45309";
-    else if (lowerColor.includes("gray") || lowerColor.includes("grey")) colorValue = "#6b7280";
+    else if (lowerColor.includes("green") || lowerColor.includes("olive"))
+      colorValue = "#22c55e";
+    else if (lowerColor.includes("teal") || lowerColor.includes("cyan"))
+      colorValue = "#14b8a6";
+    else if (lowerColor.includes("blue") || lowerColor.includes("indigo"))
+      colorValue = "#3b82f6";
+    else if (
+      lowerColor.includes("purple") ||
+      lowerColor.includes("violet") ||
+      lowerColor.includes("magenta")
+    )
+      colorValue = "#a21caf";
+    else if (lowerColor.includes("brown") || lowerColor.includes("beige"))
+      colorValue = "#b45309";
+    else if (lowerColor.includes("gray") || lowerColor.includes("grey"))
+      colorValue = "#6b7280";
     else if (lowerColor.includes("black")) colorValue = "#000";
     else if (lowerColor.includes("white")) colorValue = "#fff";
     // For white, use --border as border color
     return (
-      <FaCircle 
+      <FaCircle
         style={{
           color: colorValue,
-          border: lowerColor === "white" ? "1px solid var(--border)" : undefined,
+          border:
+            lowerColor === "white" ? "1px solid var(--border)" : undefined,
           borderRadius: "50%", // Ensures circle stays circle with border
           fontSize: "1.1rem",
         }}
@@ -76,7 +90,7 @@ export function ColorFilter({
           "flex cursor-pointer items-center justify-between gap-2 px-3 py-2",
           isSelected && "bg-accent",
         )}
-        onSelect={e => {
+        onSelect={(e) => {
           e.preventDefault();
           handleColorToggle(color);
         }}
@@ -91,7 +105,7 @@ export function ColorFilter({
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={cn("flex w-full flex-col gap-2", className)}>
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
           <Button
@@ -101,7 +115,7 @@ export function ColorFilter({
             <div className="flex items-center gap-2">
               {selectedColors.length > 0 && selectedColors.length <= 3 && (
                 <div className="flex gap-1">
-                  {selectedColors.slice(0, 3).map(color => (
+                  {selectedColors.slice(0, 3).map((color) => (
                     <div key={color} className="scale-75">
                       {getColorIcon(color)}
                     </div>
@@ -118,7 +132,7 @@ export function ColorFilter({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="max-h-96 w-64 overflow-y-auto">
-          <div className="flex items-center justify-between border-[var(--border)] border-b p-2">
+          <div className="flex items-center justify-between border-b border-[var(--border)] p-2">
             <Button
               variant="ghost"
               size="sm"
@@ -139,8 +153,6 @@ export function ColorFilter({
           {availableColors.map(renderColorItem)}
         </DropdownMenuContent>
       </DropdownMenu>
-
-
     </div>
   );
 }

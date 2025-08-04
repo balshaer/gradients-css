@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import { SearchIcon, Plus } from "lucide-react";
+import { SearchIcon, Plus, Shuffle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +24,7 @@ import gradientsData from "@/data/gradients.json";
 
 // --- Types ---
 interface Gradient {
-  name?: string;                // allow possibly undefined!
+  name?: string; // allow possibly undefined!
   colors?: string[];
   colorsname?: string[];
   keywords?: string[][];
@@ -44,7 +44,9 @@ function useGradients() {
         // Use the imported local data
         setGradients(gradientsData as Gradient[]);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load gradients");
+        setError(
+          err instanceof Error ? err.message : "Failed to load gradients",
+        );
       } finally {
         setIsLoading(false);
       }
@@ -69,7 +71,7 @@ function useFavorites() {
 
   const toggleFavorite = (name: string) => {
     setFavorites((prev) =>
-      prev.includes(name) ? prev.filter((f) => f !== name) : [...prev, name]
+      prev.includes(name) ? prev.filter((f) => f !== name) : [...prev, name],
     );
   };
 
@@ -99,7 +101,6 @@ const GradientGallery: React.FC = () => {
   const [displayedCount, setDisplayedCount] = useState(12);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const observerRef = useRef<HTMLDivElement>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const gradientsPerLoad = 12;
 
@@ -115,37 +116,38 @@ const GradientGallery: React.FC = () => {
   const favoritesSet = useMemo(() => new Set(favorites), [favorites]);
 
   // Cache lowercase selected colors for better performance
-  const selectedColorsLower = useMemo(() => 
-    selectedColors.map(color => color.toLowerCase()), 
-    [selectedColors]
+  const selectedColorsLower = useMemo(
+    () => selectedColors.map((color) => color.toLowerCase()),
+    [selectedColors],
   );
 
-
-
   // Optimized color matching map for better performance
-  const colorMatches = useMemo(() => ({
-    red: ['red'],
-    pink: ['pink'],
-    orange: ['orange'],
-    yellow: ['yellow'],
-    green: ['green'],
-    blue: ['blue'],
-    purple: ['purple', 'violet'],
-    brown: ['brown', 'beige'],
-    black: ['black'],
-    white: ['white'],
-    gray: ['gray', 'grey'],
-    teal: ['teal'],
-    cyan: ['cyan']
-  }), []);
+  const colorMatches = useMemo(
+    () => ({
+      red: ["red"],
+      pink: ["pink"],
+      orange: ["orange"],
+      yellow: ["yellow"],
+      green: ["green"],
+      blue: ["blue"],
+      purple: ["purple", "violet"],
+      brown: ["brown", "beige"],
+      black: ["black"],
+      white: ["white"],
+      gray: ["gray", "grey"],
+      teal: ["teal"],
+      cyan: ["cyan"],
+    }),
+    [],
+  );
 
   // --- Filtering and Sorting Logic ---
   const filteredGradients = useMemo(() => {
     if (!gradients.length) return [];
-    
+
     // Early returns for performance
     if (filter === "favorites" && favorites.length === 0) return [];
-    
+
     const debouncedLower = debouncedSearch.toLowerCase();
     const hasSearch = Boolean(debouncedSearch);
     const hasColorFilter = selectedColors.length > 0;
@@ -167,15 +169,15 @@ const GradientGallery: React.FC = () => {
           // Found in name, skip checking colors and keywords
         } else {
           const colorMatch = colorsname.some((color) =>
-            (color ?? "").toLowerCase().includes(debouncedLower)
+            (color ?? "").toLowerCase().includes(debouncedLower),
           );
           if (colorMatch) {
             // Found in colors, skip checking keywords
           } else {
             const keywordMatch = keywords.some((kwList) =>
               (kwList ?? []).some((kw) =>
-                (kw ?? "").toLowerCase().includes(debouncedLower)
-              )
+                (kw ?? "").toLowerCase().includes(debouncedLower),
+              ),
             );
             if (!keywordMatch) return false;
           }
@@ -185,11 +187,15 @@ const GradientGallery: React.FC = () => {
       // Color match (optimized with cached lowercase and map lookup)
       if (hasColorFilter) {
         const matchesColors = selectedColorsLower.some((lowerSelectedColor) => {
-          const searchTerms = colorMatches[lowerSelectedColor] ?? [lowerSelectedColor];
-          
+          const searchTerms = colorMatches[lowerSelectedColor] ?? [
+            lowerSelectedColor,
+          ];
+
           return colorsname.some((gradientColor) => {
             const lowerGradientColor = (gradientColor ?? "").toLowerCase();
-            return searchTerms.some(term => lowerGradientColor.includes(term));
+            return searchTerms.some((term: string) =>
+              lowerGradientColor.includes(term),
+            );
           });
         });
         if (!matchesColors) return false;
@@ -200,7 +206,17 @@ const GradientGallery: React.FC = () => {
 
     // Then, sort the filtered gradients
     return colorUtils.sortGradients(filtered, sortBy, favorites);
-  }, [debouncedSearch, gradients, favorites, filter, selectedColors, sortBy, colorMatches, favoritesSet, selectedColorsLower]);
+  }, [
+    debouncedSearch,
+    gradients,
+    favorites,
+    filter,
+    selectedColors,
+    sortBy,
+    colorMatches,
+    favoritesSet,
+    selectedColorsLower,
+  ]);
 
   const currentGradients = useMemo(() => {
     // Pre-filter valid gradients for better performance
@@ -209,7 +225,7 @@ const GradientGallery: React.FC = () => {
         gradient.name !== undefined &&
         gradient.colors !== undefined &&
         gradient.name.length > 0 &&
-        gradient.colors.length > 0
+        gradient.colors.length > 0,
     );
     
     return validGradients.slice(0, displayedCount);
@@ -265,10 +281,7 @@ const GradientGallery: React.FC = () => {
 
   const handleRandomGradient = () => {
     if (filteredGradients.length === 0) return;
-    
-    const randomIndex = Math.floor(Math.random() * filteredGradients.length);
-    const randomGradient = filteredGradients[randomIndex];
-    
+
     // Clear search and filters to show all gradients
     setSearchTerm("");
     setFilter("all");
@@ -286,18 +299,23 @@ const GradientGallery: React.FC = () => {
     setDisplayedCount(gradientsPerLoad);
   };
 
-  const handleSaveGradient = (newGradient: { name: string; colors: string[] }) => {
+  const handleSaveGradient = (newGradient: {
+    name: string;
+    colors: string[];
+  }) => {
     // Note: In a real app, this would save to a backend or extend the local data
     // For now, we'll just close the creator and show a success message
     setIsCreatorOpen(false);
-    
+
     // Optionally, you could add the gradient to local storage for user-created gradients
-    const userGradients = JSON.parse(localStorage.getItem("userGradients") || "[]");
+    const userGradients = JSON.parse(
+      localStorage.getItem("userGradients") || "[]",
+    );
     userGradients.push({
       ...newGradient,
       id: Date.now().toString(),
       createdAt: new Date().toISOString(),
-      isUserCreated: true
+      isUserCreated: true,
     });
     localStorage.setItem("userGradients", JSON.stringify(userGradients));
   };
@@ -305,8 +323,8 @@ const GradientGallery: React.FC = () => {
   // --- Render ---
   return (
     <TooltipProvider>
-      <div className="relative container" style={{ background }}>
-        <div className="space-y-2 mx-auto pt-12 max-w-6xl">
+      <div className="container relative" style={{ background }}>
+        <div className="mx-auto max-w-6xl space-y-2 pt-12">
           <HeroSection />
 
           <div className="flex flex-col gap-8">
@@ -393,10 +411,21 @@ const GradientGallery: React.FC = () => {
                   </Dialog>
                 </div>
               </div>
+
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleRandomGradient}
+                  variant="outline"
+                  className="flex items-center gap-2 whitespace-nowrap hover:scale-105 transition-all duration-300"
+                  disabled={filteredGradients.length === 0}
+                >
+                  <Shuffle className="h-4 w-4" />
+                  Surprise Me
+                </Button>
+              </div>
               
             </div>
 
-     
             {(selectedColors.length > 0 || searchTerm || filter !== "all") && (
               <div className="text-foreground/70 text-sm">
                 Showing {filteredGradients.length} gradient
@@ -409,11 +438,13 @@ const GradientGallery: React.FC = () => {
           </div>
 
           {error && (
-            <div className="flex flex-col justify-center items-center py-12 text-center">
-              <p className="mb-4 text-red-500">Error loading gradients: {error}</p>
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <p className="mb-4 text-red-500">
+                Error loading gradients: {error}
+              </p>
               <button
                 onClick={() => window.location.reload()}
-                className="bg-primary hover:bg-primary/90 px-4 py-2 rounded-md text-primary-foreground"
+                className="hover:bg-primary/90 rounded-md bg-primary px-4 py-2 text-primary-foreground"
               >
                 Retry
               </button>
