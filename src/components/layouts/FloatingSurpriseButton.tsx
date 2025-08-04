@@ -1,23 +1,30 @@
 import { motion } from "framer-motion";
-import { Shuffle } from "lucide-react";
+import { Grid3X3 } from "lucide-react";
 
 interface FloatingSurpriseButtonProps {
   onClick: () => void;
   disabled?: boolean;
+  isActive?: boolean;
+  tooltip?: string;
 }
 
 const buttonVariants = {
   initial: { scale: 1, rotate: 0 },
-  animate: { scale: 1.05, rotate: 5 },
+  animate: { scale: 1.05, rotate: 3 },
   exit: { scale: 1, rotate: 0 }
 };
 
-export function FloatingSurpriseButton({ onClick, disabled = false }: FloatingSurpriseButtonProps) {
+export function FloatingSurpriseButton({ 
+  onClick, 
+  disabled = false, 
+  isActive = false,
+  tooltip = "Mood Board - Random Selection"
+}: FloatingSurpriseButtonProps) {
   return (
     <motion.button
       type="button"
-      title="Surprise Me - Random Gradient"
-      aria-label="Get Random Gradient"
+      title={tooltip}
+      aria-label="Generate Mood Board"
       onClick={onClick}
       disabled={disabled}
       tabIndex={0}
@@ -30,7 +37,10 @@ export function FloatingSurpriseButton({ onClick, disabled = false }: FloatingSu
         flex items-center justify-center
         w-14 h-14 max-md:w-12 max-md:h-12
         rounded-full shadow-xl border border-border
-        bg-primary text-primary-foreground
+        ${isActive 
+          ? 'bg-gradient-to-r from-pink-500 to-violet-500 text-white' 
+          : 'bg-primary text-primary-foreground'
+        }
         hover:bg-primary/90 hover:shadow-2xl
         focus-visible:ring-4 focus-visible:ring-primary/30
         transition-all duration-300 outline-none
@@ -39,11 +49,11 @@ export function FloatingSurpriseButton({ onClick, disabled = false }: FloatingSu
       `}
     >
       <motion.div
-        animate={{ rotate: disabled ? 0 : 360 }}
-        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        animate={{ scale: disabled ? 1 : [1, 1.1, 1] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         className="flex items-center justify-center"
       >
-        <Shuffle 
+        <Grid3X3 
           className="w-6 h-6 max-md:w-5 max-md:h-5 group-hover:scale-110 transition-transform duration-200" 
           aria-hidden="true" 
         />

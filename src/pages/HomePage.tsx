@@ -1,8 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import { SearchIcon, Plus, Shuffle } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { ColorFilter } from "@/components/controls/ColorFilter";
+import { FloatingSurpriseButton } from "@/components/layouts/FloatingSurpriseButton";
+import Footer from "@/components/layouts/Footer";
+import { CopyHistorySection } from "@/components/sections/CopyHistorySection";
+import { GradientCreator } from "@/components/sections/GradientCreator";
+import GradientGrid from "@/components/sections/GradientGrid";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { BrandKitBuilder } from "@/components/tools/BrandKitBuilder";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -11,16 +18,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import GradientGrid from "@/components/sections/GradientGrid";
-import Footer from "@/components/layouts/Footer";
-import { HeroSection } from "@/components/sections/HeroSection";
-import { ColorFilter } from "@/components/controls/ColorFilter";
-import { CopyHistorySection } from "@/components/sections/CopyHistorySection";
-import { GradientCreator } from "@/components/sections/GradientCreator";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { FloatingSurpriseButton } from "@/components/layouts/FloatingSurpriseButton";
-import { colorUtils } from "@/utils/colorUtils";
 import gradientsData from "@/data/gradients.json";
+import { colorUtils } from "@/utils/colorUtils";
+import { Plus, SearchIcon, Palette } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 // --- Types ---
 interface Gradient {
@@ -98,8 +99,13 @@ const GradientGallery: React.FC = () => {
   const [background, setBackground] = useState("");
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
+  const [isBrandKitBuilderOpen, setIsBrandKitBuilderOpen] = useState(false);
   const [displayedCount, setDisplayedCount] = useState(12);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // State for mood board
+  const [isMoodBoard, setIsMoodBoard] = useState(false);
+  const [moodBoardGradients, setMoodBoardGradients] = useState<Array<{ name: string; colors: string[] }>>([]);
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const gradientsPerLoad = 12;
@@ -219,7 +225,12 @@ const GradientGallery: React.FC = () => {
   ]);
 
   const currentGradients = useMemo(() => {
-    // Pre-filter valid gradients for better performance
+    // If in mood board mode, return mood board gradients
+    if (isMoodBoard && moodBoardGradients.length > 0) {
+      return moodBoardGradients;
+    }
+    
+    // Otherwise, use normal filtering logic
     const validGradients = filteredGradients.filter(
       (gradient): gradient is { name: string; colors: string[] } =>
         gradient.name !== undefined &&
@@ -227,21 +238,21 @@ const GradientGallery: React.FC = () => {
         gradient.name.length > 0 &&
         gradient.colors.length > 0,
     );
-    
-    return validGradients.slice(0, displayedCount);
-  }, [filteredGradients, displayedCount]);
 
-  const hasMore = currentGradients.length < filteredGradients.length;
+    return validGradients.slice(0, displayedCount);
+  }, [filteredGradients, displayedCount, isMoodBoard, moodBoardGradients]);
+
+  const hasMore = !isMoodBoard && currentGradients.length < filteredGradients.length;
 
   // --- Infinite Scroll Logic ---
   const loadMore = useCallback(() => {
     if (isLoadingMore || !hasMore) return;
-    
+
     setIsLoadingMore(true);
-    
+
     // Simulate loading delay for better UX
     setTimeout(() => {
-      setDisplayedCount(prev => prev + gradientsPerLoad);
+      setDisplayedCount((prev) => prev + gradientsPerLoad);
       setIsLoadingMore(false);
     }, 300);
   }, [isLoadingMore, hasMore, gradientsPerLoad]);
@@ -257,9 +268,9 @@ const GradientGallery: React.FC = () => {
       },
       {
         root: null,
-        rootMargin: '100px',
+        rootMargin: "100px",
         threshold: 0.1,
-      }
+      },
     );
 
     const currentLoadMoreRef = loadMoreRef.current;
@@ -277,18 +288,164 @@ const GradientGallery: React.FC = () => {
   // Reset display count when filters change
   useEffect(() => {
     setDisplayedCount(gradientsPerLoad);
+    // Exit mood board mode when filters are applied
+    if (debouncedSearch || filter !== "all" || selectedColors.length > 0) {
+      setIsMoodBoard(false);
+      setMoodBoardGradients([]);
+    }
   }, [debouncedSearch, filter, selectedColors, sortBy, gradientsPerLoad]);
 
-  const handleRandomGradient = () => {
-    if (filteredGradients.length === 0) return;
+  // Advanced mood board themes
+  const moodBoardThemes = {
+    sunset: {
+      name: "Golden Hour",
+      description: "Warm, energetic gradients perfect for sunsets and energy",
+      colors: ['red', 'orange', 'yellow', 'pink', 'coral'],
+      keywords: ['sunset', 'sunrise', 'warm', 'fire', 'gold'],
+      count: 8
+    },
+    ocean: {
+      name: "Ocean Breeze",
+      description: "Cool, calming gradients inspired by water and sky",
+      colors: ['blue', 'teal', 'cyan', 'turquoise', 'aqua'],
+      keywords: ['ocean', 'sea', 'water', 'sky', 'wave'],
+      count: 8
+    },
+    nature: {
+      name: "Forest Path",
+      description: "Natural gradients with greens and earth tones",
+      colors: ['green', 'lime', 'forest', 'olive', 'sage'],
+      keywords: ['nature', 'forest', 'leaf', 'tree', 'earth'],
+      count: 8
+    },
+    mystic: {
+      name: "Mystic Dreams",
+      description: "Mysterious purples and deep cosmic colors",
+      colors: ['purple', 'violet', 'indigo', 'magenta', 'lavender'],
+      keywords: ['mystic', 'cosmic', 'dream', 'magic', 'space'],
+      count: 8
+    },
+    minimal: {
+      name: "Clean Slate",
+      description: "Elegant neutrals and monochromatic gradients",
+      colors: ['gray', 'grey', 'black', 'white', 'silver'],
+      keywords: ['minimal', 'clean', 'simple', 'elegant', 'mono'],
+      count: 8
+    },
+    vibrant: {
+      name: "Electric Vibes",
+      description: "Bold, high-energy gradients that pop",
+      colors: ['neon', 'bright', 'electric', 'vivid'],
+      keywords: ['electric', 'neon', 'bright', 'vivid', 'bold'],
+      count: 8
+    }
+  };
 
-    // Clear search and filters to show all gradients
+  const [currentMoodTheme, setCurrentMoodTheme] = useState<keyof typeof moodBoardThemes | null>(null);
+
+  const generateMoodBoard = (theme?: keyof typeof moodBoardThemes) => {
+    if (gradients.length === 0) return;
+
+    // Clear search and filters to show mood board
     setSearchTerm("");
     setFilter("all");
     setSelectedColors([]);
+
+    const availableGradients = gradients.filter(g => g.name && g.colors && g.colors.length > 0);
+
+    let selectedGradients: typeof availableGradients = [];
+
+    if (theme && moodBoardThemes[theme]) {
+      const themeConfig = moodBoardThemes[theme];
+      setCurrentMoodTheme(theme);
+
+      // Filter gradients based on theme colors and keywords
+      const themeGradients = availableGradients.filter(g => {
+        const hasMatchingColor = g.colorsname?.some(color => 
+          themeConfig.colors.some(themeColor => 
+            color?.toLowerCase().includes(themeColor.toLowerCase())
+          )
+        );
+        
+        const hasMatchingKeyword = g.keywords?.some(keywordList =>
+          keywordList?.some(keyword =>
+            themeConfig.keywords.some(themeKeyword =>
+              keyword?.toLowerCase().includes(themeKeyword.toLowerCase())
+            )
+          )
+        ) || g.name?.toLowerCase().split(' ').some(namePart =>
+          themeConfig.keywords.some(themeKeyword =>
+            namePart.includes(themeKeyword.toLowerCase())
+          )
+        );
+
+        return hasMatchingColor || hasMatchingKeyword;
+      });
+
+      // If we have enough theme gradients, use them; otherwise supplement with random ones
+      if (themeGradients.length >= themeConfig.count) {
+        selectedGradients = themeGradients
+          .sort(() => Math.random() - 0.5)
+          .slice(0, themeConfig.count);
+      } else {
+        // Use all theme gradients and fill with random ones
+        const remainingCount = themeConfig.count - themeGradients.length;
+        const randomGradients = availableGradients
+          .filter(g => !themeGradients.includes(g))
+          .sort(() => Math.random() - 0.5)
+          .slice(0, remainingCount);
+        
+        selectedGradients = [...themeGradients, ...randomGradients]
+          .sort(() => Math.random() - 0.5);
+      }
+    } else {
+      // Generate a balanced mixed mood board
+      setCurrentMoodTheme(null);
+      
+      const categoryGradients: { [key: string]: typeof availableGradients } = {};
+      
+      // Categorize gradients
+      Object.entries(moodBoardThemes).forEach(([key, config]) => {
+        categoryGradients[key] = availableGradients.filter(g => {
+          const hasMatchingColor = g.colorsname?.some(color => 
+            config.colors.some(themeColor => 
+              color?.toLowerCase().includes(themeColor.toLowerCase())
+            )
+          );
+          return hasMatchingColor;
+        });
+      });
+
+      // Select 2 gradients from each category
+      Object.values(categoryGradients).forEach(categoryList => {
+        if (categoryList.length > 0) {
+          const selected = categoryList
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 2);
+          selectedGradients.push(...selected);
+        }
+      });
+
+      // Shuffle final selection
+      selectedGradients = selectedGradients
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 12);
+    }
+
+    const finalSelection = selectedGradients
+      .filter((g): g is { name: string; colors: string[] } => 
+        g.name !== undefined && g.colors !== undefined
+      )
+      .map(g => ({ name: g.name, colors: g.colors }));
+
+    setMoodBoardGradients(finalSelection);
+    setIsMoodBoard(true);
+    setDisplayedCount(finalSelection.length);
     
-    // Reset display count to show the random gradient
-    setDisplayedCount(gradientsPerLoad);
+    // Scroll to top to show the mood board
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 100);
   };
 
   const handleGradientFromHistory = (gradientName: string) => {
@@ -328,23 +485,25 @@ const GradientGallery: React.FC = () => {
           <HeroSection />
 
           <div className="flex flex-col gap-8">
+            {/* Search Section */}
             <div className="space-y-4">
-              
-              <div className="relative transition-all duration-300 group" id="input">
-                <Input
-                  placeholder="Search by color name or keyword..."
-                  className="peer block bg-input focus:shadow-none px-4 py-3 pr-[52px] border invalid:border-error-500 invalid:focus:border-error-500 border-border hover:border-brand-500-secondary focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-lg outline-none focus:outline-none w-full h-full overflow-ellipsis overflow-hidden text-foreground text-sm text-nowrap appearance-none transition-all duration-300 group-hover:shadow-lg"
-                  id="floating_outlined"
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                  }}
-                />
-                <SearchIcon className="top-0 right-3 bottom-0 absolute m-auto w-5 h-5 text-foreground/60 group-hover:text-primary transition-colors duration-300" />
+              <div className="relative">
+                <div className="group relative transition-all duration-300" id="input">
+                  <Input
+                    placeholder="Search by color name or keyword..."
+                    className="h-12 w-full rounded-lg border border-border bg-background px-4 pr-12 text-foreground transition-all duration-300 placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                    }}
+                  />
+                  <SearchIcon className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground transition-colors duration-300 group-hover:text-primary" />
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-center">
+              {/* Controls */}
+              <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-5">
                 <div className="sm:order-1">
                   <ColorFilter
                     availableColors={availableColors}
@@ -362,10 +521,10 @@ const GradientGallery: React.FC = () => {
                       setFilter(value);
                     }}
                   >
-                    <SelectTrigger className="border-border hover:border-primary/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none w-full h-11 rounded-lg transition-all duration-300 nofocus nohover">
+                    <SelectTrigger className="h-11 w-full rounded-lg border-border transition-all duration-200 hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20">
                       <SelectValue placeholder="Filter" />
                     </SelectTrigger>
-                    <SelectContent className="border-border rounded-lg shadow-xl backdrop-blur-sm nofocus nohover">
+                    <SelectContent className="rounded-lg border-border shadow-xl">
                       <SelectItem value="all">All Gradients</SelectItem>
                       <SelectItem value="favorites">Favorites</SelectItem>
                     </SelectContent>
@@ -379,10 +538,10 @@ const GradientGallery: React.FC = () => {
                       setSortBy(value);
                     }}
                   >
-                    <SelectTrigger className="border-border hover:border-primary/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none w-full h-11 rounded-lg transition-all duration-300 nofocus nohover">
+                    <SelectTrigger className="h-11 w-full rounded-lg border-border transition-all duration-200 hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20">
                       <SelectValue placeholder="Sort by" />
                     </SelectTrigger>
-                    <SelectContent className="border-border rounded-lg shadow-xl backdrop-blur-sm nofocus nohover">
+                    <SelectContent className="rounded-lg border-border shadow-xl">
                       <SelectItem value="name">Name A-Z</SelectItem>
                       <SelectItem value="brightness">Brightness</SelectItem>
                       <SelectItem value="hue">Color Hue</SelectItem>
@@ -391,42 +550,98 @@ const GradientGallery: React.FC = () => {
                   </Select>
                 </div>
 
-                <div className="sm:order-4 sm:col-span-2 lg:col-span-2 flex flex-wrap gap-2">
-                  <CopyHistorySection onGradientSelect={handleGradientFromHistory} />
+                <div className="flex items-center gap-2 sm:order-4 sm:col-span-2 lg:col-span-2">
+                  <CopyHistorySection
+                    onGradientSelect={handleGradientFromHistory}
+                  />
 
                   <Dialog open={isCreatorOpen} onOpenChange={setIsCreatorOpen}>
                     <DialogTrigger asChild>
-                      <Button 
+                      <Button
                         variant="default"
-                        className="flex items-center justify-center gap-2 whitespace-nowrap h-11 hover:scale-105 transition-all duration-300 hover:shadow-lg flex-1 sm:flex-none"
+                        className="flex h-11 items-center justify-center gap-2 whitespace-nowrap transition-all duration-300 hover:scale-105 hover:shadow-lg"
                       >
-                        <Plus className="w-4 h-4" />
+                        <Plus className="h-4 w-4" />
                         <span className="hidden sm:inline">Create Gradient</span>
                         <span className="sm:hidden">Create</span>
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
                       <GradientCreator onSave={handleSaveGradient} />
                     </DialogContent>
                   </Dialog>
+
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsBrandKitBuilderOpen(true)}
+                    className="flex h-11 items-center justify-center gap-2 whitespace-nowrap transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  >
+                    <Palette className="h-4 w-4" />
+                    <span className="hidden sm:inline">Brand Kit</span>
+                    <span className="sm:hidden">Brand</span>
+                  </Button>
                 </div>
               </div>
-
-              <div className="flex gap-2">
-                <Button
-                  onClick={handleRandomGradient}
-                  variant="outline"
-                  className="flex items-center gap-2 whitespace-nowrap hover:scale-105 transition-all duration-300"
-                  disabled={filteredGradients.length === 0}
-                >
-                  <Shuffle className="h-4 w-4" />
-                  Surprise Me
-                </Button>
-              </div>
-              
             </div>
 
-            {(selectedColors.length > 0 || searchTerm || filter !== "all") && (
+            {isMoodBoard ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full bg-gradient-to-r from-pink-500 to-violet-500"></div>
+                    <div>
+                      <h3 className="font-medium text-foreground">
+                        {currentMoodTheme ? moodBoardThemes[currentMoodTheme].name : "Mixed Mood Board"}
+                      </h3>
+                      <p className="text-sm text-foreground/60">
+                        {currentMoodTheme 
+                          ? moodBoardThemes[currentMoodTheme].description
+                          : `${moodBoardGradients.length} curated gradients from various themes`
+                        }
+                      </p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      setIsMoodBoard(false);
+                      setMoodBoardGradients([]);
+                      setCurrentMoodTheme(null);
+                      setDisplayedCount(gradientsPerLoad);
+                    }}
+                    className="text-primary hover:text-primary/80 underline"
+                  >
+                    View all gradients
+                  </button>
+                </div>
+                
+                {/* Theme selector */}
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => generateMoodBoard()}
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                      !currentMoodTheme 
+                        ? 'bg-primary text-primary-foreground' 
+                        : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                    }`}
+                  >
+                    Mixed
+                  </button>
+                  {Object.entries(moodBoardThemes).map(([key, theme]) => (
+                    <button
+                      key={key}
+                      onClick={() => generateMoodBoard(key as keyof typeof moodBoardThemes)}
+                      className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                        currentMoodTheme === key 
+                          ? 'bg-primary text-primary-foreground' 
+                          : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                      }`}
+                    >
+                      {theme.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (selectedColors.length > 0 || searchTerm || filter !== "all") && (
               <div className="text-foreground/70 text-sm">
                 Showing {filteredGradients.length} gradient
                 {filteredGradients.length !== 1 ? "s" : ""}
@@ -465,31 +680,62 @@ const GradientGallery: React.FC = () => {
           {hasMore && (
             <div ref={loadMoreRef} className="flex justify-center py-8">
               {isLoadingMore ? (
-                <div className="flex items-center gap-2 text-foreground/60">
-                  <div className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+                <div className="text-foreground/60 flex items-center gap-2">
+                  <div className="border-primary/30 h-5 w-5 animate-spin rounded-full border-2 border-t-primary"></div>
                   <span>Loading more gradients...</span>
                 </div>
               ) : (
-                <div className="text-foreground/40 text-sm">
+                  <div className="text-foreground/40 text-sm">
                   Scroll to load more
                 </div>
               )}
             </div>
           )}
-          
+
           {!hasMore && currentGradients.length > 0 && (
-            <div className="text-center py-8 text-foreground/60">
+            <div className="text-foreground/60 py-8 text-center">
               <p>You've reached the end! 🎉</p>
-              <p className="text-sm mt-1">Showing all {currentGradients.length} gradients</p>
+              <p className="mt-1 text-sm">
+                Showing all {currentGradients.length} gradients
+              </p>
             </div>
           )}
         </div>
         <Footer />
-        
-        <FloatingSurpriseButton 
-          onClick={handleRandomGradient}
-          disabled={filteredGradients.length === 0}
+
+        <FloatingSurpriseButton
+          onClick={() => {
+            if (isMoodBoard) {
+              // Cycle through themes if already in mood board mode
+              const themeKeys = Object.keys(moodBoardThemes) as Array<keyof typeof moodBoardThemes>;
+              const currentIndex = currentMoodTheme ? themeKeys.indexOf(currentMoodTheme) : -1;
+              const nextIndex = (currentIndex + 1) % (themeKeys.length + 1); // +1 for mixed mode
+              
+              if (nextIndex === themeKeys.length) {
+                generateMoodBoard(); // Mixed mode
+              } else {
+                generateMoodBoard(themeKeys[nextIndex]);
+              }
+            } else {
+              // First click - generate mixed mood board
+              generateMoodBoard();
+            }
+          }}
+          disabled={gradients.length === 0}
+          isActive={isMoodBoard}
+          tooltip={
+            isMoodBoard 
+              ? `${currentMoodTheme ? moodBoardThemes[currentMoodTheme].name : 'Mixed'} - Click for next theme`
+              : 'Generate Mood Board'
+          }
         />
+
+        {isBrandKitBuilderOpen && (
+          <BrandKitBuilder
+            gradients={isMoodBoard ? moodBoardGradients : currentGradients}
+            onClose={() => setIsBrandKitBuilderOpen(false)}
+          />
+        )}
       </div>
     </TooltipProvider>
   );

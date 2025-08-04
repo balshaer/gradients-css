@@ -12,6 +12,8 @@ import { GradientCardProps } from "@/types/types";
 import { ExportModal } from "../layouts/ExportModal";
 import { GradientData } from "@/utils/exportUtils";
 import { animatedGradientUtils, AnimatedGradientOptions } from "@/utils/animatedGradientUtils";
+import { PatternGenerator } from "../tools/PatternGenerator";
+import { BrandKitBuilder } from "../tools/BrandKitBuilder";
 
 export default function GradientCard({
   gradient,
@@ -22,6 +24,8 @@ export default function GradientCard({
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isAnimated, setIsAnimated] = useState(false);
   const [animationSpeed, setAnimationSpeed] = useState(1);
+  const [isPatternGeneratorOpen, setIsPatternGeneratorOpen] = useState(false);
+  const [isBrandKitBuilderOpen, setIsBrandKitBuilderOpen] = useState(false);
   const {
     selectedColorFormat,
     setSelectedColorFormat,
@@ -121,10 +125,11 @@ background-clip: text;`;
   const { theme } = useTheme();
 
   return (
-    <MagicCard
-      gradientColor={theme === "dark" ? "#262626" : "#282828"}
-      className="w-full overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl group"
-    >
+    <>
+      <MagicCard
+        gradientColor={theme === "dark" ? "#262626" : "#282828"}
+        className="w-full overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl group"
+      >
       <div className="flex flex-col h-full">
         <AnimatePresence mode="wait">
           <motion.div
@@ -151,6 +156,8 @@ background-clip: text;`;
             isFavorite={isFavorite}
             onFavoriteToggle={handleFavoriteToggle}
             onExport={handleExport}
+            onPatternGenerator={() => setIsPatternGeneratorOpen(true)}
+            onBrandKitBuilder={() => setIsBrandKitBuilderOpen(true)}
           />
 
           <GradientCardFooter
@@ -179,6 +186,23 @@ background-clip: text;`;
         onClose={() => setIsExportModalOpen(false)}
         gradientData={gradientData}
       />
-    </MagicCard>
+
+      </MagicCard>
+
+      {/* Modals rendered outside card to appear as proper overlays */}
+      {isPatternGeneratorOpen && (
+        <PatternGenerator
+          gradient={gradient}
+          onClose={() => setIsPatternGeneratorOpen(false)}
+        />
+      )}
+
+      {isBrandKitBuilderOpen && (
+        <BrandKitBuilder
+          gradients={[gradient]}
+          onClose={() => setIsBrandKitBuilderOpen(false)}
+        />
+      )}
+    </>
   );
 }

@@ -50,6 +50,7 @@ export default function GradientGrid({
           gradients.map((gradient, index) => (
             <motion.div
               key={gradient.name}
+              data-gradient-name={gradient.name}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
