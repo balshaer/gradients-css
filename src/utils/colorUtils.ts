@@ -253,4 +253,160 @@ export const colorUtils = {
 
     return categories;
   },
+
+  // Calculate brightness of a single color (0-255)
+  getColorBrightness: (hex: string): number => {
+    const { r, g, b } = colorUtils.hexToRGB(hex);
+    // Use standard luminance formula
+    return Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+  },
+
+  // Calculate average brightness of a gradient (0-255)
+  getGradientBrightness: (colors: string[]): number => {
+    if (!colors || colors.length === 0) return 0;
+    const brightnesses = colors.map(color => colorUtils.getColorBrightness(color));
+    return brightnesses.reduce((sum, brightness) => sum + brightness, 0) / brightnesses.length;
+  },
+
+  // Calculate hue of a single color (0-360)
+  getColorHue: (hex: string): number => {
+    const { r, g, b } = colorUtils.hexToRGB(hex);
+    const { h } = colorUtils.rgbToHSL(r, g, b);
+    return h;
+  },
+
+  // Calculate average hue of a gradient (0-360)
+  getGradientHue: (colors: string[]): number => {
+    if (!colors || colors.length === 0) return 0;
+    const hues = colors.map(color => colorUtils.getColorHue(color));
+    return hues.reduce((sum, hue) => sum + hue, 0) / hues.length;
+  },
+
+  // Sort gradients by various criteria
+  sortGradients: (gradients: any[], sortBy: string, favorites: string[] = []): any[] => {
+    const sorted = [...gradients];
+    
+    switch (sortBy) {
+      case 'name':
+        return sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+      
+      case 'brightness':
+        return sorted.sort((a, b) => {
+          const brightnessA = colorUtils.getGradientBrightness(a.colors || []);
+          const brightnessB = colorUtils.getGradientBrightness(b.colors || []);
+          return brightnessB - brightnessA; // Brightest first
+        });
+      
+      case 'hue':
+        return sorted.sort((a, b) => {
+          const hueA = colorUtils.getGradientHue(a.colors || []);
+          const hueB = colorUtils.getGradientHue(b.colors || []);
+          return hueA - hueB; // Red first (0°), then through spectrum
+        });
+      
+      case 'favorites':
+        return sorted.sort((a, b) => {
+          const isFavA = favorites.includes(a.name || '');
+          const isFavB = favorites.includes(b.name || '');
+          if (isFavA && !isFavB) return -1;
+          if (!isFavA && isFavB) return 1;
+          return (a.name || '').localeCompare(b.name || '');
+        });
+      
+      default:
+        return sorted;
+    }
+  },
+
+  // Extract color palette from gradient with additional color information
+  extractPalette: (colors: string[]) => {
+    return colors.map((color, index) => {
+      const { r, g, b } = colorUtils.hexToRGB(color);
+      const { h, s, l } = colorUtils.rgbToHSL(r, g, b);
+      const brightness = colorUtils.getColorBrightness(color);
+      
+      return {
+        hex: color,
+        rgb: `rgb(${r}, ${g}, ${b})`,
+        hsl: `hsl(${h}, ${s}%, ${l}%)`,
+        hue: h,
+        saturation: s,
+        lightness: l,
+        brightness,
+        isLight: brightness > 128,
+        isDark: brightness <= 128,
+        position: index,
+        percentage: colors.length > 1 ? Math.round((index / (colors.length - 1)) * 100) : 100
+      };
+    });
+  },
+
+  // Generate complementary colors from a gradient
+  generateComplementaryColors: (colors: string[]): string[] => {
+    return colors.map(color => {
+      const { r, g, b } = colorUtils.hexToRGB(color);
+      const { h, s, l } = colorUtils.rgbToHSL(r, g, b);
+      
+      // Calculate complementary hue (opposite on color wheel)
+      const complementaryHue = (h + 180) % 360;
+      
+      // Convert complementary HSL back to RGB
+      const complementaryRgb = colorUtils.hslToRgb(complementaryHue, s, l);
+      
+      const toHex = (n: number) => n.toString(16).padStart(2, '0');
+      return `#${toHex(complementaryRgb.r)}${toHex(complementaryRgb.g)}${toHex(complementaryRgb.b)}`;
+    });
+  },
+
+  // Generate analogous colors (colors next to each other on color wheel)
+  generateAnalogousColors: (colors: string[]): string[] => {
+    return colors.flatMap(color => {
+      const { r, g, b } = colorUtils.hexToRGB(color);
+      const { h, s, l } = colorUtils.rgbToHSL(r, g, b);
+      
+      // Generate analogous colors (±30 degrees)
+      const analogous1 = (h + 30) % 360;
+      const analogous2 = (h - 30 + 360) % 360;
+      
+      // This is a simplified conversion - in a real app you'd want proper HSL to RGB conversion
+      const toHex = (hue: number) => {
+        const rgb = colorUtils.hslToRgb(hue, s, l);
+        return `#${rgb.r.toString(16).padStart(2, '0')}${rgb.g.toString(16).padStart(2, '0')}${rgb.b.toString(16).padStart(2, '0')}`;
+      };
+      
+      return [toHex(analogous1), toHex(analogous2)];
+    });
+  },
+
+  // Convert HSL to RGB (helper function)
+  hslToRgb: (h: number, s: number, l: number) => {
+    s /= 100;
+    l /= 100;
+    
+    const c = (1 - Math.abs(2 * l - 1)) * s;
+    const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+    const m = l - c / 2;
+    
+    let r = 0, g = 0, b = 0;
+    
+    if (0 <= h && h < 60) {
+      r = c; g = x; b = 0;
+    } else if (60 <= h && h < 120) {
+      r = x; g = c; b = 0;
+    } else if (120 <= h && h < 180) {
+      r = 0; g = c; b = x;
+    } else if (180 <= h && h < 240) {
+      r = 0; g = x; b = c;
+    } else if (240 <= h && h < 300) {
+      r = x; g = 0; b = c;
+    } else if (300 <= h && h < 360) {
+      r = c; g = 0; b = x;
+    }
+    
+    return {
+      r: Math.round((r + m) * 255),
+      g: Math.round((g + m) * 255),
+      b: Math.round((b + m) * 255),
+    };
+  },
 };

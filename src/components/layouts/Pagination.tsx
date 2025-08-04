@@ -30,7 +30,7 @@ export default function Pagination({
 
       {/* Display current page out of total pages */}
       <motion.div
-        className="text-sm font-semibold text-muted-foreground"
+        className="text-sm font-semibold text-foreground/80"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, delay: 0.1 }}

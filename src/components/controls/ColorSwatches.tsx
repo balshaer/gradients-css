@@ -29,7 +29,7 @@ export const ColorSwatches: React.FC<ColorSwatchesProps> = ({
           />
         </TooltipTrigger>
         <TooltipContent>
-          <p className="text-muted-foreground">
+          <p className="text-foreground/90">
             Click to copy: {getColorInFormat(color)}
           </p>
         </TooltipContent>
