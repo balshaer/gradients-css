@@ -20,9 +20,12 @@ export const GradientHeader: React.FC<GradientHeaderProps> = ({
   onFavoriteToggle,
   onExport,
 }) => (
-  <div className="flex w-full items-center justify-between">
-    <h3 className="text-lg font-semibold text-primary">{name}</h3>
-    <div className="flex items-center gap-0">
+  <div className="flex w-full items-start justify-between">
+    <div className="flex-1 min-w-0 pr-4">
+      <h3 className="text-lg sm:text-xl font-bold text-primary truncate leading-tight">{name}</h3>
+      <p className="text-xs sm:text-sm text-muted-foreground mt-2">Gradient Colors</p>
+    </div>
+    <div className="flex items-center gap-1 flex-shrink-0">
       {onExport && (
         <Tooltip>
           <TooltipTrigger asChild>

@@ -18,7 +18,7 @@ export default function GradientGrid({
   isLoading,
 }: GradientGridProps) {
   return (
-    <div className="grid grid-cols-1 gap-6 pt-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:gap-10 pt-6 sm:pt-8 sm:grid-cols-2 lg:grid-cols-3 place-items-start">
         {isLoading ? (
           Array.from({ length: 6 }).map((_, index) => (
             <motion.div
@@ -47,14 +47,21 @@ export default function GradientGrid({
             <span>No gradients found</span>
           </motion.div>
         ) : (
-          gradients.map((gradient) => (
-            <div key={gradient.name}>
+          gradients.map((gradient, index) => (
+            <motion.div
+              key={gradient.name}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+              className="w-full max-w-full"
+            >
               <GradientCard
                 gradient={gradient}
                 isFavorite={favorites.includes(gradient.name)}
                 onFavoriteToggle={() => toggleFavorite(gradient.name)}
               />
-            </div>
+            </motion.div>
           ))
         )}
     </div>
