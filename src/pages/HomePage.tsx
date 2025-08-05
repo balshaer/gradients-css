@@ -306,7 +306,7 @@ const GradientGallery: React.FC = () => {
 
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 lg:flex-row">
-              <div className="relative w-full min-w-32" id="input">
+              <div className="relative w-full min-w-32 lg:max-w-80" id="input">
                 <Input
                   placeholder="Search by color name or keyword..."
                   className="invalid:border-error-500 invalid:focus:border-error-500 hover:border-brand-500-secondary text-placeholder peer block h-full w-full appearance-none overflow-hidden overflow-ellipsis text-nowrap rounded-md border border-border bg-input px-3 py-2 pr-[48px] text-sm outline-none focus:border-none focus:shadow-none focus:outline-none"
@@ -329,7 +329,7 @@ const GradientGallery: React.FC = () => {
                     setSelectedColors(colors);
                     setCurrentPage(1);
                   }}
-                  className="w-full lg:w-32"
+                  className="w-full"
                 />
 
                 <Select
@@ -339,7 +339,7 @@ const GradientGallery: React.FC = () => {
                     setCurrentPage(1);
                   }}
                 >
-                  <SelectTrigger className="nofocus nohover w-full border-none outline-none lg:w-32">
+                  <SelectTrigger className="nofocus nohover w-full border-none outline-none">
                     <SelectValue placeholder="Filter" />
                   </SelectTrigger>
                   <SelectContent className="nofocus nohover border-none outline-none">
@@ -355,7 +355,7 @@ const GradientGallery: React.FC = () => {
                     setCurrentPage(1);
                   }}
                 >
-                  <SelectTrigger className="nofocus nohover w-full border-none outline-none lg:w-32">
+                  <SelectTrigger className="nofocus nohover w-full border-none outline-none">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent className="nofocus nohover border-none outline-none">
@@ -367,34 +367,36 @@ const GradientGallery: React.FC = () => {
                 </Select>
               </div>
 
-              <Button
-                onClick={handleRandomGradient}
-                variant="outline"
-                className="flex items-center gap-2 whitespace-nowrap"
-                disabled={filteredGradients.length === 0}
-              >
-                <Shuffle className="h-4 w-4" />
-                Surprise Me
-              </Button>
+              <div className="flex flex-col gap-2 lg:flex-row">
+                <Button
+                  onClick={handleRandomGradient}
+                  variant="outline"
+                  className="flex items-center gap-2 whitespace-nowrap"
+                  disabled={filteredGradients.length === 0}
+                >
+                  <Shuffle className="h-4 w-4" />
+                  Surprise Me
+                </Button>
 
-              <CopyHistorySection
-                onGradientSelect={handleGradientFromHistory}
-              />
+                <CopyHistorySection
+                  onGradientSelect={handleGradientFromHistory}
+                />
 
-              <Dialog open={isCreatorOpen} onOpenChange={setIsCreatorOpen}>
-                <DialogTrigger asChild>
-                  <Button
-                    variant="default"
-                    className="flex items-center gap-2 whitespace-nowrap"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Create Gradient
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
-                  <GradientCreator onSave={handleSaveGradient} />
-                </DialogContent>
-              </Dialog>
+                <Dialog open={isCreatorOpen} onOpenChange={setIsCreatorOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="default"
+                      className="flex items-center gap-2 whitespace-nowrap"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Create Gradient
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+                    <GradientCreator onSave={handleSaveGradient} />
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
 
             {(selectedColors.length > 0 || searchTerm || filter !== "all") && (
