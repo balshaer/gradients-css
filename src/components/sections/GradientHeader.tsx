@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Heart, Download } from "lucide-react";
+import { Heart, Download, Grid, Palette } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -12,6 +12,8 @@ interface GradientHeaderProps {
   isFavorite: boolean;
   onFavoriteToggle: (name: string) => void;
   onExport?: () => void;
+  onPatternGenerator?: () => void;
+  onBrandKitBuilder?: () => void;
 }
 
 export const GradientHeader: React.FC<GradientHeaderProps> = ({
@@ -19,10 +21,15 @@ export const GradientHeader: React.FC<GradientHeaderProps> = ({
   isFavorite,
   onFavoriteToggle,
   onExport,
+  onPatternGenerator,
+  onBrandKitBuilder,
 }) => (
-  <div className="flex w-full items-center justify-between">
-    <h3 className="text-lg font-semibold text-primary">{name}</h3>
-    <div className="flex items-center gap-0">
+  <div className="flex w-full items-start justify-between">
+    <div className="flex-1 min-w-0 pr-4">
+      <h3 className="text-lg sm:text-xl font-bold text-primary truncate leading-tight">{name}</h3>
+      <p className="text-xs sm:text-sm text-muted-foreground mt-2">Gradient Colors</p>
+    </div>
+    <div className="flex items-center gap-1 flex-shrink-0">
       {onExport && (
         <Tooltip>
           <TooltipTrigger asChild>
@@ -37,6 +44,42 @@ export const GradientHeader: React.FC<GradientHeaderProps> = ({
           </TooltipTrigger>
           <TooltipContent>
             <p>Export gradient</p>
+          </TooltipContent>
+        </Tooltip>
+      )}
+
+      {onPatternGenerator && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <motion.button
+              className="rounded-full p-2 transition-colors hover:bg-muted"
+              onClick={onPatternGenerator}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <Grid className="h-4 w-4 text-gray-400 hover:text-primary" />
+            </motion.button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Generate patterns</p>
+          </TooltipContent>
+        </Tooltip>
+      )}
+
+      {onBrandKitBuilder && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <motion.button
+              className="rounded-full p-2 transition-colors hover:bg-muted"
+              onClick={onBrandKitBuilder}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <Palette className="h-4 w-4 text-gray-400 hover:text-primary" />
+            </motion.button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Build brand kit</p>
           </TooltipContent>
         </Tooltip>
       )}

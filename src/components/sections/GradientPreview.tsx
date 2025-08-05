@@ -47,35 +47,36 @@ export const GradientPreview: React.FC<GradientPreviewProps> = ({
   ];
 
   const renderPreview = () => {
-    const baseClasses = "relative flex items-center justify-center overflow-hidden transition-all duration-300";
+    const baseClasses = "relative flex items-center justify-center overflow-hidden transition-all duration-500 ease-out";
     
     switch (previewShape) {
       case "circle":
         return (
           <motion.div
-            className={`${baseClasses} h-48 w-48 rounded-full`}
+            className={`${baseClasses} h-40 w-40 sm:h-48 sm:w-48 rounded-full shadow-2xl`}
             style={gradientType === "background" ? animatedStyle : {}}
-            transition={{ duration: 0.3 }}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             {gradientType === "text" ? (
-              <motion.span
-                className="text-2xl font-bold"
-                style={textGradientStyle}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+              <motion.div
+                className="w-16 h-16 rounded-full border-2 border-white/40 bg-white/20 backdrop-blur-sm flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                {gradient.name.slice(0, 8)}
-              </motion.span>
+                <div className="w-10 h-10 rounded-full bg-white/30" />
+              </motion.div>
             ) : (
-              <motion.span
-                className="text-2xl font-bold text-white mix-blend-difference"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+              <motion.div
+                className="w-16 h-16 rounded-full border-2 border-white/40 bg-white/20 backdrop-blur-sm flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                {gradient.name.slice(0, 8)}
-              </motion.span>
+                <div className="w-10 h-10 rounded-full bg-white/30" />
+              </motion.div>
             )}
           </motion.div>
         );
@@ -83,29 +84,30 @@ export const GradientPreview: React.FC<GradientPreviewProps> = ({
       case "square":
         return (
           <motion.div
-            className={`${baseClasses} h-48 w-48 rounded-lg`}
+            className={`${baseClasses} h-40 w-40 sm:h-48 sm:w-48 rounded-xl shadow-2xl`}
             style={gradientType === "background" ? animatedStyle : {}}
-            transition={{ duration: 0.3 }}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             {gradientType === "text" ? (
-              <motion.span
-                className="text-2xl font-bold"
-                style={textGradientStyle}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+              <motion.div
+                className="w-16 h-16 rounded-lg border-2 border-white/40 bg-white/20 backdrop-blur-sm flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                {gradient.name.slice(0, 8)}
-              </motion.span>
+                <div className="w-10 h-10 rounded-lg bg-white/30" />
+              </motion.div>
             ) : (
-              <motion.span
-                className="text-2xl font-bold text-white mix-blend-difference"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+              <motion.div
+                className="w-16 h-16 rounded-lg border-2 border-white/40 bg-white/20 backdrop-blur-sm flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                {gradient.name.slice(0, 8)}
-              </motion.span>
+                <div className="w-10 h-10 rounded-lg bg-white/30" />
+              </motion.div>
             )}
           </motion.div>
         );
@@ -113,32 +115,24 @@ export const GradientPreview: React.FC<GradientPreviewProps> = ({
       case "card":
         return (
           <motion.div
-            className={`${baseClasses} h-32 w-52 rounded-xl shadow-lg border border-white/20`}
+            className={`${baseClasses} h-28 w-44 sm:h-32 sm:w-52 rounded-2xl shadow-2xl border border-white/30`}
             style={gradientType === "background" ? animatedStyle : {}}
-            transition={{ duration: 0.3 }}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="p-4 text-center">
-              {gradientType === "text" ? (
-                <motion.h3
-                  className="text-lg font-semibold"
-                  style={textGradientStyle}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {gradient.name}
-                </motion.h3>
-              ) : (
-                <motion.h3
-                  className="text-lg font-semibold text-white mix-blend-difference"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {gradient.name}
-                </motion.h3>
-              )}
-              <p className="text-sm text-white/80 mt-1">Card Preview</p>
+              <motion.div
+                className="flex flex-col items-center justify-center space-y-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="w-12 h-12 rounded-lg border-2 border-white/40 bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-white/30" />
+                </div>
+                <p className="text-xs text-white/80">Card Preview</p>
+              </motion.div>
             </div>
           </motion.div>
         );
@@ -146,47 +140,40 @@ export const GradientPreview: React.FC<GradientPreviewProps> = ({
       case "button":
         return (
           <motion.button
-            className={`${baseClasses} h-12 px-8 rounded-lg font-medium shadow-lg hover:scale-105 transition-transform`}
+            className={`${baseClasses} h-12 px-6 sm:px-8 rounded-xl font-medium shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200`}
             style={gradientType === "background" ? animatedStyle : {}}
-            transition={{ duration: 0.3 }}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            {gradientType === "text" ? (
-              <motion.span
-                style={textGradientStyle}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                {gradient.name}
-              </motion.span>
-            ) : (
-              <motion.span
-                className="text-white mix-blend-difference"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                {gradient.name}
-              </motion.span>
-            )}
+            <motion.div
+              className="px-4 py-2 rounded-md border border-white/40 bg-white/20 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <span className="text-white/90 text-sm font-medium">Button</span>
+            </motion.div>
           </motion.button>
         );
 
       case "text":
         return (
           <motion.div
-            className="flex items-center justify-center h-48 w-full"
-            transition={{ duration: 0.3 }}
+            className="flex items-center justify-center h-32 sm:h-48 w-full"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <motion.h1
-              className="text-6xl font-bold text-center"
+            <motion.div
+              className="text-4xl sm:text-6xl font-bold text-center"
               style={gradientType === "text" ? textGradientStyle : { ...animatedStyle, color: "transparent", backgroundClip: "text", WebkitBackgroundClip: "text" }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              {gradient.name}
-            </motion.h1>
+              Text
+            </motion.div>
           </motion.div>
         );
 
@@ -206,24 +193,40 @@ export const GradientPreview: React.FC<GradientPreviewProps> = ({
       />
       
       {/* Shape selector */}
-      <div className="relative z-10 flex justify-center mb-4">
-        <div className="flex gap-1 p-1 bg-black/20 rounded-lg backdrop-blur-sm border border-white/10">
+      <div className="relative z-10 flex justify-center mb-6 px-2 sm:px-4">
+        <div className="inline-flex items-center justify-center gap-1 sm:gap-0.5 p-1.5 sm:p-1 bg-black/30 rounded-xl sm:rounded-lg backdrop-blur-md border border-white/20 shadow-lg">
           {shapeOptions.map((option) => {
             const IconComponent = option.icon;
+            const isActive = previewShape === option.key;
             return (
               <Button
                 key={option.key}
                 onClick={() => setPreviewShape(option.key)}
-                variant={previewShape === option.key ? "default" : "ghost"}
+                variant="ghost"
                 size="sm"
-                className={`h-8 w-8 p-0 ${
-                  previewShape === option.key 
-                    ? "bg-white/20 text-white" 
-                    : "text-white/60 hover:text-white hover:bg-white/10"
-                }`}
+                className={`
+                  relative h-11 w-11 sm:h-9 sm:w-9 md:h-8 md:w-8 
+                  min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] md:min-h-[32px] md:min-w-[32px]
+                  p-0 flex items-center justify-center shrink-0 
+                  rounded-lg sm:rounded-md transition-all duration-200 ease-out
+                  hover:scale-110 active:scale-95
+                  ${
+                    isActive
+                      ? "bg-white/25 text-white shadow-lg shadow-white/10 ring-2 ring-white/30" 
+                      : "text-white/70 hover:text-white hover:bg-white/15 hover:shadow-md"
+                  }
+                `}
                 title={option.label}
+                aria-label={`Switch to ${option.label} preview`}
               >
-                <IconComponent className="h-4 w-4" />
+                <IconComponent className="h-5 w-5 sm:h-4 sm:w-4 flex-shrink-0 transition-transform duration-200" />
+                {isActive && (
+                  <motion.div
+                    className="absolute inset-0 bg-white/10 rounded-lg sm:rounded-md"
+                    layoutId="activeShape"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
               </Button>
             );
           })}
@@ -231,8 +234,10 @@ export const GradientPreview: React.FC<GradientPreviewProps> = ({
       </div>
 
       {/* Preview container */}
-      <div className="relative flex justify-center items-center min-h-[200px]">
-        {renderPreview()}
+      <div className="relative flex justify-center items-center min-h-[200px] px-4">
+        <div className="w-full max-w-md flex justify-center">
+          {renderPreview()}
+        </div>
       </div>
     </header>
   );

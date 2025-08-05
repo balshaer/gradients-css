@@ -12,6 +12,54 @@
   .container {
     @apply max-w-7xl max-md:px-4;
   }
+  
+  /* Responsive grid improvements */
+  .gradient-grid {
+    @apply grid gap-8 pt-6;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+  
+  /* Smooth transitions for interactive elements */
+  .interactive-element {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  .interactive-element:hover {
+    @apply transform scale-105 shadow-xl;
+  }
+  
+  /* Enhanced focus states */
+  .focus-enhanced:focus {
+    @apply outline-none ring-2 ring-primary/30 ring-offset-2 ring-offset-background;
+  }
+  
+  /* Mobile-optimized touch targets */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+}
+
+@layer utilities {
+  /* Gradient animation keyframes */
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .animate-gradient {
+    animation: gradientShift 4s ease infinite;
+    background-size: 400% 400%;
+  }
+  
+  /* Search input enhancement */
+  .search-enhanced {
+    @apply relative transition-all duration-300;
+  }
+  
+  .search-enhanced:focus-within {
+    @apply transform scale-105 shadow-lg ring-2 ring-primary/20;
+  }
 }
 
 html,

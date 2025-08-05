@@ -1,8 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect, useMemo } from "react";
-import { SearchIcon, Shuffle, Plus } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { ColorFilter } from "@/components/controls/ColorFilter";
+import { FloatingSurpriseButton } from "@/components/layouts/FloatingSurpriseButton";
+import Footer from "@/components/layouts/Footer";
+import { CopyHistorySection } from "@/components/sections/CopyHistorySection";
+import { GradientCreator } from "@/components/sections/GradientCreator";
+import GradientGrid from "@/components/sections/GradientGrid";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { BrandKitBuilder } from "@/components/tools/BrandKitBuilder";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -11,16 +18,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import GradientGrid from "@/components/sections/GradientGrid";
-import Pagination from "@/components/layouts/Pagination";
-import Footer from "@/components/layouts/Footer";
-import { HeroSection } from "@/components/sections/HeroSection";
-import { ColorFilter } from "@/components/controls/ColorFilter";
-import { CopyHistorySection } from "@/components/sections/CopyHistorySection";
-import { GradientCreator } from "@/components/sections/GradientCreator";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { colorUtils } from "@/utils/colorUtils";
 import gradientsData from "@/data/gradients.json";
+import { colorUtils } from "@/utils/colorUtils";
+import { Plus, SearchIcon, Palette } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 // --- Types ---
 interface Gradient {
@@ -93,14 +94,21 @@ const GradientGallery: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = useDebouncedValue(searchTerm, 250);
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("name");
   const [background, setBackground] = useState("");
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
+  const [isBrandKitBuilderOpen, setIsBrandKitBuilderOpen] = useState(false);
+  const [displayedCount, setDisplayedCount] = useState(12);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const gradientsPerPage = 9;
+  // State for mood board
+  const [isMoodBoard, setIsMoodBoard] = useState(false);
+  const [moodBoardGradients, setMoodBoardGradients] = useState<Array<{ name: string; colors: string[] }>>([]);
+
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const gradientsPerLoad = 12;
 
   const { gradients, isLoading, error } = useGradients();
   const { favorites, toggleFavorite } = useFavorites();
@@ -191,7 +199,7 @@ const GradientGallery: React.FC = () => {
 
           return colorsname.some((gradientColor) => {
             const lowerGradientColor = (gradientColor ?? "").toLowerCase();
-            return searchTerms.some((term) =>
+            return searchTerms.some((term: string) =>
               lowerGradientColor.includes(term),
             );
           });
@@ -216,12 +224,13 @@ const GradientGallery: React.FC = () => {
     selectedColorsLower,
   ]);
 
-  const totalPages = Math.ceil(filteredGradients.length / gradientsPerPage);
   const currentGradients = useMemo(() => {
-    const start = (currentPage - 1) * gradientsPerPage;
-    const end = start + gradientsPerPage;
-
-    // Pre-filter valid gradients for better performance
+    // If in mood board mode, return mood board gradients
+    if (isMoodBoard && moodBoardGradients.length > 0) {
+      return moodBoardGradients;
+    }
+    
+    // Otherwise, use normal filtering logic
     const validGradients = filteredGradients.filter(
       (gradient): gradient is { name: string; colors: string[] } =>
         gradient.name !== undefined &&
@@ -230,42 +239,213 @@ const GradientGallery: React.FC = () => {
         gradient.colors.length > 0,
     );
 
-    return validGradients.slice(start, end);
-  }, [currentPage, filteredGradients, gradientsPerPage]);
+    return validGradients.slice(0, displayedCount);
+  }, [filteredGradients, displayedCount, isMoodBoard, moodBoardGradients]);
 
-  // --- Handlers ---
-  const handlePageChange = (direction: "next" | "prev") => {
-    setCurrentPage((prev) => (direction === "next" ? prev + 1 : prev - 1));
+  const hasMore = !isMoodBoard && currentGradients.length < filteredGradients.length;
+
+  // --- Infinite Scroll Logic ---
+  const loadMore = useCallback(() => {
+    if (isLoadingMore || !hasMore) return;
+
+    setIsLoadingMore(true);
+
+    // Simulate loading delay for better UX
+    setTimeout(() => {
+      setDisplayedCount((prev) => prev + gradientsPerLoad);
+      setIsLoadingMore(false);
+    }, 300);
+  }, [isLoadingMore, hasMore, gradientsPerLoad]);
+
+  // Intersection Observer for infinite scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting && hasMore && !isLoadingMore) {
+          loadMore();
+        }
+      },
+      {
+        root: null,
+        rootMargin: "100px",
+        threshold: 0.1,
+      },
+    );
+
+    const currentLoadMoreRef = loadMoreRef.current;
+    if (currentLoadMoreRef) {
+      observer.observe(currentLoadMoreRef);
+    }
+
+    return () => {
+      if (currentLoadMoreRef) {
+        observer.unobserve(currentLoadMoreRef);
+      }
+    };
+  }, [hasMore, isLoadingMore, loadMore]);
+
+  // Reset display count when filters change
+  useEffect(() => {
+    setDisplayedCount(gradientsPerLoad);
+    // Exit mood board mode when filters are applied
+    if (debouncedSearch || filter !== "all" || selectedColors.length > 0) {
+      setIsMoodBoard(false);
+      setMoodBoardGradients([]);
+    }
+  }, [debouncedSearch, filter, selectedColors, sortBy, gradientsPerLoad]);
+
+  // Advanced mood board themes
+  const moodBoardThemes = {
+    sunset: {
+      name: "Golden Hour",
+      description: "Warm, energetic gradients perfect for sunsets and energy",
+      colors: ['red', 'orange', 'yellow', 'pink', 'coral'],
+      keywords: ['sunset', 'sunrise', 'warm', 'fire', 'gold'],
+      count: 8
+    },
+    ocean: {
+      name: "Ocean Breeze",
+      description: "Cool, calming gradients inspired by water and sky",
+      colors: ['blue', 'teal', 'cyan', 'turquoise', 'aqua'],
+      keywords: ['ocean', 'sea', 'water', 'sky', 'wave'],
+      count: 8
+    },
+    nature: {
+      name: "Forest Path",
+      description: "Natural gradients with greens and earth tones",
+      colors: ['green', 'lime', 'forest', 'olive', 'sage'],
+      keywords: ['nature', 'forest', 'leaf', 'tree', 'earth'],
+      count: 8
+    },
+    mystic: {
+      name: "Mystic Dreams",
+      description: "Mysterious purples and deep cosmic colors",
+      colors: ['purple', 'violet', 'indigo', 'magenta', 'lavender'],
+      keywords: ['mystic', 'cosmic', 'dream', 'magic', 'space'],
+      count: 8
+    },
+    minimal: {
+      name: "Clean Slate",
+      description: "Elegant neutrals and monochromatic gradients",
+      colors: ['gray', 'grey', 'black', 'white', 'silver'],
+      keywords: ['minimal', 'clean', 'simple', 'elegant', 'mono'],
+      count: 8
+    },
+    vibrant: {
+      name: "Electric Vibes",
+      description: "Bold, high-energy gradients that pop",
+      colors: ['neon', 'bright', 'electric', 'vivid'],
+      keywords: ['electric', 'neon', 'bright', 'vivid', 'bold'],
+      count: 8
+    }
   };
 
-  const handleRandomGradient = () => {
-    if (filteredGradients.length === 0) return;
+  const [currentMoodTheme, setCurrentMoodTheme] = useState<keyof typeof moodBoardThemes | null>(null);
 
-    const randomIndex = Math.floor(Math.random() * filteredGradients.length);
-    const randomGradient = filteredGradients[randomIndex];
+  const generateMoodBoard = (theme?: keyof typeof moodBoardThemes) => {
+    if (gradients.length === 0) return;
 
-    // Clear search and filters to show all gradients
+    // Clear search and filters to show mood board
     setSearchTerm("");
     setFilter("all");
     setSelectedColors([]);
 
-    // Calculate which page the random gradient would be on (use original gradients array)
-    const randomGradientPosition = gradients.findIndex(
-      (g) => g.name === randomGradient.name,
-    );
-    if (randomGradientPosition !== -1) {
-      const targetPage =
-        Math.floor(randomGradientPosition / gradientsPerPage) + 1;
-      setCurrentPage(
-        Math.max(
-          1,
-          Math.min(targetPage, Math.ceil(gradients.length / gradientsPerPage)),
-        ),
-      );
+    const availableGradients = gradients.filter(g => g.name && g.colors && g.colors.length > 0);
+
+    let selectedGradients: typeof availableGradients = [];
+
+    if (theme && moodBoardThemes[theme]) {
+      const themeConfig = moodBoardThemes[theme];
+      setCurrentMoodTheme(theme);
+
+      // Filter gradients based on theme colors and keywords
+      const themeGradients = availableGradients.filter(g => {
+        const hasMatchingColor = g.colorsname?.some(color => 
+          themeConfig.colors.some(themeColor => 
+            color?.toLowerCase().includes(themeColor.toLowerCase())
+          )
+        );
+        
+        const hasMatchingKeyword = g.keywords?.some(keywordList =>
+          keywordList?.some(keyword =>
+            themeConfig.keywords.some(themeKeyword =>
+              keyword?.toLowerCase().includes(themeKeyword.toLowerCase())
+            )
+          )
+        ) || g.name?.toLowerCase().split(' ').some(namePart =>
+          themeConfig.keywords.some(themeKeyword =>
+            namePart.includes(themeKeyword.toLowerCase())
+          )
+        );
+
+        return hasMatchingColor || hasMatchingKeyword;
+      });
+
+      // If we have enough theme gradients, use them; otherwise supplement with random ones
+      if (themeGradients.length >= themeConfig.count) {
+        selectedGradients = themeGradients
+          .sort(() => Math.random() - 0.5)
+          .slice(0, themeConfig.count);
+      } else {
+        // Use all theme gradients and fill with random ones
+        const remainingCount = themeConfig.count - themeGradients.length;
+        const randomGradients = availableGradients
+          .filter(g => !themeGradients.includes(g))
+          .sort(() => Math.random() - 0.5)
+          .slice(0, remainingCount);
+        
+        selectedGradients = [...themeGradients, ...randomGradients]
+          .sort(() => Math.random() - 0.5);
+      }
     } else {
-      // Fallback: go to first page
-      setCurrentPage(1);
+      // Generate a balanced mixed mood board
+      setCurrentMoodTheme(null);
+      
+      const categoryGradients: { [key: string]: typeof availableGradients } = {};
+      
+      // Categorize gradients
+      Object.entries(moodBoardThemes).forEach(([key, config]) => {
+        categoryGradients[key] = availableGradients.filter(g => {
+          const hasMatchingColor = g.colorsname?.some(color => 
+            config.colors.some(themeColor => 
+              color?.toLowerCase().includes(themeColor.toLowerCase())
+            )
+          );
+          return hasMatchingColor;
+        });
+      });
+
+      // Select 2 gradients from each category
+      Object.values(categoryGradients).forEach(categoryList => {
+        if (categoryList.length > 0) {
+          const selected = categoryList
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 2);
+          selectedGradients.push(...selected);
+        }
+      });
+
+      // Shuffle final selection
+      selectedGradients = selectedGradients
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 12);
     }
+
+    const finalSelection = selectedGradients
+      .filter((g): g is { name: string; colors: string[] } => 
+        g.name !== undefined && g.colors !== undefined
+      )
+      .map(g => ({ name: g.name, colors: g.colors }));
+
+    setMoodBoardGradients(finalSelection);
+    setIsMoodBoard(true);
+    setDisplayedCount(finalSelection.length);
+    
+    // Scroll to top to show the mood board
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 100);
   };
 
   const handleGradientFromHistory = (gradientName: string) => {
@@ -273,7 +453,7 @@ const GradientGallery: React.FC = () => {
     setSearchTerm(gradientName);
     setFilter("all");
     setSelectedColors([]);
-    setCurrentPage(1);
+    setDisplayedCount(gradientsPerLoad);
   };
 
   const handleSaveGradient = (newGradient: {
@@ -304,102 +484,164 @@ const GradientGallery: React.FC = () => {
         <div className="mx-auto max-w-6xl space-y-2 pt-12">
           <HeroSection />
 
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-4 lg:flex-row">
-              <div className="relative w-full min-w-32 lg:max-w-80" id="input">
-                <Input
-                  placeholder="Search by color name or keyword..."
-                  className="invalid:border-error-500 invalid:focus:border-error-500 hover:border-brand-500-secondary text-placeholder peer block h-full w-full appearance-none overflow-hidden overflow-ellipsis text-nowrap rounded-md border border-border bg-input px-3 py-2 pr-[48px] text-sm outline-none focus:border-none focus:shadow-none focus:outline-none"
-                  id="floating_outlined"
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                />
-                <SearchIcon className="absolute bottom-0 right-2 top-0 m-auto h-5 w-5 text-primary" />
+          <div className="flex flex-col gap-8">
+            {/* Search Section */}
+            <div className="space-y-4">
+              <div className="relative">
+                <div className="group relative transition-all duration-300" id="input">
+                  <Input
+                    placeholder="Search by color name or keyword..."
+                    className="h-12 w-full rounded-lg border border-border bg-background px-4 pr-12 text-foreground transition-all duration-300 placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                    }}
+                  />
+                  <SearchIcon className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground transition-colors duration-300 group-hover:text-primary" />
+                </div>
               </div>
 
-              <div className="flex w-full flex-col gap-2 md:flex-row">
-                <ColorFilter
-                  availableColors={availableColors}
-                  selectedColors={selectedColors}
-                  onColorChange={(colors) => {
-                    setSelectedColors(colors);
-                    setCurrentPage(1);
-                  }}
-                  className="w-full"
-                />
+              {/* Controls */}
+              <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-5">
+                <div className="sm:order-1">
+                  <ColorFilter
+                    availableColors={availableColors}
+                    selectedColors={selectedColors}
+                    onColorChange={(colors) => {
+                      setSelectedColors(colors);
+                    }}
+                  />
+                </div>
 
-                <Select
-                  value={filter}
-                  onValueChange={(value) => {
-                    setFilter(value);
-                    setCurrentPage(1);
-                  }}
-                >
-                  <SelectTrigger className="nofocus nohover w-full border-none outline-none">
-                    <SelectValue placeholder="Filter" />
-                  </SelectTrigger>
-                  <SelectContent className="nofocus nohover border-none outline-none">
-                    <SelectItem value="all">All Gradients</SelectItem>
-                    <SelectItem value="favorites">Favorites</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="sm:order-2">
+                  <Select
+                    value={filter}
+                    onValueChange={(value) => {
+                      setFilter(value);
+                    }}
+                  >
+                    <SelectTrigger className="h-11 w-full rounded-lg border-border transition-all duration-200 hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20">
+                      <SelectValue placeholder="Filter" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-lg border-border shadow-xl">
+                      <SelectItem value="all">All Gradients</SelectItem>
+                      <SelectItem value="favorites">Favorites</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                <Select
-                  value={sortBy}
-                  onValueChange={(value) => {
-                    setSortBy(value);
-                    setCurrentPage(1);
-                  }}
-                >
-                  <SelectTrigger className="nofocus nohover w-full border-none outline-none">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent className="nofocus nohover border-none outline-none">
-                    <SelectItem value="name">Name A-Z</SelectItem>
-                    <SelectItem value="brightness">Brightness</SelectItem>
-                    <SelectItem value="hue">Color Hue</SelectItem>
-                    <SelectItem value="favorites">Favorites First</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                <div className="sm:order-3">
+                  <Select
+                    value={sortBy}
+                    onValueChange={(value) => {
+                      setSortBy(value);
+                    }}
+                  >
+                    <SelectTrigger className="h-11 w-full rounded-lg border-border transition-all duration-200 hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20">
+                      <SelectValue placeholder="Sort by" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-lg border-border shadow-xl">
+                      <SelectItem value="name">Name A-Z</SelectItem>
+                      <SelectItem value="brightness">Brightness</SelectItem>
+                      <SelectItem value="hue">Color Hue</SelectItem>
+                      <SelectItem value="favorites">Favorites First</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div className="flex flex-col gap-2 lg:flex-row">
-                <Button
-                  onClick={handleRandomGradient}
-                  variant="outline"
-                  className="flex items-center gap-2 whitespace-nowrap"
-                  disabled={filteredGradients.length === 0}
-                >
-                  <Shuffle className="h-4 w-4" />
-                  Surprise Me
-                </Button>
+                <div className="flex items-center gap-2 sm:order-4 sm:col-span-2 lg:col-span-2">
+                  <CopyHistorySection
+                    onGradientSelect={handleGradientFromHistory}
+                  />
 
-                <CopyHistorySection
-                  onGradientSelect={handleGradientFromHistory}
-                />
+                  <Dialog open={isCreatorOpen} onOpenChange={setIsCreatorOpen}>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="default"
+                        className="flex h-11 items-center justify-center gap-2 whitespace-nowrap transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                      >
+                        <Plus className="h-4 w-4" />
+                        <span className="hidden sm:inline">Create Gradient</span>
+                        <span className="sm:hidden">Create</span>
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+                      <GradientCreator onSave={handleSaveGradient} />
+                    </DialogContent>
+                  </Dialog>
 
-                <Dialog open={isCreatorOpen} onOpenChange={setIsCreatorOpen}>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="default"
-                      className="flex items-center gap-2 whitespace-nowrap"
-                    >
-                      <Plus className="h-4 w-4" />
-                      Create Gradient
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
-                    <GradientCreator onSave={handleSaveGradient} />
-                  </DialogContent>
-                </Dialog>
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsBrandKitBuilderOpen(true)}
+                    className="flex h-11 items-center justify-center gap-2 whitespace-nowrap transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  >
+                    <Palette className="h-4 w-4" />
+                    <span className="hidden sm:inline">Brand Kit</span>
+                    <span className="sm:hidden">Brand</span>
+                  </Button>
+                </div>
               </div>
             </div>
 
-            {(selectedColors.length > 0 || searchTerm || filter !== "all") && (
+            {isMoodBoard ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full bg-gradient-to-r from-pink-500 to-violet-500"></div>
+                    <div>
+                      <h3 className="font-medium text-foreground">
+                        {currentMoodTheme ? moodBoardThemes[currentMoodTheme].name : "Mixed Mood Board"}
+                      </h3>
+                      <p className="text-sm text-foreground/60">
+                        {currentMoodTheme 
+                          ? moodBoardThemes[currentMoodTheme].description
+                          : `${moodBoardGradients.length} curated gradients from various themes`
+                        }
+                      </p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      setIsMoodBoard(false);
+                      setMoodBoardGradients([]);
+                      setCurrentMoodTheme(null);
+                      setDisplayedCount(gradientsPerLoad);
+                    }}
+                    className="text-primary hover:text-primary/80 underline"
+                  >
+                    View all gradients
+                  </button>
+                </div>
+                
+                {/* Theme selector */}
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => generateMoodBoard()}
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                      !currentMoodTheme 
+                        ? 'bg-primary text-primary-foreground' 
+                        : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                    }`}
+                  >
+                    Mixed
+                  </button>
+                  {Object.entries(moodBoardThemes).map(([key, theme]) => (
+                    <button
+                      key={key}
+                      onClick={() => generateMoodBoard(key as keyof typeof moodBoardThemes)}
+                      className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                        currentMoodTheme === key 
+                          ? 'bg-primary text-primary-foreground' 
+                          : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                      }`}
+                    >
+                      {theme.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (selectedColors.length > 0 || searchTerm || filter !== "all") && (
               <div className="text-foreground/70 text-sm">
                 Showing {filteredGradients.length} gradient
                 {filteredGradients.length !== 1 ? "s" : ""}
@@ -434,13 +676,66 @@ const GradientGallery: React.FC = () => {
             />
           )}
 
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          {/* Infinite Scroll Trigger */}
+          {hasMore && (
+            <div ref={loadMoreRef} className="flex justify-center py-8">
+              {isLoadingMore ? (
+                <div className="text-foreground/60 flex items-center gap-2">
+                  <div className="border-primary/30 h-5 w-5 animate-spin rounded-full border-2 border-t-primary"></div>
+                  <span>Loading more gradients...</span>
+                </div>
+              ) : (
+                  <div className="text-foreground/40 text-sm">
+                  Scroll to load more
+                </div>
+              )}
+            </div>
+          )}
+
+          {!hasMore && currentGradients.length > 0 && (
+            <div className="text-foreground/60 py-8 text-center">
+              <p>You've reached the end! 🎉</p>
+              <p className="mt-1 text-sm">
+                Showing all {currentGradients.length} gradients
+              </p>
+            </div>
+          )}
         </div>
         <Footer />
+
+        <FloatingSurpriseButton
+          onClick={() => {
+            if (isMoodBoard) {
+              // Cycle through themes if already in mood board mode
+              const themeKeys = Object.keys(moodBoardThemes) as Array<keyof typeof moodBoardThemes>;
+              const currentIndex = currentMoodTheme ? themeKeys.indexOf(currentMoodTheme) : -1;
+              const nextIndex = (currentIndex + 1) % (themeKeys.length + 1); // +1 for mixed mode
+              
+              if (nextIndex === themeKeys.length) {
+                generateMoodBoard(); // Mixed mode
+              } else {
+                generateMoodBoard(themeKeys[nextIndex]);
+              }
+            } else {
+              // First click - generate mixed mood board
+              generateMoodBoard();
+            }
+          }}
+          disabled={gradients.length === 0}
+          isActive={isMoodBoard}
+          tooltip={
+            isMoodBoard 
+              ? `${currentMoodTheme ? moodBoardThemes[currentMoodTheme].name : 'Mixed'} - Click for next theme`
+              : 'Generate Mood Board'
+          }
+        />
+
+        {isBrandKitBuilderOpen && (
+          <BrandKitBuilder
+            gradients={isMoodBoard ? moodBoardGradients : currentGradients}
+            onClose={() => setIsBrandKitBuilderOpen(false)}
+          />
+        )}
       </div>
     </TooltipProvider>
   );

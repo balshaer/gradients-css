@@ -12,6 +12,8 @@ import { GradientCardProps } from "@/types/types";
 import { ExportModal } from "../layouts/ExportModal";
 import { GradientData } from "@/utils/exportUtils";
 import { animatedGradientUtils, AnimatedGradientOptions } from "@/utils/animatedGradientUtils";
+import { PatternGenerator } from "../tools/PatternGenerator";
+import { BrandKitBuilder } from "../tools/BrandKitBuilder";
 
 export default function GradientCard({
   gradient,
@@ -22,6 +24,8 @@ export default function GradientCard({
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isAnimated, setIsAnimated] = useState(false);
   const [animationSpeed, setAnimationSpeed] = useState(1);
+  const [isPatternGeneratorOpen, setIsPatternGeneratorOpen] = useState(false);
+  const [isBrandKitBuilderOpen, setIsBrandKitBuilderOpen] = useState(false);
   const {
     selectedColorFormat,
     setSelectedColorFormat,
@@ -102,7 +106,7 @@ export default function GradientCard({
         return animatedGradientUtils.generateAnimatedSVG(animatedOptions);
       case "json":
         return animatedGradientUtils.generateAnimatedJSON(animatedOptions);
-      default:
+      default: {
         const gradientStyle = `linear-gradient(${angle}deg, ${formattedColors.join(", ")})`;
         return gradientType === "background"
           ? `background-image: ${gradientStyle};`
@@ -110,6 +114,7 @@ export default function GradientCard({
 background-image: ${gradientStyle};
 -webkit-background-clip: text;
 background-clip: text;`;
+      }
     }
   };
 
@@ -120,62 +125,84 @@ background-clip: text;`;
   const { theme } = useTheme();
 
   return (
-    <MagicCard
-      gradientColor={theme === "dark" ? "#262626" : "#282828"}
-      className="overflow-hidden transition-all duration-300"
-    >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={gradientType}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-        >
-          <GradientPreview
-            style={getCodePreview()}
-            gradientType={gradientType}
-            gradient={gradient}
-            isAnimated={isAnimated}
-            animationSpeed={animationSpeed}
-          />
-        </motion.div>
-      </AnimatePresence>
-      <footer className="flex flex-col items-start space-y-4 p-4 w-full max-w-full">
-        <div className="flex w-full items-center justify-between">
+    <>
+      <MagicCard
+        gradientColor={theme === "dark" ? "#262626" : "#282828"}
+        className="w-full overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl group"
+      >
+      <div className="flex flex-col h-full">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={gradientType}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="flex-1"
+          >
+            <GradientPreview
+              style={getCodePreview()}
+              gradientType={gradientType}
+              gradient={gradient}
+              isAnimated={isAnimated}
+              animationSpeed={animationSpeed}
+            />
+          </motion.div>
+        </AnimatePresence>
+        
+        <div className="p-6 sm:p-8 bg-card/50 backdrop-blur-sm border-t border-border/50 space-y-6">
           <GradientHeader
             name={gradient.name}
             isFavorite={isFavorite}
             onFavoriteToggle={handleFavoriteToggle}
             onExport={handleExport}
+            onPatternGenerator={() => setIsPatternGeneratorOpen(true)}
+            onBrandKitBuilder={() => setIsBrandKitBuilderOpen(true)}
+          />
+
+          <GradientCardFooter
+            gradient={gradient}
+            getColorInFormat={getColorInFormat}
+            copyToClipboard={copyToClipboard}
+            selectedColorFormat={selectedColorFormat}
+            setSelectedColorFormat={setSelectedColorFormat}
+            colorFormats={colorFormats}
+            gradientType={gradientType}
+            setGradientType={setGradientType}
+            angle={angle}
+            setAngle={setAngle}
+            getCode={getCode}
+            copiedStates={copiedStates}
+            isAnimated={isAnimated}
+            setIsAnimated={setIsAnimated}
+            animationSpeed={animationSpeed}
+            setAnimationSpeed={setAnimationSpeed}
           />
         </div>
-
-        <GradientCardFooter
-          gradient={gradient}
-          getColorInFormat={getColorInFormat}
-          copyToClipboard={copyToClipboard}
-          selectedColorFormat={selectedColorFormat}
-          setSelectedColorFormat={setSelectedColorFormat}
-          colorFormats={colorFormats}
-          gradientType={gradientType}
-          setGradientType={setGradientType}
-          angle={angle}
-          setAngle={setAngle}
-          getCode={getCode}
-          copiedStates={copiedStates}
-          isAnimated={isAnimated}
-          setIsAnimated={setIsAnimated}
-          animationSpeed={animationSpeed}
-          setAnimationSpeed={setAnimationSpeed}
-        />
-      </footer>
+      </div>
 
       <ExportModal
         isOpen={isExportModalOpen}
         onClose={() => setIsExportModalOpen(false)}
         gradientData={gradientData}
       />
-    </MagicCard>
+
+      </MagicCard>
+
+      {/* Modals rendered outside card to appear as proper overlays */}
+      {isPatternGeneratorOpen && (
+        <PatternGenerator
+          gradient={gradient}
+          onClose={() => setIsPatternGeneratorOpen(false)}
+        />
+      )}
+
+      {isBrandKitBuilderOpen && (
+        <BrandKitBuilder
+          gradients={[gradient]}
+          onClose={() => setIsBrandKitBuilderOpen(false)}
+        />
+      )}
+    </>
   );
 }

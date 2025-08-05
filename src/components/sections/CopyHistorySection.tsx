@@ -60,9 +60,10 @@ export function CopyHistorySection({ onGradientSelect }: CopyHistorySectionProps
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="flex items-center gap-2">
+        <Button variant="outline" className="flex h-11 items-center gap-2 whitespace-nowrap">
           <Clock className="h-4 w-4" />
-          Recent Copies ({getCopyCount()})
+          <span className="hidden sm:inline">Recent Copies ({getCopyCount()})</span>
+          <span className="sm:hidden">Recent ({getCopyCount()})</span>
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>

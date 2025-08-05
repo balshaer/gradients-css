@@ -43,8 +43,8 @@ export const GradientCardFooter: React.FC<GradientCardFooterProps> = ({
   animationSpeed,
   setAnimationSpeed,
 }) => (
-  <div className="flex flex-col items-start space-y-4 max-w-full">
-    <div className="flex w-full items-center justify-between gap-2">
+  <div className="flex flex-col items-start space-y-5 sm:space-y-6 max-w-full">
+    <div className="flex w-full items-center justify-between gap-3 sm:gap-4">
       <ColorSwatches
         colors={gradient.colors}
         getColorInFormat={getColorInFormat}
@@ -70,7 +70,7 @@ export const GradientCardFooter: React.FC<GradientCardFooterProps> = ({
     />
 
     {/* Animation Controls */}
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 sm:gap-4 w-full">
       <AnimatedCheckbox
         checked={isAnimated}
         onChange={setIsAnimated}
