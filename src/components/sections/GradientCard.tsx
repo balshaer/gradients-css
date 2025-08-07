@@ -1,31 +1,34 @@
+// @TODO : Make a new feat allow users copy code as animation
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import { useTheme } from "next-themes";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { MagicCard } from "@/components/ui/MagicCard";
 import { GradientPreview } from "./GradientPreview";
 import { GradientHeader } from "./GradientHeader";
-import { GradientCardFooter } from "./GradientCardFooter";
+import { ColorSwatches } from "../controls/ColorSwatches";
+import { AngleSlider } from "../controls/AngleSlider";
+import { GradientTypeSelector } from "../controls/GradientTypeSelector";
 import { useColorFormat } from "@/hooks/useColorFormat";
 import { useCopyState } from "@/hooks/useCopyState";
 
 import { GradientCardProps } from "@/types/types";
-import { ExportModal } from "../layouts/ExportModal";
-import { GradientData } from "@/utils/exportUtils";
-import { animatedGradientUtils, AnimatedGradientOptions } from "@/utils/animatedGradientUtils";
-import { PatternGenerator } from "../tools/PatternGenerator";
-import { BrandKitBuilder } from "../tools/BrandKitBuilder";
+import { CodePreview } from "../layouts/CodePreview";
 
 export default function GradientCard({
   gradient,
   isFavorite,
   onFavoriteToggle,
 }: GradientCardProps) {
+  const [activeTab, setActiveTab] = useState("tailwind");
   const [angle, setAngle] = useState(90);
-  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
-  const [isAnimated, setIsAnimated] = useState(false);
-  const [animationSpeed, setAnimationSpeed] = useState(1);
-  const [isPatternGeneratorOpen, setIsPatternGeneratorOpen] = useState(false);
-  const [isBrandKitBuilderOpen, setIsBrandKitBuilderOpen] = useState(false);
   const {
     selectedColorFormat,
     setSelectedColorFormat,
@@ -33,88 +36,108 @@ export default function GradientCard({
     gradientType,
     setGradientType,
   } = useColorFormat();
-  const { copiedStates, copyToClipboard } = useCopyState(gradient.name, gradient.colors);
+  const { copiedStates, copyToClipboard } = useCopyState();
 
   const colorFormats = ["HEX", "RGB", "HSL"];
-
-  // Create gradient data for export
-  const gradientData: GradientData = {
-    name: gradient.name,
-    colors: gradient.colors,
-    angle: angle,
-    type: gradientType,
-  };
-
-  const handleExport = () => {
-    setIsExportModalOpen(true);
-  };
 
   const getCodePreview = () => {
     const formattedColors = gradient.colors.map((color) =>
       getColorInFormat(color),
     );
     const gradientStyle = `linear-gradient(${angle}deg, ${formattedColors.join(", ")})`;
-
-    if (gradientType === "background") {
-      return isAnimated ? {
-        backgroundImage: gradientStyle,
-        backgroundSize: "400% 400%",
-        animation: `gradientShift ${4 / animationSpeed}s ease infinite`,
-      } : { backgroundImage: gradientStyle };
-    } else {
-      return isAnimated ? {
-        color: "transparent",
-        backgroundImage: gradientStyle,
-        backgroundSize: "400% 400%",
-        WebkitBackgroundClip: "text",
-        backgroundClip: "text",
-        animation: `gradientShift ${4 / animationSpeed}s ease infinite`,
-      } : {
-        color: "transparent",
-        backgroundImage: gradientStyle,
-        WebkitBackgroundClip: "text",
-        backgroundClip: "text",
-      };
-    }
+    return gradientType === "background"
+      ? { backgroundImage: gradientStyle }
+      : {
+          color: "transparent",
+          backgroundImage: gradientStyle,
+          WebkitBackgroundClip: "text",
+        };
   };
 
   const getCode = (format: string) => {
     const formattedColors = gradient.colors.map((color) =>
       getColorInFormat(color),
     );
+    const firstColor = formattedColors[0];
+    const lastColor = formattedColors[formattedColors.length - 1];
+    const hasMiddleColor = formattedColors.length === 3;
+    const middleColor = hasMiddleColor ? formattedColors[1] : null;
 
-    const animatedOptions: AnimatedGradientOptions = {
-      colors: formattedColors,
-      angle,
-      isAnimated,
-      animationSpeed,
-      gradientType,
-    };
+    const gradientStyle = `linear-gradient(${angle}deg, ${formattedColors.join(", ")})`;
 
     switch (format) {
       case "tailwind":
-        return animatedGradientUtils.generateAnimatedTailwind(animatedOptions);
+        if (gradientType === "background") {
+          return hasMiddleColor
+            ? `bg-gradient-to-r from-[${firstColor}] via-[${middleColor}] to-[${lastColor}]`
+            : `bg-gradient-to-r from-[${firstColor}] to-[${lastColor}]`;
+        } else {
+          return `text-transparent bg-clip-text bg-gradient-to-r from-[${firstColor}] ${hasMiddleColor ? `via-[${middleColor}] ` : ""}to-[${lastColor}]`;
+        }
       case "css":
-        return animatedGradientUtils.generateAnimatedCSS(animatedOptions);
-      case "sass":
-        return animatedGradientUtils.generateAnimatedSass(animatedOptions);
-      case "bootstrap":
-        return animatedGradientUtils.generateAnimatedBootstrap(animatedOptions);
-      case "xml":
-        return animatedGradientUtils.generateAnimatedXML(animatedOptions);
-      case "svg":
-        return animatedGradientUtils.generateAnimatedSVG(animatedOptions);
-      case "json":
-        return animatedGradientUtils.generateAnimatedJSON(animatedOptions);
-      default: {
-        const gradientStyle = `linear-gradient(${angle}deg, ${formattedColors.join(", ")})`;
         return gradientType === "background"
           ? `background-image: ${gradientStyle};`
           : `color: transparent;
 background-image: ${gradientStyle};
 -webkit-background-clip: text;
 background-clip: text;`;
-      }
+      case "sass":
+        return `// Gradient using ${selectedColorFormat} colors
+$color-1: ${firstColor};
+${hasMiddleColor ? `$color-2: ${middleColor};` : ""}
+$color-final: ${lastColor};
+$gradient-angle: ${angle}deg;
+${gradientType === "background" ? "background-image" : "color"}: linear-gradient(
+  $gradient-angle,
+  $color-1,
+  ${hasMiddleColor ? "$color-2," : ""}
+  $color-final
+);
+${
+  gradientType === "text"
+    ? `
+color: transparent;
+background-image: linear-gradient(
+  $gradient-angle,
+  $color-1,
+  ${hasMiddleColor ? "$color-2," : ""}
+  $color-final
+);
+-webkit-background-clip: text;
+background-clip: text;`
+    : ""
+}`;
+      case "bootstrap":
+        return `// Bootstrap gradient using ${selectedColorFormat} colors
+$gradient-degrees: ${angle};
+$start-color: ${firstColor};
+${hasMiddleColor ? `$middle-color: ${middleColor};` : ""}
+$end-color: ${lastColor};
+
+.gradient {
+  ${
+    gradientType === "background"
+      ? `
+  background-image: linear-gradient(
+    #{$gradient-degrees}deg,
+    $start-color,
+    ${hasMiddleColor ? "$middle-color," : ""}
+    $end-color
+  );`
+      : `
+  color: transparent;
+  background-image: linear-gradient(
+    #{$gradient-degrees}deg,
+    $start-color,
+    ${hasMiddleColor ? "$middle-color," : ""}
+    $end-color
+  );
+  -webkit-background-clip: text;
+  background-clip: text;`
+  }
+}`;
+      default:
+        return "";
     }
   };
 
@@ -125,84 +148,120 @@ background-clip: text;`;
   const { theme } = useTheme();
 
   return (
-    <>
-      <MagicCard
-        gradientColor={theme === "dark" ? "#262626" : "#282828"}
-        className="w-full overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl group"
-      >
-      <div className="flex flex-col h-full">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={gradientType}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="flex-1"
-          >
-            <GradientPreview
-              style={getCodePreview()}
-              gradientType={gradientType}
-              gradient={gradient}
-              isAnimated={isAnimated}
-              animationSpeed={animationSpeed}
-            />
-          </motion.div>
-        </AnimatePresence>
-        
-        <div className="p-6 sm:p-8 bg-card/50 backdrop-blur-sm border-t border-border/50 space-y-6">
+    <MagicCard
+      gradientColor={theme === "dark" ? "#262626" : "#282828"}
+      className="overflow-hidden transition-all duration-300"
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={gradientType}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <GradientPreview
+            style={getCodePreview()}
+            gradientType={gradientType}
+            gradient={gradient}
+          />
+        </motion.div>
+      </AnimatePresence>
+      <footer className="flex flex-col items-start space-y-4 p-4">
+        <div className="flex w-full items-center justify-between">
           <GradientHeader
             name={gradient.name}
             isFavorite={isFavorite}
             onFavoriteToggle={handleFavoriteToggle}
-            onExport={handleExport}
-            onPatternGenerator={() => setIsPatternGeneratorOpen(true)}
-            onBrandKitBuilder={() => setIsBrandKitBuilderOpen(true)}
-          />
-
-          <GradientCardFooter
-            gradient={gradient}
-            getColorInFormat={getColorInFormat}
-            copyToClipboard={copyToClipboard}
-            selectedColorFormat={selectedColorFormat}
-            setSelectedColorFormat={setSelectedColorFormat}
-            colorFormats={colorFormats}
-            gradientType={gradientType}
-            setGradientType={setGradientType}
-            angle={angle}
-            setAngle={setAngle}
-            getCode={getCode}
-            copiedStates={copiedStates}
-            isAnimated={isAnimated}
-            setIsAnimated={setIsAnimated}
-            animationSpeed={animationSpeed}
-            setAnimationSpeed={setAnimationSpeed}
           />
         </div>
-      </div>
 
-      <ExportModal
-        isOpen={isExportModalOpen}
-        onClose={() => setIsExportModalOpen(false)}
-        gradientData={gradientData}
-      />
+        <div className="flex w-full items-center justify-between gap-2">
+          <ColorSwatches
+            colors={gradient.colors}
+            getColorInFormat={getColorInFormat}
+            copyToClipboard={(text, key) => {
+              copyToClipboard(text, key);
+            }}
+          />
 
-      </MagicCard>
+          <div className="flex gap-1">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="nofocus inline-flex">
+                <div className="flex w-24 items-center justify-between rounded-md border border-border bg-secondary p-2 text-sm text-primary">
+                  <span>{selectedColorFormat}</span>
+                  <ChevronDown className="h-4 w-4" />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="w-24 rounded-md border border-border bg-secondary p-1"
+              >
+                {colorFormats.map((format) => (
+                  <DropdownMenuItem
+                    key={format}
+                    onSelect={() => {
+                      setSelectedColorFormat(format);
+                    }}
+                    className="hover:bg-primary/10 cursor-pointer rounded px-2 py-1.5 text-sm text-primary"
+                  >
+                    {format}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-      {/* Modals rendered outside card to appear as proper overlays */}
-      {isPatternGeneratorOpen && (
-        <PatternGenerator
-          gradient={gradient}
-          onClose={() => setIsPatternGeneratorOpen(false)}
+            <div>{/* <Checkbox /> */}</div>
+
+            <GradientTypeSelector
+              gradientType={gradientType}
+              setGradientType={(type) => {
+                setGradientType(type);
+              }}
+            />
+          </div>
+        </div>
+
+        <AngleSlider
+          angle={angle}
+          setAngle={(newAngle) => {
+            setAngle(newAngle);
+          }}
         />
-      )}
 
-      {isBrandKitBuilderOpen && (
-        <BrandKitBuilder
-          gradients={[gradient]}
-          onClose={() => setIsBrandKitBuilderOpen(false)}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="nofocus relative w-full">
+            <div className="flex items-center justify-between rounded-md border border-border bg-secondary p-2 text-sm text-primary">
+              <span>{activeTab}</span>
+              <ChevronDown className="h-4 w-4" />
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            className="w-48 rounded-md border border-border bg-secondary p-1"
+          >
+            {["tailwind", "css", "sass", "bootstrap"].map((format) => (
+              <DropdownMenuItem
+                key={format}
+                onSelect={() => {
+                  setActiveTab(format);
+                }}
+                className="hover:bg-primary/10 cursor-pointer rounded px-2 py-1.5 text-sm text-primary"
+              >
+                {format.charAt(0).toUpperCase() + format.slice(1)}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <CodePreview
+          code={getCode(activeTab)}
+          copiedStates={copiedStates}
+          activeTab={activeTab}
+          copyToClipboard={(text, key) => {
+            copyToClipboard(text, key);
+          }}
         />
-      )}
-    </>
+      </footer>
+    </MagicCard>
   );
 }

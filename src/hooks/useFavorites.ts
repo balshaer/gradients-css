@@ -1,26 +1,22 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function useFavorites() {
   const [favorites, setFavorites] = useState<string[]>([]);
 
   useEffect(() => {
-    const storedFavorites = localStorage.getItem("gradientFavorites");
-    if (storedFavorites) {
-      setFavorites(JSON.parse(storedFavorites));
-    }
+    const stored = localStorage.getItem("gradientFavorites");
+    if (stored) setFavorites(JSON.parse(stored));
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("gradientFavorites", JSON.stringify(favorites));
+  }, [favorites]);
+
   const toggleFavorite = (name: string) => {
-    setFavorites((prev) => {
-      const newFavorites = prev.includes(name)
-        ? prev.filter((f) => f !== name)
-        : [...prev, name];
-      localStorage.setItem("gradientFavorites", JSON.stringify(newFavorites));
-      return newFavorites;
-    });
+    setFavorites((prev) =>
+      prev.includes(name) ? prev.filter((f) => f !== name) : [...prev, name]
+    );
   };
 
-  const getFavoriteCount = () => favorites.length;
-
-  return { favorites, toggleFavorite, getFavoriteCount };
+  return { favorites, toggleFavorite };
 }
