@@ -20,7 +20,7 @@ import gradientsData from "@/data/gradients.json";
 
 // --- Types ---
 interface Gradient {
-  name?: string; // allow possibly undefined!
+  name?: string;                // allow possibly undefined!
   colors?: string[];
   colorsname?: string[];
   keywords?: string[][];
@@ -40,9 +40,7 @@ function useGradients() {
         // Use the imported local data
         setGradients(gradientsData as Gradient[]);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to load gradients",
-        );
+        setError(err instanceof Error ? err.message : "Failed to load gradients");
       } finally {
         setIsLoading(false);
       }
@@ -67,7 +65,7 @@ function useFavorites() {
 
   const toggleFavorite = (name: string) => {
     setFavorites((prev) =>
-      prev.includes(name) ? prev.filter((f) => f !== name) : [...prev, name],
+      prev.includes(name) ? prev.filter((f) => f !== name) : [...prev, name]
     );
   };
 
@@ -88,12 +86,12 @@ function useDebouncedValue<T>(value: T, delay: number): T {
 const HomePage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = useDebouncedValue(searchTerm, 250);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("all");
   const [background, setBackground] = useState("");
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const gradientsPerPage = 9;
 
@@ -104,6 +102,8 @@ const HomePage: React.FC = () => {
   const availableColors = useMemo(() => {
     return colorUtils.getSimplifiedColors(gradients);
   }, [gradients]);
+
+
 
   // --- Filtering Logic ---
   const filteredGradients = useMemo(() => {
@@ -121,12 +121,12 @@ const HomePage: React.FC = () => {
         !debouncedSearch ||
         name.toLowerCase().includes(debouncedLower) ||
         colorsname.some((color) =>
-          (color ?? "").toLowerCase().includes(debouncedLower),
+          (color ?? "").toLowerCase().includes(debouncedLower)
         ) ||
         keywords.some((kwList) =>
           (kwList ?? []).some((kw) =>
-            (kw ?? "").toLowerCase().includes(debouncedLower),
-          ),
+            (kw ?? "").toLowerCase().includes(debouncedLower)
+          )
         );
 
       // Favorites match
@@ -142,77 +142,22 @@ const HomePage: React.FC = () => {
             const lowerGradientColor = (gradientColor ?? "").toLowerCase();
             const lowerSelectedColor = (selectedColor ?? "").toLowerCase();
 
-            if (
-              lowerSelectedColor === "red" &&
-              lowerGradientColor.includes("red")
-            )
-              return true;
-            if (
-              lowerSelectedColor === "pink" &&
-              lowerGradientColor.includes("pink")
-            )
-              return true;
-            if (
-              lowerSelectedColor === "orange" &&
-              lowerGradientColor.includes("orange")
-            )
-              return true;
-            if (
-              lowerSelectedColor === "yellow" &&
-              lowerGradientColor.includes("yellow")
-            )
-              return true;
-            if (
-              lowerSelectedColor === "green" &&
-              lowerGradientColor.includes("green")
-            )
-              return true;
-            if (
-              lowerSelectedColor === "blue" &&
-              lowerGradientColor.includes("blue")
-            )
-              return true;
-            if (
-              lowerSelectedColor === "purple" &&
-              (lowerGradientColor.includes("purple") ||
-                lowerGradientColor.includes("violet"))
-            )
-              return true;
-            if (
-              lowerSelectedColor === "brown" &&
-              (lowerGradientColor.includes("brown") ||
-                lowerGradientColor.includes("beige"))
-            )
-              return true;
-            if (
-              lowerSelectedColor === "black" &&
-              lowerGradientColor.includes("black")
-            )
-              return true;
-            if (
-              lowerSelectedColor === "white" &&
-              lowerGradientColor.includes("white")
-            )
-              return true;
-            if (
-              lowerSelectedColor === "gray" &&
-              (lowerGradientColor.includes("gray") ||
-                lowerGradientColor.includes("grey"))
-            )
-              return true;
-            if (
-              lowerSelectedColor === "teal" &&
-              lowerGradientColor.includes("teal")
-            )
-              return true;
-            if (
-              lowerSelectedColor === "cyan" &&
-              lowerGradientColor.includes("cyan")
-            )
-              return true;
+            if (lowerSelectedColor === "red" && lowerGradientColor.includes("red")) return true;
+            if (lowerSelectedColor === "pink" && lowerGradientColor.includes("pink")) return true;
+            if (lowerSelectedColor === "orange" && lowerGradientColor.includes("orange")) return true;
+            if (lowerSelectedColor === "yellow" && lowerGradientColor.includes("yellow")) return true;
+            if (lowerSelectedColor === "green" && lowerGradientColor.includes("green")) return true;
+            if (lowerSelectedColor === "blue" && lowerGradientColor.includes("blue")) return true;
+            if (lowerSelectedColor === "purple" && (lowerGradientColor.includes("purple") || lowerGradientColor.includes("violet"))) return true;
+            if (lowerSelectedColor === "brown" && (lowerGradientColor.includes("brown") || lowerGradientColor.includes("beige"))) return true;
+            if (lowerSelectedColor === "black" && lowerGradientColor.includes("black")) return true;
+            if (lowerSelectedColor === "white" && lowerGradientColor.includes("white")) return true;
+            if (lowerSelectedColor === "gray" && (lowerGradientColor.includes("gray") || lowerGradientColor.includes("grey"))) return true;
+            if (lowerSelectedColor === "teal" && lowerGradientColor.includes("teal")) return true;
+            if (lowerSelectedColor === "cyan" && lowerGradientColor.includes("cyan")) return true;
 
             return false;
-          }),
+          })
         );
       return matchesSearch && matchesFavorites && matchesColors;
     });
@@ -223,19 +168,18 @@ const HomePage: React.FC = () => {
     const start = (currentPage - 1) * gradientsPerPage;
     return filteredGradients
       .slice(start, start + gradientsPerPage)
-      .filter(
-        (gradient): gradient is { name: string; colors: string[] } =>
-          gradient.name !== undefined &&
-          gradient.colors !== undefined &&
-          gradient.name.length > 0 &&
-          gradient.colors.length > 0,
+      .filter((gradient): gradient is { name: string; colors: string[] } =>
+        gradient.name !== undefined &&
+        gradient.colors !== undefined &&
+        gradient.name.length > 0 &&
+        gradient.colors.length > 0
       );
   }, [currentPage, filteredGradients, gradientsPerPage]);
 
   // --- Handlers ---
   const handlePageChange = (direction: "next" | "prev") => {
     setCurrentPage((prev) => (direction === "next" ? prev + 1 : prev - 1));
-    if (containerRef.current) {
+      if (containerRef.current) {
       const offset = 20;
       containerRef.current &&
         window.scrollTo({
@@ -254,7 +198,10 @@ const HomePage: React.FC = () => {
 
           <div className="flex flex-col gap-4" ref={containerRef}>
             <div className="flex flex-col gap-4 sm:flex-row">
+
+              
               <div className="relative w-full" id="input">
+
                 <Input
                   placeholder="Search by color name or keyword..."
                   className="hover:border-brand-500-secondary invalid:border-error-500 invalid:focus:border-error-500 text-placeholder peer block h-full w-full appearance-none overflow-hidden overflow-ellipsis text-nowrap rounded-md border border-border bg-input px-3 py-2 pr-[48px] text-sm outline-none focus:border-none focus:shadow-none focus:outline-none"
@@ -269,15 +216,17 @@ const HomePage: React.FC = () => {
                 <SearchIcon className="absolute bottom-0 right-2 top-0 m-auto h-5 w-5 text-primary" />
               </div>
 
+
               <div className=" ">
-                <ColorFilter
-                  availableColors={availableColors}
-                  selectedColors={selectedColors}
-                  onColorChange={(colors) => {
-                    setSelectedColors(colors);
-                    setCurrentPage(1);
-                  }}
-                />
+
+                  <ColorFilter
+                availableColors={availableColors}
+                selectedColors={selectedColors}
+                onColorChange={(colors) => {
+                  setSelectedColors(colors);
+                  setCurrentPage(1);
+                }}
+              />
               </div>
 
               <Select
@@ -295,8 +244,12 @@ const HomePage: React.FC = () => {
                   <SelectItem value="favorites">Favorites</SelectItem>
                 </SelectContent>
               </Select>
+
+
+              
             </div>
 
+     
             {(selectedColors.length > 0 || searchTerm || filter !== "all") && (
               <div className="text-sm text-muted-foreground">
                 Showing {filteredGradients.length} gradient
@@ -310,12 +263,10 @@ const HomePage: React.FC = () => {
 
           {error && (
             <div className="flex flex-col items-center justify-center py-12 text-center">
-              <p className="mb-4 text-red-500">
-                Error loading gradients: {error}
-              </p>
+              <p className="text-red-500 mb-4">Error loading gradients: {error}</p>
               <button
                 onClick={() => window.location.reload()}
-                className="hover:bg-primary/90 rounded-md bg-primary px-4 py-2 text-primary-foreground"
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
               >
                 Retry
               </button>
