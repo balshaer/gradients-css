@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
@@ -91,6 +91,7 @@ const HomePage: React.FC = () => {
   const [filter, setFilter] = useState("all");
   const [background, setBackground] = useState("");
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const gradientsPerPage = 9;
 
@@ -178,6 +179,14 @@ const HomePage: React.FC = () => {
   // --- Handlers ---
   const handlePageChange = (direction: "next" | "prev") => {
     setCurrentPage((prev) => (direction === "next" ? prev + 1 : prev - 1));
+      if (containerRef.current) {
+      const offset = 20;
+      containerRef.current &&
+        window.scrollTo({
+          top: containerRef.current.offsetTop - offset,
+          behavior: "smooth",
+        });
+    }
   };
 
   // --- Render ---
@@ -187,7 +196,7 @@ const HomePage: React.FC = () => {
         <div className="mx-auto max-w-6xl space-y-2 pt-12">
           <HeroSection />
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" ref={containerRef}>
             <div className="flex flex-col gap-4 sm:flex-row">
 
               
